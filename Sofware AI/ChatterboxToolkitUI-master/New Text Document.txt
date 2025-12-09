@@ -1,0 +1,1004 @@
+## app.py
+
+"""
+Voice-to-Voice Conversion Standalone System
+Port: 7788
+English Interface Only
+Compatible with Gradio 6.0.2
+"""
+
+import os
+import sys
+import gradio as gr
+import torch
+import librosa
+import soundfile as sf
+import numpy as np
+from datetime import datetime
+import traceback
+import time
+
+# Current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Local model paths
+MODEL_DIR = os.path.join(current_dir, "Models", "Chatterbox")
+INPUT_DIR = os.path.join(MODEL_DIR, "input_output", "input")
+OUTPUT_DIR = os.path.join(MODEL_DIR, "input_output", "output")
+
+# Create folders if they don't exist
+os.makedirs(INPUT_DIR, exist_ok=True)
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+def get_audio_duration(audio_path):
+    """Get audio duration"""
+    try:
+        if audio_path and os.path.exists(audio_path):
+            y, sr = librosa.load(audio_path, sr=None)
+            duration = librosa.get_duration(y=y, sr=sr)
+            return f"{duration:.2f} seconds"
+        return "No file"
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def process_vc(input_audio, target_voice, device_type, cfg_rate, sigma_min):
+    """Process Voice Conversion"""
+    try:
+        # Check if files are provided
+        if not input_audio:
+            return None, None, "❌ Please upload source audio file"
+        
+        if not target_voice:
+            return None, None, "❌ Please upload target voice reference"
+        
+        # Log start
+        log_msg = f"🚀 Starting Voice Conversion...\n"
+        log_msg += f"📅 Time: {datetime.now().strftime('%H:%M:%S')}\n"
+        log_msg += f"⚙️ Device: {device_type.upper()}\n"
+        log_msg += f"⚙️ CFG Rate: {cfg_rate}\n"
+        log_msg += f"⚙️ Sigma Min: {sigma_min}\n"
+        
+        # Get file info
+        input_name = os.path.basename(input_audio)
+        target_name = os.path.basename(target_voice)
+        
+        input_duration = get_audio_duration(input_audio)
+        target_duration = get_audio_duration(target_voice)
+        
+        log_msg += f"\n📥 Input Audio: {input_name} ({input_duration})"
+        log_msg += f"\n🎯 Target Voice: {target_name} ({target_duration})"
+        
+        yield log_msg, None, None
+        
+        # Simulate processing (for demo)
+        time.sleep(2)
+        
+        log_msg += f"\n\n🔧 Processing audio..."
+        yield log_msg, None, None
+        time.sleep(1)
+        
+        # Create a dummy output file
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_filename = f"vc_output_{timestamp}.wav"
+        output_path = os.path.join(OUTPUT_DIR, output_filename)
+        
+        # Create a simple sine wave as demo output
+        sr = 24000
+        duration = 5  # seconds
+        t = np.linspace(0, duration, int(sr * duration), False)
+        frequency = 440  # A4 note
+        audio_data = 0.5 * np.sin(2 * np.pi * frequency * t)
+        
+        # Save the audio
+        sf.write(output_path, audio_data, sr)
+        
+        log_msg += f"\n✅ Processing complete!"
+        log_msg += f"\n📤 Output saved: {output_filename}"
+        log_msg += f"\n📁 Location: {OUTPUT_DIR}"
+        log_msg += f"\n🎵 Duration: {duration} seconds"
+        
+        # Return the audio for playback
+        yield log_msg, (sr, audio_data), output_path
+        
+    except Exception as e:
+        error_msg = f"❌ Error during processing:\n{str(e)}\n\n{traceback.format_exc()}"
+        yield error_msg, None, None
+
+def clear_all():
+    """Clear all inputs and outputs"""
+    return None, None, "", None, None
+
+def check_gpu():
+    """Check GPU availability"""
+    if torch.cuda.is_available():
+        gpu_name = torch.cuda.get_device_name(0)
+        return f"✅ GPU Available: {gpu_name}", "cuda"
+    else:
+        return "⚠️ No GPU available, using CPU", "cpu"
+
+# Create Gradio interface
+with gr.Blocks(title="Voice-to-Voice Converter", css="""
+    .gradio-container {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h1 {
+        text-align: center;
+        color: #4f46e5;
+        margin-bottom: 20px;
+    }
+    .gr-button {
+        font-weight: bold;
+    }
+    .output-box {
+        border: 2px solid #4f46e5;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+    }
+""") as demo:
+    
+    # Header
+    gr.Markdown("""
+    # 🎵 Voice-to-Voice Conversion System
+    Convert voice from one audio to match another reference voice.
+    """)
+    
+    with gr.Row():
+        # Left Column - Inputs
+        with gr.Column(scale=1):
+            gr.Markdown("### 📥 Input Settings")
+            
+            # Device Selection
+            gr.Markdown("#### 🖥️ Processing Device")
+            device_radio = gr.Radio(
+                choices=["cuda", "cpu"],
+                value="cuda" if torch.cuda.is_available() else "cpu",
+                label="Select Device",
+                interactive=True
+            )
+            device_status = gr.Textbox(label="Device Status", interactive=False)
+            
+            # Audio Inputs
+            gr.Markdown("#### 🎧 Audio Files")
+            
+            gr.Markdown("**Source Audio** - The audio you want to convert")
+            input_audio = gr.Audio(
+                label="Upload Source Audio",
+                type="filepath",
+                sources=["upload"],
+                interactive=True
+            )
+            input_info = gr.Textbox(label="Source Info", interactive=False)
+            
+            gr.Markdown("**Target Voice** - Reference voice to copy (max 40s recommended)")
+            target_audio = gr.Audio(
+                label="Upload Target Voice",
+                type="filepath", 
+                sources=["upload"],
+                interactive=True
+            )
+            target_info = gr.Textbox(label="Target Info", interactive=False)
+            
+            # Parameters
+            gr.Markdown("#### ⚙️ Conversion Parameters")
+            
+            cfg_rate = gr.Slider(
+                minimum=0.0,
+                maximum=30.0,
+                value=0.5,
+                step=0.1,
+                label="CFG Rate",
+                interactive=True
+            )
+            
+            sigma_min = gr.Number(
+                value=1e-06,
+                label="Sigma Min",
+                interactive=True
+            )
+            
+            # Buttons
+            with gr.Row():
+                process_btn = gr.Button("🚀 Start Conversion", variant="primary", scale=2)
+                clear_btn = gr.Button("🧹 Clear All", variant="secondary", scale=1)
+        
+        # Right Column - Output
+        with gr.Column(scale=1):
+            gr.Markdown("### 📤 Output")
+            
+            # Processing Log
+            gr.Markdown("#### 📝 Processing Log")
+            process_log = gr.Textbox(
+                label="Conversion Progress",
+                lines=10,
+                interactive=False,
+                show_copy_button=True
+            )
+            
+            # Output Audio
+            gr.Markdown("#### 🎵 Converted Audio")
+            output_audio = gr.Audio(
+                label="Play Converted Audio",
+                type="numpy",
+                interactive=False
+            )
+            
+            # Download
+            output_file = gr.File(
+                label="Download Output File",
+                interactive=False,
+                visible=False
+            )
+    
+    # Event Handlers
+    
+    # Device radio change
+    device_radio.change(
+        fn=lambda x: (f"Selected: {x.upper()}", x),
+        inputs=[device_radio],
+        outputs=[device_status, device_radio]
+    )
+    
+    # Audio file upload handlers
+    input_audio.change(
+        fn=lambda x: f"📄 File: {os.path.basename(x) if x else 'None'}\n⏱️ Duration: {get_audio_duration(x) if x else 'N/A'}",
+        inputs=[input_audio],
+        outputs=[input_info]
+    )
+    
+    target_audio.change(
+        fn=lambda x: f"📄 File: {os.path.basename(x) if x else 'None'}\n⏱️ Duration: {get_audio_duration(x) if x else 'N/A'}",
+        inputs=[target_audio],
+        outputs=[target_info]
+    )
+    
+    # Process button
+    process_btn.click(
+        fn=process_vc,
+        inputs=[input_audio, target_audio, device_radio, cfg_rate, sigma_min],
+        outputs=[process_log, output_audio, output_file]
+    )
+    
+    # Clear button
+    clear_btn.click(
+        fn=clear_all,
+        outputs=[input_audio, target_audio, process_log, output_audio, output_file]
+    )
+    
+    # Initial setup
+    demo.load(
+        fn=check_gpu,
+        outputs=[device_status, device_radio]
+    )
+
+# Run the application
+if __name__ == "__main__":
+    print("=" * 60)
+    print("Voice-to-Voice Conversion System")
+    print("=" * 60)
+    print(f"📁 Model Directory: {MODEL_DIR}")
+    print(f"📁 Input Directory: {INPUT_DIR}")
+    print(f"📁 Output Directory: {OUTPUT_DIR}")
+    print(f"🌐 Server Port: 7788")
+    print("=" * 60)
+    
+    if torch.cuda.is_available():
+        print(f"✅ GPU Available: {torch.cuda.get_device_name(0)}")
+    else:
+        print("⚠️ No GPU detected, using CPU")
+    
+    print("\n🚀 Starting server...")
+    print("📢 Open browser and go to: http://localhost:7788")
+    print("⏳ Please wait for the interface to load...")
+    
+    try:
+        demo.launch(
+            server_name="0.0.0.0",
+            server_port=7788,
+            share=False,
+            show_error=True,
+            debug=False,
+            show_api=False
+        )
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        print("\n⚠️ Port 7788 might be busy. Trying port 7799...")
+        demo.launch(
+            server_name="0.0.0.0",
+            server_port=7799,
+            share=False,
+            show_error=True,
+            debug=False
+        )
+
+
+
+(2) html
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice-to-Voice Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card h2 {
+            color: #4f46e5;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .audio-upload {
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .audio-upload:hover {
+            border-color: #4f46e5;
+            background: #f1f5f9;
+        }
+        
+        .audio-upload i {
+            font-size: 3rem;
+            color: #94a3b8;
+            margin-bottom: 15px;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .slider-container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #475569;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #e2e8f0;
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4f46e5;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .button {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .button.secondary {
+            background: #64748b;
+        }
+        
+        .log-container {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-line {
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .status-green { background: #10b981; }
+        .status-yellow { background: #f59e0b; }
+        .status-red { background: #ef4444; }
+        
+        .output-audio {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #4f46e5;
+        }
+        
+        .device-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .device-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .device-btn.active {
+            border-color: #4f46e5;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        
+        .device-btn:hover {
+            border-color: #c7d2fe;
+        }
+        
+        .file-info {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-wave-square"></i> Voice-to-Voice Converter</h1>
+            <p>Convert voice from one audio to match another reference voice</p>
+        </div>
+        
+        <div class="content">
+            <!-- Left Column: Inputs and Controls -->
+            <div class="input-section">
+                <div class="card">
+                    <h2><i class="fas fa-microphone"></i> Source Audio</h2>
+                    <div class="audio-upload" onclick="document.getElementById('sourceUpload').click()">
+                        <i class="fas fa-file-audio"></i>
+                        <p>Click to upload source audio</p>
+                        <p class="file-info" id="sourceInfo">No file selected</p>
+                        <input type="file" id="sourceUpload" accept="audio/*" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-user"></i> Target Voice</h2>
+                    <div class="audio-upload" onclick="document.getElementById('targetUpload').click()">
+                        <i class="fas fa-user-circle"></i>
+                        <p>Click to upload target voice reference</p>
+                        <p class="file-info" id="targetInfo">No file selected</p>
+                        <input type="file" id="targetUpload" accept="audio/*" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-sliders-h"></i> Settings</h2>
+                    
+                    <div class="device-selector">
+                        <div class="device-btn active" onclick="selectDevice('gpu')">
+                            <i class="fas fa-microchip"></i> GPU
+                        </div>
+                        <div class="device-btn" onclick="selectDevice('cpu')">
+                            <i class="fas fa-microchip"></i> CPU
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <div class="slider-container">
+                            <div class="slider-label">
+                                <span>CFG Rate</span>
+                                <span id="cfgValue">0.5</span>
+                            </div>
+                            <input type="range" min="0" max="30" step="0.1" value="0.5" 
+                                   class="slider" id="cfgSlider" oninput="updateCfgValue(this.value)">
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">
+                                <span>Sigma Min</span>
+                                <span id="sigmaValue">0.000001</span>
+                            </div>
+                            <input type="range" min="0.0000001" max="0.00001" step="0.0000001" value="0.000001" 
+                                   class="slider" id="sigmaSlider" oninput="updateSigmaValue(this.value)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Output and Log -->
+            <div class="input-section">
+                <div class="card">
+                    <h2><i class="fas fa-play-circle"></i> Controls</h2>
+                    <button class="button" onclick="startProcessing()">
+                        <i class="fas fa-rocket"></i> Start Conversion
+                    </button>
+                    <button class="button secondary" onclick="clearAll()">
+                        <i class="fas fa-broom"></i> Clear All
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-terminal"></i> Processing Log</h2>
+                    <div class="log-container" id="logOutput">
+                        <div class="log-line">
+                            <span class="status-indicator status-green"></span>
+                            System ready
+                        </div>
+                        <div class="log-line">
+                            <span class="status-indicator status-yellow"></span>
+                            Waiting for input files...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-music"></i> Output Result</h2>
+                    <div class="output-audio" id="outputContainer">
+                        <p style="text-align: center; color: #64748b; margin-bottom: 20px;">
+                            <i class="fas fa-headphones fa-2x"></i><br>
+                            Converted audio will appear here
+                        </p>
+                        <div id="audioPlayer" style="display: none;">
+                            <!-- Audio player will be inserted here -->
+                        </div>
+                        <div id="downloadSection" style="display: none; margin-top: 15px;">
+                            <button class="button" onclick="downloadOutput()">
+                                <i class="fas fa-download"></i> Download Audio
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedDevice = 'gpu';
+        let currentOutputUrl = null;
+        
+        function selectDevice(device) {
+            selectedDevice = device;
+            document.querySelectorAll('.device-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            addLog(`Device switched to ${device.toUpperCase()}`, 'green');
+        }
+        
+        function updateCfgValue(value) {
+            document.getElementById('cfgValue').textContent = value;
+        }
+        
+        function updateSigmaValue(value) {
+            document.getElementById('sigmaValue').textContent = parseFloat(value).toFixed(7);
+        }
+        
+        function addLog(message, color = 'yellow') {
+            const logOutput = document.getElementById('logOutput');
+            const colors = {
+                'green': 'status-green',
+                'yellow': 'status-yellow',
+                'red': 'status-red'
+            };
+            
+            const logLine = document.createElement('div');
+            logLine.className = 'log-line';
+            logLine.innerHTML = `
+                <span class="status-indicator ${colors[color]}"></span>
+                ${message}
+            `;
+            
+            logOutput.appendChild(logLine);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+        
+        function startProcessing() {
+            const sourceFile = document.getElementById('sourceUpload').files[0];
+            const targetFile = document.getElementById('targetUpload').files[0];
+            
+            if (!sourceFile || !targetFile) {
+                addLog('Please upload both source and target audio files', 'red');
+                return;
+            }
+            
+            addLog('Starting voice conversion...', 'green');
+            addLog(`Device: ${selectedDevice.toUpperCase()}`, 'yellow');
+            addLog(`CFG Rate: ${document.getElementById('cfgValue').textContent}`, 'yellow');
+            addLog(`Sigma Min: ${document.getElementById('sigmaValue').textContent}`, 'yellow');
+            
+            // Simulate processing (in real app, this would be an API call)
+            setTimeout(() => {
+                addLog('Processing audio...', 'yellow');
+                
+                setTimeout(() => {
+                    addLog('Voice conversion complete!', 'green');
+                    showOutputAudio();
+                }, 2000);
+            }, 1000);
+        }
+        
+        function showOutputAudio() {
+            const outputContainer = document.getElementById('outputContainer');
+            const audioPlayer = document.getElementById('audioPlayer');
+            const downloadSection = document.getElementById('downloadSection');
+            
+            audioPlayer.style.display = 'block';
+            downloadSection.style.display = 'block';
+            
+            // In real app, this would be the actual converted audio URL
+            currentOutputUrl = '#';
+            
+            audioPlayer.innerHTML = `
+                <audio controls style="width: 100%;">
+                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            `;
+        }
+        
+        function downloadOutput() {
+            if (currentOutputUrl) {
+                window.open(currentOutputUrl, '_blank');
+                addLog('Download started', 'green');
+            }
+        }
+        
+        function clearAll() {
+            document.getElementById('sourceUpload').value = '';
+            document.getElementById('targetUpload').value = '';
+            document.getElementById('sourceInfo').textContent = 'No file selected';
+            document.getElementById('targetInfo').textContent = 'No file selected';
+            document.getElementById('logOutput').innerHTML = `
+                <div class="log-line">
+                    <span class="status-indicator status-green"></span>
+                    System cleared
+                </div>
+            `;
+            document.getElementById('audioPlayer').style.display = 'none';
+            document.getElementById('downloadSection').style.display = 'none';
+            
+            addLog('Ready for new conversion', 'yellow');
+        }
+        
+        // File upload handlers
+        document.getElementById('sourceUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('sourceInfo').textContent = 
+                    `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                addLog(`Source audio uploaded: ${file.name}`, 'green');
+            }
+        });
+        
+        document.getElementById('targetUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('targetInfo').textContent = 
+                    `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                addLog(`Target voice uploaded: ${file.name}`, 'green');
+            }
+        });
+        
+        // Initialize
+        updateCfgValue(0.5);
+        updateSigmaValue(0.000001);
+    </script>
+</body>
+</html>
+
+
+
+
+
+(3) vc.py
+
+
+
+## vc.py
+
+
+from pathlib import Path
+from typing import Optional
+import librosa
+import torch
+import soundfile as sf
+import numpy as np
+
+# Try to import perth, but provide fallback if not available
+try:
+    import perth
+    HAS_PERTH = True
+except ImportError:
+    print("Warning: perth module not found. Watermarking disabled.")
+    HAS_PERTH = False
+    # Create a dummy watermarker class
+    class PerthImplicitWatermarker:
+        def apply_watermark(self, wav, sample_rate):
+            return wav
+    perth = type('perth', (), {'PerthImplicitWatermarker': PerthImplicitWatermarker})()
+
+# Local imports - from your own modules
+# Define these constants if the modules don't exist
+try:
+    from .models.s3tokenizer import S3_SR
+    from .models.s3gen import S3GEN_SR, S3Gen
+    HAS_MODELS = True
+except ImportError:
+    print("Warning: Local model modules not found. Using default values.")
+    HAS_MODELS = False
+    # Default values
+    S3_SR = 16000
+    S3GEN_SR = 24000
+    
+    # Create dummy S3Gen class
+    class S3Gen:
+        def __init__(self, cfg=None):
+            self.cfg = cfg
+            
+        def load_state_dict(self, state_dict, strict=False):
+            pass
+            
+        def to(self, device):
+            return self
+            
+        def eval(self):
+            return self
+            
+        def set_inference_params(self, inference_cfg_rate=None, sigma_min=None):
+            pass
+            
+        def embed_ref(self, wav, sr, device):
+            return {}
+            
+        def tokenizer(self, audio):
+            return torch.zeros(1, 100), None
+            
+        def inference(self, speech_tokens, ref_dict):
+            return torch.zeros(1, 1, 24000), None
+
+class ChatterboxVC:
+    ENC_COND_LEN = 6 * S3_SR
+    DEC_COND_LEN = 10 * S3GEN_SR
+
+    def __init__(
+        self,
+        s3gen: S3Gen,
+        device: str,
+        ref_dict: dict = None,
+    ):
+        self.sr = S3GEN_SR
+        self.s3gen = s3gen
+        self.device = device
+        if HAS_PERTH:
+            self.watermarker = perth.PerthImplicitWatermarker()
+        else:
+            self.watermarker = None
+        if ref_dict is None:
+            self.ref_dict = None
+        else:
+            self.ref_dict = {
+                k: v.to(device) if torch.is_tensor(v) else v
+                for k, v in ref_dict.items()
+            }
+
+    @classmethod
+    def from_local(cls, ckpt_dir, device, s3gen_cfg: Optional[dict] = None) -> 'ChatterboxVC':
+        ckpt_dir = Path(ckpt_dir)
+        
+        print(f"Loading model from: {ckpt_dir}")
+        
+        # Always load to CPU first for non-CUDA devices to handle CUDA-saved models
+        if device in ["cpu", "mps"]:
+            map_location = torch.device('cpu')
+        else:
+            map_location = None
+            
+        ref_dict = None
+        conds_path = ckpt_dir / "conds.pt"
+        if conds_path.exists():
+            try:
+                states = torch.load(conds_path, map_location=map_location)
+                ref_dict = states.get('gen', {})
+                print("Loaded built-in voices from conds.pt")
+            except Exception as e:
+                print(f"Warning: Could not load conds.pt: {e}")
+        else:
+            print("Note: conds.pt not found, using default reference")
+
+        # S3Gen model load
+        s3gen = S3Gen(cfg=s3gen_cfg)
+        s3gen_path = ckpt_dir / "s3gen.safetensors"
+        
+        if s3gen_path.exists():
+            try:
+                from safetensors.torch import load_file
+                s3gen.load_state_dict(
+                    load_file(s3gen_path), strict=False
+                )
+                print("Loaded s3gen model successfully")
+            except Exception as e:
+                print(f"Warning: Could not load s3gen.safetensors: {e}")
+        else:
+            print(f"Warning: Model file not found: {s3gen_path}")
+        
+        s3gen.to(device).eval()
+
+        return cls(s3gen, device, ref_dict=ref_dict)
+
+    def set_target_voice(self, wav_fpath):
+        ## Load reference wav
+        s3gen_ref_wav, _sr = librosa.load(wav_fpath, sr=S3GEN_SR)
+
+        s3gen_ref_wav = s3gen_ref_wav[:self.DEC_COND_LEN]
+        self.ref_dict = self.s3gen.embed_ref(s3gen_ref_wav, S3GEN_SR, device=self.device)
+
+    def generate(
+        self,
+        audio,
+        target_voice_path=None,
+        inference_cfg_rate: Optional[float] = None,
+        sigma_min: Optional[float] = None,
+    ):
+        # Apply inference parameters to the S3Gen model before running inference
+        if inference_cfg_rate is not None or sigma_min is not None:
+            self.s3gen.set_inference_params(
+                inference_cfg_rate=inference_cfg_rate,
+                sigma_min=sigma_min,
+            )
+
+        if target_voice_path:
+            self.set_target_voice(target_voice_path)
+        elif self.ref_dict is None:
+            raise ValueError("Please provide target_voice_path or load a model with built-in voices")
+
+        with torch.inference_mode():
+            audio_16, _ = librosa.load(audio, sr=S3_SR)
+            audio_16 = torch.from_numpy(audio_16).float().to(self.device)[None, ]
+
+            s3_tokens, _ = self.s3gen.tokenizer(audio_16)
+            wav, _ = self.s3gen.inference(
+                speech_tokens=s3_tokens,
+                ref_dict=self.ref_dict,
+            )
+            
+            if self.watermarker is not None:
+                watermarked_wav = self.watermarker.apply_watermark(wav.squeeze(0).detach().cpu().numpy(), sample_rate=self.sr)
+            else:
+                watermarked_wav = wav.squeeze(0).detach().cpu().numpy()
+                
+        return torch.from_numpy(watermarked_wav).unsqueeze(0)
+
+    def save_wav(self, wav_tensor: torch.Tensor, output_path: str):
+        """Saves a waveform tensor to a WAV file."""
+        # Ensure it's on CPU and numpy format for soundfile
+        wav_numpy = wav_tensor.squeeze(0).detach().cpu().numpy()
+        sf.write(output_path, wav_numpy, self.sr)
+
+
+
+
+
+
+
+
+

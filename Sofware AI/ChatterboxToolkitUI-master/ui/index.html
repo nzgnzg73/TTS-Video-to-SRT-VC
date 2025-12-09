@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice-to-Voice Converter Professional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* آپ کا پسندیدہ اسٹائل (سیم ٹو سیم) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .container { background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; max-width: 1200px; width: 100%; position: relative; }
+        .header { background: linear-gradient(90deg, #4f46e5, #7c3aed); color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .header p { font-size: 1.1rem; opacity: 0.9; }
+        .content { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 30px; }
+        @media (max-width: 768px) { .content { grid-template-columns: 1fr; } }
+        .card { background: #f8fafc; border-radius: 15px; padding: 25px; border: 1px solid #e2e8f0; }
+        .card h2 { color: #4f46e5; margin-bottom: 20px; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        .input-section { display: flex; flex-direction: column; gap: 20px; }
+        
+        .audio-upload { border: 2px dashed #cbd5e1; border-radius: 10px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.3s; position: relative; }
+        .audio-upload:hover { border-color: #4f46e5; background: #f1f5f9; }
+        .audio-upload i.main-icon { font-size: 3rem; color: #94a3b8; margin-bottom: 15px; }
+        
+        .controls { display: flex; flex-direction: column; gap: 15px; }
+        .slider-container { background: white; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .slider-label { display: flex; justify-content: space-between; margin-bottom: 10px; color: #475569; }
+        .slider { width: 100%; height: 6px; -webkit-appearance: none; background: #e2e8f0; border-radius: 3px; outline: none; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: #4f46e5; border-radius: 50%; cursor: pointer; }
+        
+        .button { background: linear-gradient(90deg, #4f46e5, #7c3aed); color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; }
+        .button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3); }
+        .button:disabled { background: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
+        .button.secondary { background: #64748b; margin-top: 10px; }
+        
+        .log-container { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px; font-family: 'Monaco', 'Courier New', monospace; max-height: 300px; overflow-y: auto; }
+        .log-line { margin-bottom: 5px; padding: 5px 10px; border-radius: 5px; background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .status-indicator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
+        .status-green { background: #10b981; }
+        .status-yellow { background: #f59e0b; }
+        .status-red { background: #ef4444; }
+        
+        .output-audio { background: white; border-radius: 10px; padding: 20px; border: 2px solid #4f46e5; text-align: center; }
+        
+        /* Device Selector Styling */
+        .device-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .device-btn { flex: 1; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; text-align: center; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; color: #64748b; }
+        .device-btn.active { border-color: #4f46e5; background: #eef2ff; color: #4f46e5; box-shadow: 0 0 10px rgba(79, 70, 229, 0.1); }
+        .device-btn:hover { border-color: #c7d2fe; }
+
+        /* --- NEW STYLES FOR FILE INFO & ACTIONS --- */
+        .file-info { margin-top: 15px; font-size: 0.9rem; color: #334155; font-weight: 500; line-height: 1.4; display: none; background: white; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .file-info.show { display: block; animation: fadeIn 0.3s ease; }
+        
+        .file-actions { display: flex; gap: 10px; margin-top: 8px; justify-content: center; }
+        
+        .action-btn { padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 0.9em; border: none; color: white; transition: transform 0.2s; display: flex; align-items: center; gap: 5px; }
+        .btn-play { background: #3b82f6; } /* Blue for Play */
+        .btn-play:hover { background: #2563eb; transform: scale(1.05); }
+        
+        .btn-remove { background: #ef4444; } /* Red for Delete */
+        .btn-remove:hover { background: #dc2626; transform: scale(1.05); }
+
+        /* --- MODAL (POPUP) STYLES --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Dark background */
+            display: none; justify-content: center; align-items: center;
+            z-index: 1000; backdrop-filter: blur(5px);
+        }
+        .modal-box {
+            background: white; padding: 30px; border-radius: 15px;
+            width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.3s ease;
+        }
+        .modal-title { font-size: 1.2rem; color: #1e293b; margin-bottom: 20px; font-weight: bold; }
+        .btn-close-modal {
+            margin-top: 20px; background: #e2e8f0; color: #475569;
+            padding: 10px 20px; border-radius: 8px; border: none;
+            cursor: pointer; font-weight: bold;
+        }
+        .btn-close-modal:hover { background: #cbd5e1; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <div id="audioModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-title"><i class="fas fa-volume-up"></i> Preview Audio</div>
+            <audio id="modalAudioPlayer" controls style="width: 100%; border-radius: 30px;"></audio>
+            <button class="btn-close-modal" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-wave-square"></i> Voice-to-Voice Converter</h1>
+            <p>Professional AI Voice Cloning Interface</p>
+        </div>
+        
+        <div class="content">
+            <div class="input-section">
+                <div class="card">
+                    <h2><i class="fas fa-microphone"></i> Target Reference </h2>
+                    <div class="audio-upload">
+                        <div onclick="document.getElementById('sourceUpload').click()">
+                            <i class="fas fa-file-audio main-icon"></i>
+                            <p>Click to Upload Target Reference</p>
+                        </div>
+                        
+                        <div class="file-info" id="sourceInfoBox">
+                            <div id="sourceDetails"></div>
+                            <div class="file-actions">
+                                <button class="action-btn btn-play" onclick="openModal('source')">
+                                    <i class="fas fa-play"></i> Listen
+                                </button>
+                                <button class="action-btn btn-remove" onclick="removeFile('source')">
+                                    <i class="fas fa-times"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+
+                        <input type="file" id="sourceUpload" accept="audio/*" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-user"></i> Original Voice (Source)</h2>
+                    <div class="audio-upload">
+                        <div onclick="document.getElementById('targetUpload').click()">
+                            <i class="fas fa-user-circle main-icon"></i>
+                            <p>Click to Upload Your Voice</p>
+                        </div>
+
+                        <div class="file-info" id="targetInfoBox">
+                            <div id="targetDetails"></div>
+                            <div class="file-actions">
+                                <button class="action-btn btn-play" onclick="openModal('target')">
+                                    <i class="fas fa-play"></i> Listen
+                                </button>
+                                <button class="action-btn btn-remove" onclick="removeFile('target')">
+                                    <i class="fas fa-times"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+
+                        <input type="file" id="targetUpload" accept="audio/*" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-sliders-h"></i> Settings</h2>
+                    
+                    <div class="device-selector">
+                        <div class="device-btn active" id="btn-gpu" onclick="setDevice('cuda')">
+                            <i class="fas fa-microchip"></i> GPU (Fast)
+                        </div>
+                        <div class="device-btn" id="btn-cpu" onclick="setDevice('cpu')">
+                            <i class="fas fa-server"></i> CPU (Slow)
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <div class="slider-container">
+                            <div class="slider-label">
+                                <span>CFG Rate (Similarity)</span>
+                                <span id="cfgValue">0.5</span>
+                            </div>
+                            <input type="range" min="0" max="30" step="0.1" value="0.5" 
+                                   class="slider" id="cfgSlider" oninput="document.getElementById('cfgValue').innerText = this.value">
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">
+                                <span>Sigma Min (Clarity)</span>
+                                <span id="sigmaValue">0.000001</span>
+                            </div>
+                            <input type="range" min="0.0000001" max="0.00001" step="0.0000001" value="0.000001" 
+                                   class="slider" id="sigmaSlider" oninput="document.getElementById('sigmaValue').innerText = this.value">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-section">
+                <div class="card">
+                    <h2><i class="fas fa-play-circle"></i> Controls</h2>
+                    <button class="button" id="processBtn" onclick="startRealProcessing()">
+                        <i class="fas fa-rocket"></i> Start Conversion
+                    </button>
+                    <button class="button secondary" onclick="window.location.reload()">
+                        <i class="fas fa-broom"></i> Reset System
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-terminal"></i> Processing Log</h2>
+                    <div class="log-container" id="logOutput">
+                        <div class="log-line">
+                            <span class="status-indicator status-green"></span> System Ready. Waiting for input...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-music"></i> Output Result</h2>
+                    <div class="output-audio" id="outputContainer">
+                        <div id="placeholderOutput">
+                            <i class="fas fa-headphones fa-3x" style="color: #cbd5e1; margin-bottom: 15px;"></i>
+                            <p style="color: #64748b;">Converted audio will appear here</p>
+                        </div>
+                        
+                        <div id="realOutput" style="display: none;">
+                            <audio id="audioPlayer" controls style="width: 100%; margin-bottom: 15px;"></audio>
+                            <a id="downloadLink" href="#" class="button" style="text-decoration: none;">
+                                <i class="fas fa-download"></i> Download Result
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDevice = 'cuda'; 
+        let fileBlobs = { source: null, target: null }; // Store audio URLs for preview
+
+        function setDevice(device) {
+            currentDevice = device;
+            document.getElementById('btn-gpu').className = device === 'cuda' ? 'device-btn active' : 'device-btn';
+            document.getElementById('btn-cpu').className = device === 'cpu' ? 'device-btn active' : 'device-btn';
+            addLog(`Device switched to: ${device.toUpperCase()}`, 'yellow');
+        }
+
+        function addLog(msg, color='green') {
+            const box = document.getElementById('logOutput');
+            const colorClass = color === 'red' ? 'status-red' : (color === 'yellow' ? 'status-yellow' : 'status-green');
+            const line = `<div class="log-line"><span class="status-indicator ${colorClass}"></span> ${msg}</div>`;
+            box.innerHTML += line;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // --- NEW FILE HANDLING LOGIC ---
+
+        function handleFileSelect(type) {
+            const inputId = type + 'Upload';     // e.g., sourceUpload
+            const infoBoxId = type + 'InfoBox';  // e.g., sourceInfoBox
+            const detailsId = type + 'Details';  // e.g., sourceDetails
+
+            document.getElementById(inputId).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const objectUrl = URL.createObjectURL(file);
+                    fileBlobs[type] = objectUrl; // Save for modal
+
+                    const audio = new Audio(objectUrl);
+                    audio.onloadedmetadata = function() {
+                        const duration = audio.duration;
+                        const minutes = Math.floor(duration / 60);
+                        const seconds = Math.floor(duration % 60);
+                        const durationStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                        const sizeMB = (file.size / (1024*1024)).toFixed(2);
+                        
+                        // Show the Info Box
+                        const box = document.getElementById(infoBoxId);
+                        box.classList.add('show');
+                        
+                        document.getElementById(detailsId).innerHTML = `
+                            <strong>${file.name}</strong><br>
+                            <span style="font-size:0.85em; color:#64748b;">Size: ${sizeMB} MB | Time: ${durationStr}</span>
+                        `;
+
+                        addLog(`Loaded: ${file.name}`, 'green');
+                    };
+                }
+            });
+        }
+
+        // Initialize listeners
+        handleFileSelect('source');
+        handleFileSelect('target');
+
+        // --- MODAL FUNCTIONS ---
+        function openModal(type) {
+            const url = fileBlobs[type];
+            if(url) {
+                const modal = document.getElementById('audioModal');
+                const player = document.getElementById('modalAudioPlayer');
+                player.src = url;
+                modal.style.display = 'flex'; // Show modal
+                player.play(); // Auto play
+            } else {
+                alert("No audio loaded!");
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('audioModal');
+            const player = document.getElementById('modalAudioPlayer');
+            player.pause();
+            player.src = ""; // Stop audio
+            modal.style.display = 'none';
+        }
+
+        // --- REMOVE FILE FUNCTION ---
+        function removeFile(type) {
+            // Reset Input
+            document.getElementById(type + 'Upload').value = "";
+            // Hide Info Box
+            document.getElementById(type + 'InfoBox').classList.remove('show');
+            // Clear Blob
+            fileBlobs[type] = null;
+            addLog(`${type === 'source' ? 'Target' : 'Original'} audio removed.`, 'yellow');
+        }
+
+        // Close modal when clicking outside box
+        window.onclick = function(event) {
+            const modal = document.getElementById('audioModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // --- MAIN PROCESSING ---
+        async function startRealProcessing() {
+            const sourceFile = document.getElementById('sourceUpload').files[0];
+            const targetFile = document.getElementById('targetUpload').files[0];
+            const btn = document.getElementById('processBtn');
+
+            if (!sourceFile || !targetFile) {
+                addLog('Error: Please upload both files.', 'red');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            document.getElementById('realOutput').style.display = 'none';
+            document.getElementById('placeholderOutput').style.display = 'block';
+
+            addLog('Uploading files and starting AI conversion...', 'yellow');
+
+            const formData = new FormData();
+            formData.append('source_audio', sourceFile);
+            formData.append('target_audio', targetFile);
+            formData.append('device', currentDevice);
+            formData.append('cfg_rate', document.getElementById('cfgSlider').value);
+            formData.append('sigma_min', document.getElementById('sigmaSlider').value);
+
+            try {
+                const response = await fetch('/process_vc', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(errText);
+                }
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const player = document.getElementById('audioPlayer');
+                const dLink = document.getElementById('downloadLink');
+                
+                player.src = url;
+                dLink.href = url;
+                dLink.download = `converted_${Date.now()}.wav`;
+
+                document.getElementById('placeholderOutput').style.display = 'none';
+                document.getElementById('realOutput').style.display = 'block';
+                
+                addLog('Success! Audio converted successfully.', 'green');
+
+            } catch (err) {
+                console.error(err);
+                let cleanError = err.message;
+                if(cleanError.includes("No model file")) {
+                     cleanError = "Processing Failed: No model file found in 'models' folder.";
+                }
+                addLog(cleanError, 'red');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-rocket"></i> Start Conversion';
+            }
+        }
+    </script>
+</body>
+</html>
