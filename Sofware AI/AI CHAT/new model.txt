@@ -1,0 +1,369 @@
+I have read the important explanation you have given.
+Better and clearer text of your explanation:
+"This explanation is very important for you, please read it carefully.
+I have named the files engine v1 old and engine v3.
+* engine v1 old is the file for the old model. If you are downloading the old model, then you have to remove the name written 'engine v1 old'.
+* If you want to download the new model, not the old one, then you have to remove the name written in front of 'engine v3'.
+After removing the name, you have to copy that file and go back one step. There will already be a file there named 'engine'. You have to delete the file with this 'engine' first.
+Finally, you have to remove the name of engine v3 (or engine v1 old) and paste the copied file in this place."
+
+
+
+
+آپ نے جو اہم وضاحت دی ہے، میں نے اُسے اچھی طرح پڑھ لیا ہے۔
+آپ کی وضاحت کا بہتر اور واضح متن:
+"یہ وضاحت آپ کے لیے بہت اہم ہے، براہ مہربانی اِسے لازمی پڑھ لیں۔
+میں نے فائلوں کے نام engine v1 old اور engine v3 رکھے ہیں۔
+ * engine v1 old وہ فائل ہے جو پرانے ماڈل کے لیے ہے۔ اگر آپ پرانا ماڈل ڈاؤن لوڈ کر رہے ہیں، تو آپ نے 'engine v1 old' لکھے ہوئے نام کو ہٹا دینا ہے۔
+ * اگر آپ پرانا نہیں بلکہ نیا ماڈل ڈاؤن لوڈ کرنا چاہتے ہیں، تو آپ نے 'engine v3' کے آگے لکھے ہوئے نام کو ہٹا دینا ہے۔
+نام ہٹانے کے بعد، آپ نے اُس فائل کو کاپی کرنا ہے اور ایک سٹیپ پیچھے جانا ہے۔ وہاں پہلے سے ایک فائل موجود ہو گی جس کا نام 'engine'  ہو گا۔ آپ نے سب سے پہلے اس 'engine' والی فائل کو ڈیلیٹ (Delete) کر دینا ہے۔
+آخر میں، آپ نے engine v3 (یا engine v1 old) کا نام ہٹا کر جو فائل کاپی کی تھی، اُسے اِس جگہ پر پیسٹ (Paste) کر دینا ہے۔"
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+engine v1old  (t3_23lang)   #old model
+
+engine v3    (t3_mtl23ls_v2)    #new Update 
+
+
+
+
+Of the models you mentioned, some will be old and some new. I would advise you to download only the new models as they have better features and performance.
+
+
+
+آپ نے جن ماڈلز کا ذکر کیا ہے، ان میں سے کچھ پرانے (Old) ہوں گے اور کچھ نئے (New)۔ میں آپ کو یہی مشورہ دوں گا کہ نئے ماڈلز ہی ڈاؤن لوڈ کریں کیونکہ وہ بہتر خصوصیات (Features) اور کارکردگی (Performance) کے حامل ہوتے ہیں۔
+
+
+
+
+
+engine v3  (t3_mtl23ls_v2)   #new Update 
+
+
+model download link 
+
+https://huggingface.co/ResembleAI/chatterbox/tree/main
+
+https://huggingface.co/nzgnzg73/chatterbox/tree/main
+
+https://drive.google.com/drive/folders/1c48_jhVjBoPQXpSivL9ogvJU6stMSg_f?usp=sharing
+
+
+
+Cangjie5_TC.json:-  
+
+
+tokenizer.json
+
+
+conds.pt:-h
+
+👇
+grapheme_mtl_merged_expanded_v1.json:- 
+
+
+s3gen .pt;- 
+
+
+ve.pt-h
+
+
+s3gen.safetensors
+
+
+t3_cfg.safetensors
+
+ve.safetensors
+
+
+
+
+👇
+t3_mtl23ls_v2.safetensors
+
+-------------------------------------------------------------------------------
+
+
+If the new model does not work, you can run the old model.
+Explanation of your method:
+1 I would advise you to first download all the files that I have mentioned as "New".
+2 Suppose you have downloaded the new model, but it did not work on your computer (PC).
+3. In such a case, you do not have to download all the old files mentioned below.
+4. Rather, you only have to download the two files that I have written "NZG".
+5. Do not delete the files that you downloaded earlier (for the new model), but add the new "NZG" files to the same place.
+
+
+
+
+
+اگر نیا ماڈل نہ چلے تو آپ پرانا ماڈل چلا سکتے ہیں۔
+آپ کے طریقہ کار کی وضاحت:
+ 1  میں آپ کو مشورہ دوں گا کہ پہلے آپ وہ تمام فائلیں ڈاؤن لوڈ کریں جنہیں میں نے "New" کے نام سے بتایا ہے۔
+ 2  فرض کریں کہ آپ نے نیا ماڈل ڈاؤن لوڈ کر لیا، لیکن وہ آپ کے کمپیوٹر (PC) پر کام نہیں کیا۔
+ 3.   ایسی صورت میں، آپ نے نیچے بتائی گئی تمام پرانی فائلیں ڈاؤن لوڈ نہیں کرنی ہیں۔
+ 4.   بلکہ، آپ نے صرف وہ دو فائلیں ڈاؤن لوڈ کرنی ہیں جن پر میں نے "NZG" لکھا ہوا ہے۔
+ 5.   جو فائلیں آپ نے پہلے (نئے ماڈل کے لیے) ڈاؤن لوڈ کی تھیں، اُنہیں حذف (Delete) نہیں کرنا ہے، بلکہ نئی "NZG" والی فائلوں کو بھی اُسی جگہ شامل (Add) کر دینا ہے۔
+
+------------------------------------------------------------------------------------------------------------------------------
+
+engine v1 (t3_23lang)   #old model 
+
+
+
+Cangjie5_TC.json:-  
+
+
+conds.pt:-
+
+
+tokenizer.json
+
+
+NZG
+👇
+mtl_tokenizer.json:- 
+
+
+s3gen .pt;- 
+
+ve.pt-
+
+s3gen.safetensors
+
+
+t3_cfg.safetensors
+
+
+ve.safetensors
+
+
+
+NZG
+👇
+t3_23lang.safetensors
+
+
+
+-----------------------------------------------------------------------------------------------------
+
+My brothers! The things I have told you, must be followed. Now listen to the last and most important thing. If you do not do this, then you will face 100% problem.
+What do you have to do?
+* All the models that you have downloaded, now you have to organize them.
+* Open the folder where you have downloaded the files from GitHub.
+* Inside this folder, you have to copy all the V3 models, for example 
+
+Cangjie5_TC.json:-  
+tokenizer.json
+conds.pt:-h
+grapheme_mtl_merged_expanded_v1.json:- 
+s3gen .pt;- 
+ve.pt-h
+s3gen.safetensors
+t3_cfg.safetensors
+ve.safetensors
+t3_mtl23ls_v2.safetensors
+
+
+(etc.), and paste them inside the same V3 folder.
+
+Important Editing:
+
+Now you have to edit one thing in the engine v3 (or engine v1 old) file that you had copied and pasted outside. You have to find the path to a specific code or location given below.
+ When you get that code, you have to write the name and location of your model folder there.
+Example:
+
+
+
+
+r"D:\Flie\Chatterbox-TTS-Server\Chatterbox-TTS-Server-Multilingual\v3"
+
+
+
+
+
+You can quickly find the coding above, you will find it, these two codings are done inside this file, inside V
+
+engine v3/ engine v1 old 
+
+Where my folder D is written, you have to write your own or ARJC or JAP PHO folder, you just have to do this 
+
+I am giving you an example to explain how to create a folder. In my example, the location is 'D drive', but you may have this 'C' drive or any other—you know that. I had given the location below to explain this to you:
+
+D:\Flie\Chatterbox-TTS-Server-Multilingual\v3
+
+Hopefully now you understand more.
+
+
+
+میرے بھائیو! جو باتیں میں نے آپ کو بتائی ہیں، اُن پر عمل کرنا لازمی ہے۔ اب آخری اور اہم ترین بات سُن لیں۔ اگر آپ نے یہ کام نہ کیا، تو آپ کو 100 فیصد مسئلہ (پرابلم) آئے گا۔
+آپ کو کیا کرنا ہے؟
+ * آپ نے جو تمام ماڈلز ڈاؤن لوڈ کیے ہیں، اب اُنہیں منظم (Organize) کرنا ہے۔
+ * جہاں آپ نے گِٹ ہب (GitHub) سے فائلیں ڈاؤن لوڈ کی ہیں، اُس فولڈر کو کھولیں (اوپن کریں۔)
+ * اِس فولڈر کے اندر آپ نے V3 تمام ماڈلز کو، مثلاً 
+
+Cangjie5_TC.json:-  
+tokenizer.json
+conds.pt:-h
+grapheme_mtl_merged_expanded_v1.json:- 
+s3gen .pt;- 
+ve.pt-h
+s3gen.safetensors
+t3_cfg.safetensors
+ve.safetensors
+t3_mtl23ls_v2.safetensors
+
+
+
+ (وغیرہ)، کاپی کر کے اِسی V3 فولڈر کے اندر پیسٹ کر دینا ہے۔
+
+
+
+اہم ترمیم (Editing):
+اب آپ نے جو engine v3 (یا engine v1 old) فائل باہر کاپی کر کے پیسٹ کی تھی، اُس میں آپ کو ایک چیز ایڈٹ کرنی ہو گی۔ آپ کو نیچے دیا گیا ایک خاص کوڈ یا لوکیشن کا راستہ ڈھونڈنا ہے۔
+جب آپ کو وہ کوڈ مل جائے، تو وہاں آپ نے اپنے ماڈل فولڈر کا نام اور لوکیشن لکھنی ہے۔
+مثال:
+
+
+
+r"D:\Flie\Chatterbox-TTS-Server\Chatterbox-TTS-Server-Multilingual\v3"
+
+
+
+جو اوپر کوڈنگ دی ہے یہ اپ نے جلدی جلدی یہ ڈھونڈنی یہ اپ کو مل جائے گی یہ دو کوڈنگ ہو گئی اس فائل کے اندر وی کے اندر
+
+ engine v3/ engine v1 old 
+
+جہاں میرا فولڈن ڈی لکھی کیا ہوا ہے وہاں اپ نے اپنا یا اے ار جے سی یا جب پی ایچ او ہی فولڈر وہ اپ نے بس لکھ دینا ہے یہ کام کرنا ہے 
+
+
+میں آپ کو ایک مثال دے کر سمجھا رہا ہوں کہ فولڈر کیسے بنانا ہے۔ میری مثال میں، لوکیشن 'D drive' ہے، لیکن آپ کے پاس یہ 'C' ڈرائیو یا کوئی اور ہو سکتی ہے—یہ آپ کو پتا ہے۔ میں نے یہ بات آپ کو سمجھانے کے لیے نیچے لوکیشن دی تھی:
+
+D:\Flie\Chatterbox-TTS-Server-Multilingual\v3
+
+اُمید ہے کہ اب آپ کو مزید سمجھ آ گئی ہو گی۔
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+chatgpt chat :-  https://chatgpt.com/share/68fbcb37-7480-800e-aad5-229283a2bed6
+
+
+
+
+Solution — Two Simple Lines of Change Guide
+
+🔹 1️⃣ First thing: Change the “offline” version to “online”
+
+Where your engine_offline_v3.py has the offline code (where we used from_local),
+change it temporarily like this 👇
+
+Old (offline):
+
+multilingual_model = PatchedChatterboxTTS.from_local(
+    ckpt_dir="D:\\Flie\\Chatterbox-TTS-Server\\Chatterbox-TTS-Server-Multilingual\\models--ResembleAI--chatterbox\\snapshots\\05e904af2b5c7f8e482687a9d7336c5c824467d9",
+    device=model_device
+)
+
+New (online):
+
+multilingual_model = PatchedChatterboxTTS.from_pretrained(
+    "ResembleAI/chatterbox",
+    device=model_device
+)
+
+
+---
+
+🔹  2️⃣ You will only do this for the first time
+
+1. Put the above online code
+
+2. Run the server — the models will be downloaded automatically
+
+(C:\Users\<YourName>\.cache\huggingface\hub\...)
+
+3. When the download is complete → close the server
+
+4. Now copy those downloaded models to your D:\Flie\... folder
+
+(You have to keep the exact same structure)
+
+5. Now put the offline block back in the code
+
+i.e. the code with from_local(...).
+
+
+
+
+
+
+
+
+حل — دو سادہ لائنیں بدلنے والی گائیڈ
+
+🔹 1️⃣ پہلا کام: “offline” version کو “online” میں بدل دو
+
+جہاں تمہارے engine_offline_v3.py میں offline والا code ہے (جہاں ہم نے from_local استعمال کیا تھا)،
+اسے temporarily بدل دو اس طرح 👇
+
+پرانا (offline):
+
+multilingual_model = PatchedChatterboxTTS.from_local(
+    ckpt_dir="D:\\Flie\\Chatterbox-TTS-Server\\Chatterbox-TTS-Server-Multilingual\\models--ResembleAI--chatterbox\\snapshots\\05e904af2b5c7f8e482687a9d7336c5c824467d9",
+    device=model_device
+)
+
+نیا (online):
+
+multilingual_model = PatchedChatterboxTTS.from_pretrained(
+    "ResembleAI/chatterbox",
+    device=model_device
+)
+
+
+---
+
+🔹 2️⃣ یہ تم صرف پہلی بار کرو گے
+
+1. اوپر والا online code رکھو
+
+
+2. server چلاو — models خود بخود download ہوں گے
+(C:\Users\<YourName>\.cache\huggingface\hub\...)
+
+
+3. جب download مکمل ہو جائے → server بند کر دو
+
+
+4. اب وہ downloaded models کو copy کرو اپنی D:\Flie\... والی folder میں
+(بالکل وہی structure رکھنا ہے)
+
+
+5. اب code میں واپس offline والا block رکھ دو
+یعنی from_local(...) والا code۔
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
