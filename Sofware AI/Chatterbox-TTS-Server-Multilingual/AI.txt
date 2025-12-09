@@ -1,0 +1,348 @@
+<div class="tool-section" id="audioCleanerProSection" style="margin-top: 20px;">
+        <div class="section-header" onclick="toggleSection('audioCleanerProContent', 'audioCleanerProArrow')">
+            <h2 id="acpMainTitle">🎛️ Audio Cleaner Pro (Offline)</h2>
+            <div class="collapse-arrow" id="audioCleanerProArrow">▼</div>
+        </div>
+        
+        <div class="section-content hidden" id="audioCleanerProContent">
+            
+            <style>
+                #proCleanerWrapper {
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f0f2f5;
+                    padding: 15px;
+                    border-radius: 10px;
+                    color: #333;
+                    text-align: center;
+                }
+                #proCleanerWrapper h2 { color: #075e54; font-size: 20px; margin-bottom: 10px; }
+                
+                /* Lang Button */
+                .acp-lang-btn {
+                    background-color: #128c7e; color: white; border: none;
+                    padding: 5px 15px; border-radius: 20px; cursor: pointer;
+                    font-weight: bold; font-size: 13px; margin-bottom: 15px;
+                }
+
+                /* Upload Box */
+                .acp-upload-box {
+                    border: 2px dashed #128c7e; padding: 20px;
+                    border-radius: 10px; margin-bottom: 20px;
+                    background-color: #e9ebee; cursor: pointer; position: relative;
+                }
+                .acp-upload-box input {
+                    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                    opacity: 0; cursor: pointer;
+                }
+
+                /* Controls */
+                .acp-controls-box {
+                    background: #fff; padding: 15px; border-radius: 10px;
+                    margin-bottom: 15px; text-align: left; border: 1px solid #ddd;
+                }
+                .acp-control-group { margin-bottom: 15px; }
+                .acp-control-group label { display: block; font-weight: bold; font-size: 14px; color: #075e54; }
+                .acp-control-group small { color: #666; font-size: 12px; display: block; margin-bottom: 5px; }
+                .acp-slider { width: 100%; cursor: pointer; }
+
+                /* Action Buttons */
+                .acp-action-btn {
+                    width: 100%; padding: 12px; font-size: 16px; border: none;
+                    border-radius: 8px; color: white; font-weight: bold; cursor: pointer;
+                    margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                }
+                #acpProcessBtn { background-color: #25d366; }
+                #acpDownloadBtn { background-color: #34b7f1; display: none; }
+
+                /* Canvas */
+                .acp-canvas { width: 100%; height: 80px; background-color: #333; border-radius: 5px; margin-top:5px; }
+                
+                /* About */
+                .acp-about { margin-top: 20px; padding-top: 15px; border-top: 1px solid #ccc; font-size: 13px; }
+                .acp-link { display: inline-block; margin: 5px; padding: 6px 12px; color: white; border-radius: 4px; text-decoration: none; font-weight: bold; }
+                .acp-yt { background: #FF0000; }
+                .acp-em { background: #EA4335; }
+
+                /* Urdu Mode Class */
+                .acp-urdu-mode { direction: rtl; }
+                .acp-urdu-mode .acp-controls-box { text-align: right; }
+            </style>
+
+            <div id="proCleanerWrapper">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 id="acp_txt_title">Audio Cleaner Pro</h2>
+                    <button class="acp-lang-btn" onclick="acp_toggleLanguage()" id="acp_btn_lang">اردو</button>
+                </div>
+
+                <div class="acp-upload-box">
+                    <p id="acp_txt_upload" style="margin:0; font-size:16px;">📂 Upload Audio (Click Here)</p>
+                    <input type="file" id="acpAudioInput" accept="audio/*" onchange="acp_handleFile(this)">
+                </div>
+
+                <div id="acpSecOrig" style="display:none; margin-bottom:15px; background:white; padding:10px; border-radius:8px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold;">
+                        <span style="color:#d32f2f;" id="acp_lbl_orig">Original:</span>
+                        <span id="acpTimeOrig">00:00</span>
+                    </div>
+                    <canvas id="acpCvsOrig" class="acp-canvas"></canvas>
+                    <audio id="acpAudOrig" controls style="width:100%; margin-top:5px; height:30px;"></audio>
+                </div>
+
+                <div class="acp-controls-box" id="acpCtrlBox" style="display:none;">
+                    
+                    <div class="acp-control-group">
+                        <label id="acp_lbl_gate">1. Silence Remover (Gate): <span id="acpValGate">0.02</span></label>
+                        <small id="acp_desc_gate">Removes parts where no one is speaking.</small>
+                        <input type="range" class="acp-slider" id="acpRngGate" min="0.001" max="0.1" step="0.001" value="0.02" oninput="acp_updVals()">
+                    </div>
+
+                    <div class="acp-control-group">
+                        <label id="acp_lbl_hiss">2. Hiss Removal (High Freq): <span id="acpValHiss">3000 Hz</span></label>
+                        <small id="acp_desc_hiss">Removes shhh/hiss sounds. (Lower = More cleaning)</small>
+                        <input type="range" class="acp-slider" id="acpRngHiss" min="1000" max="8000" step="100" value="5000" oninput="acp_updVals()">
+                    </div>
+
+                    <div class="acp-control-group">
+                        <label id="acp_lbl_rumble">3. Rumble Removal (Low Freq): <span id="acpValRumble">85 Hz</span></label>
+                        <small id="acp_desc_rumble">Removes heavy wind/mic bumps.</small>
+                        <input type="range" class="acp-slider" id="acpRngRumble" min="0" max="300" step="10" value="85" oninput="acp_updVals()">
+                    </div>
+
+                    <button id="acpProcessBtn" class="acp-action-btn" onclick="acp_processAudio()">✨ Clean & Process Audio</button>
+                    <p id="acpStatus" style="font-weight:bold; margin-top:10px; color:#555; text-align:center;"></p>
+                </div>
+
+                <div id="acpSecProc" style="display:none; margin-bottom:15px; background:white; padding:10px; border-radius:8px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold;">
+                        <span style="color:#2e7d32;" id="acp_lbl_proc">Result (Cleaned):</span>
+                        <span id="acpTimeProc">00:00</span>
+                    </div>
+                    <canvas id="acpCvsProc" class="acp-canvas"></canvas>
+                    <audio id="acpAudProc" controls style="width:100%; margin-top:5px; height:30px;"></audio>
+                </div>
+
+                <button id="acpDownloadBtn" class="acp-action-btn" onclick="acp_downloadFile()">⬇️ Download Clean Audio</button>
+
+                <div class="acp-about">
+                    <h3 id="acp_abt_title">About</h3>
+                    <p id="acp_abt_desc">📞 Want to contact me? Click below! 👇</p>
+                    <a href="https://youtube.com/@nzg73" target="_blank" class="acp-link acp-yt">🎥 YouTube: @nzg73</a>
+                    <a href="mailto:nzgnzg73@gmail.com" class="acp-link acp-em">📧 Email: nzgnzg73@gmail.com</a>
+                </div>
+            </div>
+
+            <script>
+                // Namespace prefixed with acp_ to prevent conflict with upper tool
+                let acp_lang = 'en';
+                const acp_txt = {
+                    en: {
+                        title: "Audio Cleaner Pro", btn_lang: "اردو",
+                        upload: "📂 Upload Audio (Click Here)",
+                        orig: "Original (Noisy):", proc: "Result (Cleaned):",
+                        gate: "1. Silence Threshold (Gate):", desc_gate: "Removes silence between words.",
+                        hiss: "2. Hiss Filter (Treble):", desc_hiss: "Reduces 'shhh' sounds. (Lower value = Muffled)",
+                        rumble: "3. Rumble Filter (Bass):", desc_rumble: "Removes heavy wind/bumps.",
+                        btn_proc: "✨ Clean & Process Audio", btn_down: "⬇️ Download Clean Audio",
+                        stat_wait: "Processing... Please wait...", stat_done: "Done! Audio Cleaned.",
+                        abt_title: "About", abt_desc: "📞 Want to talk to me, ask something? Click below! 👇"
+                    },
+                    ur: {
+                        title: "آڈیو کلینر پرو (شور ہٹائیں)", btn_lang: "English",
+                        upload: "📂 آڈیو اپلوڈ کریں (یہاں کلک کریں)",
+                        orig: "پہلے (اصل):", proc: "بعد میں (صاف شدہ):",
+                        gate: "1. خاموشی ہٹائیں (Silence):", desc_gate: "الفاظ کے درمیان کی خاموشی کاٹتا ہے۔",
+                        hiss: "2. باریک شور (Hiss):", desc_hiss: "شوں شوں کی آواز کم کریں (جتنا کم کریں گے آواز موٹی ہوگی)۔",
+                        rumble: "3. بھاری شور (Rumble):", desc_rumble: "ہوا اور پھونکوں کا شور ہٹائیں۔",
+                        btn_proc: "✨ صفائی شروع کریں (Process)", btn_down: "⬇️ صاف آڈیو ڈاؤن لوڈ کریں",
+                        stat_wait: "کام جاری ہے... انتظار کریں...", stat_done: "مکمل! آڈیو صاف ہو گئی ہے۔",
+                        abt_title: "ہمارے بارے میں", abt_desc: "📞 رابطہ کرنے کے لیے نیچے کلک کریں 👇"
+                    }
+                };
+
+                function acp_toggleLanguage() {
+                    acp_lang = acp_lang === 'en' ? 'ur' : 'en';
+                    const t = acp_txt[acp_lang];
+                    
+                    document.getElementById('acp_txt_title').innerText = t.title;
+                    document.getElementById('acp_btn_lang').innerText = t.btn_lang;
+                    document.getElementById('acp_txt_upload').innerText = t.upload;
+                    document.getElementById('acp_lbl_orig').innerText = t.orig;
+                    document.getElementById('acp_lbl_proc').innerText = t.proc;
+                    document.getElementById('acpProcessBtn').innerText = t.btn_proc;
+                    document.getElementById('acpDownloadBtn').innerText = t.btn_down;
+                    document.getElementById('acp_abt_title').innerText = t.abt_title;
+                    document.getElementById('acp_abt_desc').innerText = t.abt_desc;
+                    
+                    acp_updVals();
+
+                    const wrapper = document.getElementById('proCleanerWrapper');
+                    if(acp_lang === 'ur') {
+                        wrapper.classList.add('acp-urdu-mode');
+                        document.getElementById('acp_txt_title').style.textAlign = 'right';
+                    } else {
+                        wrapper.classList.remove('acp-urdu-mode');
+                        document.getElementById('acp_txt_title').style.textAlign = 'left';
+                    }
+                }
+
+                function acp_updVals() {
+                    const t = acp_txt[acp_lang];
+                    document.getElementById('acpValGate').innerText = document.getElementById('acpRngGate').value;
+                    document.getElementById('acpValHiss').innerText = document.getElementById('acpRngHiss').value + " Hz";
+                    document.getElementById('acpValRumble').innerText = document.getElementById('acpRngRumble').value + " Hz";
+
+                    document.getElementById('acp_lbl_gate').innerHTML = `${t.gate} <span>${document.getElementById('acpRngGate').value}</span>`;
+                    document.getElementById('acp_desc_gate').innerText = t.desc_gate;
+                    
+                    document.getElementById('acp_lbl_hiss').innerHTML = `${t.hiss} <span>${document.getElementById('acpRngHiss').value} Hz</span>`;
+                    document.getElementById('acp_desc_hiss').innerText = t.desc_hiss;
+
+                    document.getElementById('acp_lbl_rumble').innerHTML = `${t.rumble} <span>${document.getElementById('acpRngRumble').value} Hz</span>`;
+                    document.getElementById('acp_desc_rumble').innerText = t.desc_rumble;
+                }
+
+                // Audio Logic for PRO section
+                let acp_audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let acp_origBlob = null;
+                let acp_finalBlob = null;
+
+                async function acp_handleFile(input) {
+                    if (input.files[0]) {
+                        acp_origBlob = input.files[0];
+                        document.getElementById('acpSecOrig').style.display = 'block';
+                        document.getElementById('acpCtrlBox').style.display = 'block';
+                        document.getElementById('acpSecProc').style.display = 'none';
+                        document.getElementById('acpDownloadBtn').style.display = 'none';
+
+                        document.getElementById('acpAudOrig').src = URL.createObjectURL(acp_origBlob);
+                        
+                        let arrBuf = await acp_origBlob.arrayBuffer();
+                        let audBuf = await acp_audioCtx.decodeAudioData(arrBuf);
+                        acp_drawWave(audBuf, 'acpCvsOrig', '#d32f2f');
+                        document.getElementById('acpTimeOrig').innerText = acp_fmtTime(audBuf.duration);
+                    }
+                }
+
+                async function acp_processAudio() {
+                    if(!acp_origBlob) return;
+                    document.getElementById('acpStatus').innerText = acp_txt[acp_lang].stat_wait;
+
+                    let fileReader = new FileReader();
+                    fileReader.readAsArrayBuffer(acp_origBlob);
+                    fileReader.onload = async function() {
+                        let audBuf = await acp_audioCtx.decodeAudioData(fileReader.result);
+                        
+                        let offlineCtx = new OfflineAudioContext(1, audBuf.length, audBuf.sampleRate);
+                        let source = offlineCtx.createBufferSource();
+                        source.buffer = audBuf;
+
+                        let highPass = offlineCtx.createBiquadFilter();
+                        highPass.type = "highpass";
+                        highPass.frequency.value = document.getElementById('acpRngRumble').value;
+
+                        let lowPass = offlineCtx.createBiquadFilter();
+                        lowPass.type = "lowpass";
+                        lowPass.frequency.value = document.getElementById('acpRngHiss').value;
+
+                        source.connect(highPass);
+                        highPass.connect(lowPass);
+                        lowPass.connect(offlineCtx.destination);
+                        source.start();
+
+                        let filteredBuf = await offlineCtx.startRendering();
+                        let filteredData = filteredBuf.getChannelData(0);
+
+                        let threshold = parseFloat(document.getElementById('acpRngGate').value);
+                        let newBuffer = [];
+                        let chunkSize = Math.floor(audBuf.sampleRate * 0.05);
+
+                        for (let i = 0; i < filteredData.length; i += chunkSize) {
+                            let chunk = filteredData.slice(i, i + chunkSize);
+                            let sum = 0;
+                            for(let v of chunk) sum += Math.abs(v);
+                            let avg = sum / chunk.length;
+                            if(avg > threshold) {
+                                for(let v of chunk) newBuffer.push(v);
+                            }
+                        }
+
+                        if(newBuffer.length === 0) {
+                            alert("Threshold too high!"); return;
+                        }
+
+                        acp_finalBlob = acp_encodeWAV(newBuffer, audBuf.sampleRate);
+                        
+                        document.getElementById('acpSecProc').style.display = 'block';
+                        document.getElementById('acpDownloadBtn').style.display = 'block';
+                        document.getElementById('acpAudProc').src = URL.createObjectURL(acp_finalBlob);
+                        document.getElementById('acpStatus').innerText = acp_txt[acp_lang].stat_done;
+                        document.getElementById('acpStatus').style.color = 'green';
+
+                        let drawCtx = new OfflineAudioContext(1, newBuffer.length, audBuf.sampleRate);
+                        let drawBuf = drawCtx.createBuffer(1, newBuffer.length, audBuf.sampleRate);
+                        drawBuf.copyToChannel(new Float32Array(newBuffer), 0);
+                        acp_drawWave(drawBuf, 'acpCvsProc', '#25d366');
+                        document.getElementById('acpTimeProc').innerText = acp_fmtTime(newBuffer.length / audBuf.sampleRate);
+                    };
+                }
+
+                function acp_downloadFile() {
+                    if(!acp_finalBlob) return;
+                    let name = prompt(acp_lang === 'ur' ? "فائل کا نام لکھیں:" : "Enter Filename:", "cleaned_audio_pro");
+                    if(name) {
+                        let a = document.createElement('a');
+                        a.href = URL.createObjectURL(acp_finalBlob);
+                        a.download = name + ".wav";
+                        a.click();
+                    }
+                }
+
+                function acp_fmtTime(s) {
+                    let m = Math.floor(s/60);
+                    let sec = Math.floor(s%60);
+                    return (m<10?"0"+m:m) + ":" + (sec<10?"0"+sec:sec);
+                }
+
+                function acp_drawWave(buf, id, color) {
+                    let cvs = document.getElementById(id);
+                    let ctx = cvs.getContext('2d');
+                    let w = cvs.width = cvs.offsetWidth;
+                    let h = cvs.height = cvs.offsetHeight;
+                    let data = buf.getChannelData(0);
+                    let step = Math.ceil(data.length / w);
+                    let amp = h/2;
+                    ctx.clearRect(0,0,w,h);
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    for(let i=0; i<w; i++) {
+                        let min=1.0, max=-1.0;
+                        for(let j=0; j<step; j++) {
+                            let v = data[(i*step)+j];
+                            if(v<min) min=v; if(v>max) max=v;
+                        }
+                        ctx.fillRect(i, (1+min)*amp, 1, Math.max(1,(max-min)*amp));
+                    }
+                }
+
+                function acp_encodeWAV(samples, sr) {
+                    let buf = new ArrayBuffer(44 + samples.length * 2);
+                    let view = new DataView(buf);
+                    const wS = (o, s) => { for(let i=0; i<s.length; i++) view.setUint8(o+i, s.charCodeAt(i)); };
+                    wS(0, 'RIFF'); view.setUint32(4, 36+samples.length*2, true); wS(8, 'WAVEfmt ');
+                    view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+                    view.setUint32(24, sr, true); view.setUint32(28, sr*2, true);
+                    view.setUint16(32, 2, true); view.setUint16(34, 16, true); wS(36, 'data');
+                    view.setUint32(40, samples.length*2, true);
+                    for(let i=0; i<samples.length; i++) {
+                        let s = Math.max(-1, Math.min(1, samples[i]));
+                        view.setInt16(44+i*2, s<0 ? s*0x8000 : s*0x7FFF, true);
+                    }
+                    return new Blob([view], {type:'audio/wav'});
+                }
+            </script>
+        </div>
+    </div>
+
+
+”السلام علیکم، امید ہے آپ خیریت سے ہوں گے۔ یہ کوڈنگ ملاحظہ کریں جو میرے 'Chatterbox TTS Server' کا حصہ ہے۔ مجھے آپ سے درکار نئی کوڈنگ بالکل اسی فارمیٹ اور اسٹائل میں چاہیے، کیونکہ میرا موجودہ سسٹم اسی ترتیب پر چل رہا ہے۔
+مسئلہ یہ ہے کہ میرے پاس جو نیا فیچر (New Project) ہے وہ مکمل HTML اسٹرکچر (Body/Head ٹیگز) کے ساتھ بنا ہوا ہے۔ اگر میں اسے ڈائریکٹ اپنے کوڈ میں شامل کروں تو میرا پرانا سیٹ اپ خراب ہو جائے گا، اور میں کوڈ مرج (Merge) کرنے کا طریقہ نہیں جانتا۔ لہٰذا، میں چاہتا ہوں کہ آپ اس نئے فیچر کو میرے دیے گئے 'بٹن والے اسٹائل' (Modular Style) میں تبدیل کر کے دیں تاکہ میں اسے بغیر کسی پریشانی کے اپنے پروجیکٹ میں شامل کر سکوں۔ کیا آپ کو میری یہ ضرورت اور کوڈنگ کا اسٹائل سمجھ آ گیا ہے؟“
