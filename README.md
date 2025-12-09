@@ -68,8 +68,8 @@ Follow these steps to set up the studio on your local machine.
 
 1.  **Clone the Repository**
     ```bash
-    git clone [https://github.com/nzgnzg73/your-repo-name.git](https://github.com/nzgnzg73/your-repo-name.git)
-    cd your-repo-name
+    git clone https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git
+    cd TTS-Video-to-SRT-VC
     ```
 
 2.  **Create a Virtual Environment (Recommended)**
@@ -99,12 +99,94 @@ Follow these steps to set up the studio on your local machine.
 Start the application by running the main Python script:
 
 ```bash
-python app.py
+python server_vc.py
+```
+
+
+🌐 API Documentation
+The server provides REST API endpoints:
+
+
+## TTS Generation
+```bash
+POST /tts
+Content-Type: application/json
+
+{
+  "text": "Your text here",
+  "voice_mode": "predefined",
+  "predefined_voice_id": "voice1",
+  "temperature": 0.8,
+  "speed_factor": 1.0,
+  "language": "en",
+  "output_format": "mp3"
+}
+```
+
+
+## Voice Cloning
+
+```bash
+
+POST /process_vc
+Content-Type: multipart/form-data
+
+source_audio: [file]
+target_audio: [file]
+device: "cuda"
+cfg_rate: 0.5
+sigma_min: 0.000001
+```
+## Transcription
+
+
+
+```bash
+POST /transcribe
+Content-Type: multipart/form-data
+
+file: [audio/video file]
+language: "en"
+model: "small"
+task: "transcribe"
+```
+🙏 Acknowledgments
+
+· Coqui TTS for the amazing TTS engine
+· OpenAI Whisper for transcription capabilities
+· Hugging Face for model hosting
+· FastAPI for the robust backend
+· Tailwind CSS for the beautiful interface
+
+📞 Support & Contact
+
+## YouTube Tutorials: @NZG73
+## Website: nzg73.blogspot.com
+## Email: nzgnzg73@gmail.com
+## GitHub Issues: Report Bugs
+
+⭐ Star History
+
+https://api.star-history.com/svg?repos=nzgnzg73/TTS-Video-to-SRT-VC&type=Date
+
+---
+
+<div align="center">
+
+Made with ❤️ by NZG73
+
+If this project helped you, please give it a ⭐ on GitHub!
+
+"Your Voice, Your Style, Your Creation"
+
+</div>
+
+---
 
 Or if you used a specific filename: python main.py or uvicorn app:app --reload
 2. Open the Interface
 Once the server starts, open your web browser and navigate to:
-[http://127.0.0.1:8000](http://127.0.0.1:8000)
+[http://127.0.0.1:8004](http://127.0.0.1:8004)
 
 (Or the URL displayed in your terminal)
 3. How to Use Modules
