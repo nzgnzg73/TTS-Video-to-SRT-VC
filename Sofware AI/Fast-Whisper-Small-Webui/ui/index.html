@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Audio Transcriber</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
+        
+        /* Title & Subtitle Styling */
+        h1 { text-align: center; color: #4a90e2; margin-bottom: 0.5rem; }
+        .subtitle { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; font-weight: 500; }
+        
+        .upload-area { border: 2px dashed #ccc; padding: 2rem; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .upload-area:hover { border-color: #4a90e2; background-color: #f0f7ff; }
+        input[type="file"] { display: none; }
+        .btn { display: block; width: 100%; padding: 12px; background-color: #4a90e2; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 1rem; transition: 0.3s; }
+        .btn:hover { background-color: #357abd; }
+        .btn:disabled { background-color: #ccc; cursor: not-allowed; }
+        .status { margin-top: 1rem; text-align: center; font-weight: bold; min-height: 24px; }
+        .output-section { margin-top: 2rem; display: none; }
+        textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; resize: vertical; font-family: monospace; margin-bottom: 10px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        .download-link { display: inline-block; text-decoration: none; color: #4a90e2; margin-top: 5px; font-size: 14px; }
+        
+        .device-selector { margin-top: 1rem; text-align: center; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e0e0e0; }
+        .device-selector label { display: inline-block; margin: 0 15px; cursor: pointer; font-weight: normal; }
+        .device-selector input { margin-right: 5px; }
+
+        .settings-area { display: flex; gap: 10px; margin-top: 1rem; }
+        .settings-group { flex: 1; }
+        select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; background: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Audio to SRT Transcriber</h1>
+    <p class="subtitle">✨ Supports 100+ Languages (Urdu, English, Hindi, Arabic, Chinese & More)</p>
+    
+    <div class="upload-area" onclick="document.getElementById('audioFile').click()">
+        <p id="fileName">Click to Select Audio File</p>
+        <input type="file" id="audioFile" accept="audio/*,video/*" onchange="updateFileName()">
+    </div>
+
+    <div class="device-selector">
+        <label>
+            <input type="radio" name="deviceType" value="cuda" checked> 
+            🚀 <b>Run on GPU</b> (Fast)
+        </label>
+        <label>
+            <input type="radio" name="deviceType" value="cpu"> 
+            🐢 <b>Run on CPU</b> (Slow/Safe)
+        </label>
+    </div>
+
+    <div class="settings-area">
+        <div class="settings-group">
+            <label>Select Model:</label>
+            <select id="modelSelect">
+                <optgroup label="Standard Models (Recommended)">
+                    <option value="tiny">Tiny (Fastest/Lowest Quality)</option>
+                    <option value="base">Base</option>
+                    <option value="small" selected>Small (Balanced)</option>
+                    <option value="medium">Medium (Better Quality)</option>
+                    <option value="large-v3">Large-V3 (Best Quality)</option>
+                </optgroup>
+                <optgroup label="English Only Models">
+                    <option value="tiny.en">Tiny.en</option>
+                    <option value="base.en">Base.en</option>
+                    <option value="small.en">Small.en</option>
+                    <option value="medium.en">Medium.en</option>
+                </optgroup>
+                <optgroup label="Advanced / Other Versions">
+                    <option value="large-v1">Large-V1</option>
+                    <option value="large-v2">Large-V2</option>
+                    <option value="large-v3-turbo">Large-V3 Turbo</option>
+                    <option value="distil-large-v2">Distil-Large-V2</option>
+                    <option value="distil-medium.en">Distil-Medium.en</option>
+                </optgroup>
+            </select>
+        </div>
+        <div class="settings-group">
+            <label>Language:</label>
+            <select id="languageSelect">
+                <option value="ur" selected>Urdu (اردو)</option>
+                <option value="en">English</option>
+                <option value="auto">Auto Detect</option>
+                <option value="hi">Hindi (हिंदी)</option>
+                <option value="ar">Arabic (العربية)</option>
+                <option value="zh">Chinese (中文)</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="ru">Russian</option>
+                <option value="pt">Portuguese</option>
+                <option value="tr">Turkish</option>
+                <option value="fa">Persian (فارسی)</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="it">Italian</option>
+                <option value="nl">Dutch</option>
+                <option value="pl">Polish</option>
+                <option value="uk">Ukrainian</option>
+                <option value="vi">Vietnamese</option>
+                <option value="th">Thai</option>
+                <option value="id">Indonesian</option>
+                <option value="ms">Malay</option>
+                <option value="bn">Bengali</option>
+                <option value="pa">Punjabi</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="mr">Marathi</option>
+                </select>
+        </div>
+    </div>
+
+    <button id="processBtn" class="btn" onclick="uploadAndTranscribe()">Start Processing</button>
+    <div id="status" class="status"></div>
+
+    <div id="outputSection" class="output-section">
+        <label>Generated SRT:</label>
+        <textarea id="srtOutput" readonly></textarea>
+        <a id="downloadSrt" class="download-link" href="#" download="subtitles.srt">Download SRT</a>
+
+        <div style="margin-top: 15px;">
+            <label>Plain Text:</label>
+            <textarea id="textOutput" readonly></textarea>
+            <a id="downloadTxt" class="download-link" href="#" download="transcription.txt">Download Text</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateFileName() {
+        const fileInput = document.getElementById('audioFile');
+        const fileNameDisplay = document.getElementById('fileName');
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.innerText = "Selected: " + fileInput.files[0].name;
+        }
+    }
+
+    async function uploadAndTranscribe() {
+        const fileInput = document.getElementById('audioFile');
+        const statusDiv = document.getElementById('status');
+        const btn = document.getElementById('processBtn');
+        const outputSection = document.getElementById('outputSection');
+        
+        const deviceChoice = document.querySelector('input[name="deviceType"]:checked').value;
+        const modelChoice = document.getElementById('modelSelect').value;
+        const langChoice = document.getElementById('languageSelect').value;
+
+        if (fileInput.files.length === 0) {
+            statusDiv.innerText = "Please select a file first!";
+            statusDiv.style.color = "red";
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        formData.append('device', deviceChoice);
+        formData.append('model', modelChoice);
+        formData.append('language', langChoice);
+
+        btn.disabled = true;
+        btn.innerText = "Processing (" + modelChoice + ")... Please Wait";
+        statusDiv.innerText = "Loading Model & Transcribing... (Note: First time use of a new model will download it)";
+        statusDiv.style.color = "#333";
+        outputSection.style.display = "none";
+
+        try {
+            const response = await fetch('/transcribe', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                statusDiv.innerText = "Error: " + data.error;
+                statusDiv.style.color = "red";
+            } else {
+                statusDiv.innerText = "Processing Complete!";
+                statusDiv.style.color = "green";
+                
+                document.getElementById('srtOutput').value = data.srt_content;
+                document.getElementById('textOutput').value = data.text_content;
+                
+                createDownloadLink('downloadSrt', data.srt_content, 'subtitles.srt');
+                createDownloadLink('downloadTxt', data.text_content, 'transcription.txt');
+                
+                outputSection.style.display = "block";
+            }
+        } catch (error) {
+            statusDiv.innerText = "An error occurred: " + error;
+            statusDiv.style.color = "red";
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Start Processing";
+        }
+    }
+
+    function createDownloadLink(elementId, content, filename) {
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.getElementById(elementId);
+        a.href = url;
+        a.download = filename;
+    }
+</script>
+
+</body>
+</html>

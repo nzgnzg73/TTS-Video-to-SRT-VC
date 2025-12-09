@@ -1,0 +1,13 @@
+
+Fast-Whisper-Small-Webui Models Dowload
+
+
+faster-whisper-large-v1
+
+
+https://huggingface.co/Systran/faster-whisper-large-v1/tree/main
+
+
+google drive 
+
+https://drive.google.com/drive/folders/1t2SOI6IS9WoUa_DiD7euo1KK4TS3Jd28?usp=sharing

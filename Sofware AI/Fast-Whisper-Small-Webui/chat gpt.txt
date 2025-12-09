@@ -1,0 +1,267 @@
+
+
+Fast-Whisper-Small-WebUI:-"  https://chatgpt.com/share/69189653-4334-800e-a683-1bd3e6a4a383
+
+
+https://chatgpt.com/share/69189653-4334-800e-a683-1bd3e6a4a383
+
+
+
+deepseek:-  https://chat.deepseek.com/share/wezy57yaykx93b73tl
+
+
+✔ Fast-Whisper Small WebUI کیسے چلانی ہے
+✔ کون سی فائلیں ڈاؤنلوڈ کرنی ہیں
+✔ GitHub سے clone کیسے کرنا ہے
+✔ CUDA کیسے انسٹال کرنا ہے
+✔ Python, Git, FFmpeg, VS Build Tools کون سے چاہئیں
+✔ CPU version اور GPU version دونوں کے الگ الگ commands
+✔ پورا پروجیکٹ کیسے چلانا ہے۔
+یہ اتنا کلئیر ہوگا کہ آپ کسی کو بھی دے دیں، وہ بھی خود چلا لے گا۔
+
+
+---
+
+⚡ "FAST WHISPER SMALL WEBUI — COMPLETE A TO Z INSTALL GUIDE"
+
+(Windows 10/11 — GPU یا CPU دونوں کے لیے)
+
+بغیر بکواس — صرف وہی چیزیں جو ضروری ہیں — لنکس سمیت
+
+
+---
+
+🔰 PART 1 — ضروری سافٹ ویئر جو لازمی انسٹال کرنے ہیں
+
+1️⃣ Python (ورژن 3.10–3.11)
+
+✔ Download link:
+https://www.python.org/downloads/windows/
+
+⚠ انسٹال کرتے وقت لازمی tick کریں:
+✔ Add Python to PATH
+✔ Install for all users
+
+
+---
+
+2️⃣ Git
+
+✔ Download link:
+https://git-scm.com/download/win
+
+Git ضروری ہے کیونکہ repository clone کرنی ہوتی ہے۔
+
+
+---
+
+3️⃣ Microsoft Visual C++ Build Tools
+
+✔ Download link:
+https://visualstudio.microsoft.com/visual-cpp-build-tools/
+
+Install کرتے وقت یہ workloads لازمی چنیں:
+
+✔ MSVC v143
+✔ Windows 10 SDK
+✔ C++ CMake tools
+
+
+---
+
+4️⃣ FFmpeg
+
+✔ Download link:
+https://www.gyan.dev/ffmpeg/builds/
+
+Download: ffmpeg-release-full.zip
+
+اس کو C:\ffmpeg میں extract کریں
+اور PATH میں add کریں۔
+
+
+---
+
+5️⃣ CUDA (صرف GPU Users کے لیے)
+
+آپ کے لیے ضروری ورژن:
+
+👉 CUDA 12.1 — Local Installer (3.1GB)
+
+✔ Download link (Local Installer):
+https://developer.nvidia.com/cuda-12-1-0-download-archive
+
+Select:
+
+Operating System: Windows
+
+Architecture: x86_64
+
+Version: 10 or 11
+
+Installer Type: Local Installer
+
+
+⚠ Local Installer ہی انسٹال کرنا ہے
+⚠ CUDA 13 یا 12.2 نہیں چلیں گے
+⚠ CUDA انسٹال کے بعد PC Restart لازمی
+
+
+---
+
+🔰 PART 2 — GitHub Repo Download / Clone
+
+1️⃣ Git Clone کرنا (Recommended)
+
+CMD کھولیں:
+
+git clone https://github.com/guillaumekln/faster-whisper
+
+لیکن آپ Fast Whisper Small WebUI چلا رہے ہیں، اس لیے یہ والا clone کریں:
+
+git clone https://github.com/ufal/whisper_small_webui
+
+پھر فولڈر میں جائیں:
+
+cd whisper_small_webui
+
+
+---
+
+2️⃣ اگر Git نہیں چاہیے → Zip Download
+
+GitHub Page:
+https://github.com/ufal/whisper_small_webui
+
+Download → Code → Download ZIP
+Extract to:
+D:\Fast-Whisper-WebUI
+
+
+---
+
+🔰 PART 3 — Python Virtual Environment بنانا
+
+CMD میں:
+
+cd D:\Fast-Whisper-WebUI
+python -m venv venv
+
+اب venv activate کریں:
+
+venv\Scripts\activate
+
+
+---
+
+🔰 PART 4 — ضروری Python Libraries Install کرنا
+
+✔ GPU Version (CUDA 12.1 Users)
+
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install -r requirements.txt
+
+✔ CPU Version (صرف CPU Users)
+
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt
+
+
+---
+
+🔰 PART 5 — WebUI چلانا
+
+Activate venv:
+
+venv\Scripts\activate
+
+Run app:
+
+python app.py
+
+WebUI یہاں چلے گی:
+
+👉 http://127.0.0.1:7860
+
+
+---
+
+🔰 PART 6 — Public Link (Optional)
+
+اگر public link چاہیے:
+
+python app.py --share
+
+
+---
+
+🔰 PART 7 — Model Download (HuggingFace)
+
+Fast Whisper Models:
+
+✔ Download link:
+https://huggingface.co/guillaumekln
+
+Model Types:
+
+Name	Speed	Quality
+
+tiny	بہت تیز	کم
+small	تیز	بہتر
+medium	درمیانہ	اچھا
+large-v2	سست	بہترین
+
+
+آپ models کو رکھیں:
+
+models/
+
+WebUI خود detect کر لے گی۔
+
+
+---
+
+🔰 PART 8 — Common Errors Fix
+
+❗ Error: cublas64_12.dll not found
+
+✔ آپ نے CUDA 12.1 Local Installer انسٹال نہیں کیا
+✔ یا PC restart نہیں کیا
+✔ یا torch GPU version install نہیں
+
+Fix:
+
+pip uninstall torch torchvision torchaudio
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+
+---
+
+❗ Error: FFmpeg not found
+
+✔ ffmpeg PATH میں add کریں
+
+
+---
+
+🔰 PART 9 — CPU ONLY Mode چلانا
+
+اگر آپ CPU پر چلانا چاہتے ہیں تو:
+
+python app.py --device cpu
+
+GPU Mode Default ہوتا ہے۔
+
+
+---
+
+🔰 PART 10 — فائلیں کون سی ہیں اور کیا کرتی ہیں؟
+
+File	کام
+
+app.py	WebUI چلانے والی مین فائل
+subtitle_manager.py	SRT بنانے کا سسٹم
+whisper_models.py	HuggingFace models handle کرتا ہے
+requirements.txt	تمام ضروری Python libs
+languages.py	languages کی list
+README.md	ہدایات

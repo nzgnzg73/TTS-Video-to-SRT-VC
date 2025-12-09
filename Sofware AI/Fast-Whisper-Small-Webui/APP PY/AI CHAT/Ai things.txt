@@ -1,0 +1,282 @@
+
+
+ui\index.html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Audio Transcriber</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
+        h1 { text-align: center; color: #4a90e2; margin-bottom: 1.5rem; }
+        .upload-area { border: 2px dashed #ccc; padding: 2rem; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .upload-area:hover { border-color: #4a90e2; background-color: #f0f7ff; }
+        input[type="file"] { display: none; }
+        .btn { display: block; width: 100%; padding: 12px; background-color: #4a90e2; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 1rem; transition: 0.3s; }
+        .btn:hover { background-color: #357abd; }
+        .btn:disabled { background-color: #ccc; cursor: not-allowed; }
+        .status { margin-top: 1rem; text-align: center; font-weight: bold; min-height: 24px; }
+        .output-section { margin-top: 2rem; display: none; }
+        textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; resize: vertical; font-family: monospace; margin-bottom: 10px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        .download-link { display: inline-block; text-decoration: none; color: #4a90e2; margin-top: 5px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Audio to SRT Transcriber</h1>
+    
+    <div class="upload-area" onclick="document.getElementById('audioFile').click()">
+        <p id="fileName">Click to Select Audio File</p>
+        <input type="file" id="audioFile" accept="audio/*,video/*" onchange="updateFileName()">
+    </div>
+
+    <button id="processBtn" class="btn" onclick="uploadAndTranscribe()">Start Processing</button>
+    <div id="status" class="status"></div>
+
+    <div id="outputSection" class="output-section">
+        <label>Generated SRT:</label>
+        <textarea id="srtOutput" readonly></textarea>
+        <a id="downloadSrt" class="download-link" href="#" download="subtitles.srt">Download SRT</a>
+
+        <div style="margin-top: 15px;">
+            <label>Plain Text:</label>
+            <textarea id="textOutput" readonly></textarea>
+            <a id="downloadTxt" class="download-link" href="#" download="transcription.txt">Download Text</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateFileName() {
+        const fileInput = document.getElementById('audioFile');
+        const fileNameDisplay = document.getElementById('fileName');
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.innerText = "Selected: " + fileInput.files[0].name;
+        }
+    }
+
+    async function uploadAndTranscribe() {
+        const fileInput = document.getElementById('audioFile');
+        const statusDiv = document.getElementById('status');
+        const btn = document.getElementById('processBtn');
+        const outputSection = document.getElementById('outputSection');
+
+        if (fileInput.files.length === 0) {
+            statusDiv.innerText = "Please select a file first!";
+            statusDiv.style.color = "red";
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        // UI Updates
+        btn.disabled = true;
+        btn.innerText = "Processing... (Please Wait)";
+        statusDiv.innerText = "Uploading and Transcribing... This may take time depending on file size.";
+        statusDiv.style.color = "#333";
+        outputSection.style.display = "none";
+
+        try {
+            const response = await fetch('/transcribe', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                statusDiv.innerText = "Error: " + data.error;
+                statusDiv.style.color = "red";
+            } else {
+                statusDiv.innerText = "Processing Complete!";
+                statusDiv.style.color = "green";
+                
+                // Show results
+                document.getElementById('srtOutput').value = data.srt_content;
+                document.getElementById('textOutput').value = data.text_content;
+                
+                // Create download blobs
+                createDownloadLink('downloadSrt', data.srt_content, 'subtitles.srt');
+                createDownloadLink('downloadTxt', data.text_content, 'transcription.txt');
+                
+                outputSection.style.display = "block";
+            }
+        } catch (error) {
+            statusDiv.innerText = "An error occurred: " + error;
+            statusDiv.style.color = "red";
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Start Processing";
+        }
+    }
+
+    function createDownloadLink(elementId, content, filename) {
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.getElementById(elementId);
+        a.href = url;
+        a.download = filename;
+    }
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+Fast-Whisper-Small-Webui\app.py
+
+
+
+
+جی بالکل، یہ دونوں (CPU اور GPU) پر چل سکتا ہے۔ میں کوڈ میں ایسی تبدیلی کر دیتا ہوں کہ یہ خودکار (Automatic) فیصلہ کرے:
+ * پہلے یہ GPU پر چلنے کی کوشش کرے گا (کیونکہ وہ تیز ہے)۔
+ * اگر GPU میں کوئی مسئلہ ہو (جیسے وہ dll والا ایرر) یا GPU موجود نہ ہو، تو یہ خودبخود CPU پر شفٹ ہو جائے گا اور ایپ بند (Crash) نہیں ہوگی۔
+نیچے app.py کا اپڈیٹڈ کوڈ ہے، اسے کاپی کر کے پرانی فائل سے تبدیل کر لیں۔
+3. فائل: app.py (اپڈیٹڈ - CPU + GPU دونوں کے لیے)
+# 🌟 Updated app.py (Auto CPU/GPU Support)
+# .............................................................................................
+# 🇬🇧 Location: This file is located in the ROOT folder.
+# 🇵🇰 Urdu: یہ فائل مین (Root) فولڈر میں موجود ہے۔
+
+
+
+
+# 🌟 Updated app.py (Auto CPU/GPU Support)
+# .............................................................................................
+# 🇬🇧 Location: This file is located in the ROOT folder.
+# 🇵🇰 Urdu: یہ فائل مین (Root) فولڈر میں موجود ہے۔
+
+import os
+import datetime
+from flask import Flask, request, jsonify, render_template
+from faster_whisper import WhisperModel
+
+# 🌟 Folder Configuration
+app = Flask(__name__, template_folder='ui')
+
+UPLOAD_FOLDER = "uploads"
+OUTPUT_FOLDER = "output_files"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+
+# 🌟 SMART MODEL LOADING (CPU + GPU) 🌟
+# .............................................................................................
+# 🇬🇧 Logic: Try GPU first. If it fails (due to errors/missing drivers), fallback to CPU automatically.
+# 🇵🇰 Urdu: یہ کوڈ پہلے GPU چیک کرے گا۔ اگر GPU میں ایرر آیا تو خود بخود CPU پر شفٹ ہو جائے گا۔
+
+print("🔄 Initializing Whisper Model...")
+
+model = None
+
+try:
+    # 1. پہلے GPU (CUDA) پر کوشش کریں
+    print("🚀 Attempting to load on GPU (CUDA)...")
+    model = WhisperModel("small", device="cuda", compute_type="float16")
+    print("✅ Success! Model loaded on GPU.")
+    
+except Exception as e:
+    # 2. اگر GPU فیل ہو جائے تو CPU پر جائیں
+    print(f"⚠️ GPU failed to load. Error: {e}")
+    print("🔄 Switching to CPU mode...")
+    try:
+        model = WhisperModel("small", device="cpu", compute_type="int8")
+        print("✅ Success! Model loaded on CPU.")
+    except Exception as cpu_e:
+        print(f"❌ Critical Error: Could not load on CPU either. {cpu_e}")
+
+# --- Helper Functions ---
+def format_timestamp(seconds):
+    """Converts seconds to SRT timestamp format (00:00:00,000)"""
+    td = datetime.timedelta(seconds=seconds)
+    total_seconds = int(td.total_seconds())
+    hours = total_seconds // 3600
+    minutes = (total_seconds % 3600) // 60
+    secs = total_seconds % 60
+    millis = int(td.microseconds / 1000)
+    return f"{hours:02}:{minutes:02}:{secs:02},{millis:03}"
+
+# --- Routes ---
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/transcribe', methods=['POST'])
+def transcribe():
+    global model
+    if model is None:
+        return jsonify({"error": "Model failed to load. Check server console."}), 500
+
+    if 'file' not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No file selected"}), 400
+
+    if file:
+        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(filepath)
+
+        try:
+            # Transcribe
+            # اگر CPU پر ہو تو beam_size تھوڑا کم رکھیں تاکہ ہینگ نہ ہو
+            segments, info = model.transcribe(filepath, beam_size=5)
+
+            srt_content = ""
+            text_content = ""
+            segment_id = 1
+
+            for segment in segments:
+                start = format_timestamp(segment.start)
+                end = format_timestamp(segment.end)
+                text = segment.text.strip()
+                
+                srt_content += f"{segment_id}\n{start} --> {end}\n{text}\n\n"
+                text_content += text + " "
+                segment_id += 1
+
+            # Backup save
+            base_name = os.path.splitext(file.filename)[0]
+            with open(os.path.join(OUTPUT_FOLDER, f"{base_name}.srt"), "w", encoding="utf-8") as f:
+                f.write(srt_content)
+
+            os.remove(filepath)
+
+            return jsonify({
+                "message": "Success",
+                "srt_content": srt_content,
+                "text_content": text_content.strip()
+            })
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    # 🌟 Port Configuration
+    app.run(host='0.0.0.0', port=2188, debug=True)
+
+
+
+
+
+کیا تبدیلی کی گئی ہے؟
+اس کوڈ میں میں نے ایک "Try-Except" بلاک لگایا ہے:
+ * جب آپ ایپ چلائیں گے، کالی اسکرین (Console) پر لکھا آئے گا: 🚀 Attempting to load on GPU...
+ * اگر آپ کے سسٹم میں وہ dll والا ایرر آیا، تو ایپ بند نہیں ہوگی بلکہ لکھا آئے گا: ⚠️ GPU failed... Switching to CPU۔
+ * پھر یہ خود بخود CPU موڈ میں چل پڑے گی اور ویب سائٹ اوپن ہو جائے گی۔
+
+
+
+
+
