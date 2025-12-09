@@ -120,7 +120,7 @@ git clone [https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git](https://github.c
 - **SRT Generation**: Automatic timestamped subtitle creation
 ```
 ## 🌐 Supported Languages
-
+```
 ### 🗣️ TTS & Voice Cloning (24+ Languages)
 | Language | Code | Status | Language | Code | Status |
 |----------|------|--------|----------|------|--------|
@@ -142,7 +142,7 @@ git clone [https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git](https://github.c
 - **Translation**: Convert between languages
 - **Multiple Models**: Tiny → Large-v3 for speed/quality balance
 - **GPU/CPU Options**: Run on GPU for speed or CPU for compatibility
-
+```
 ## 🖥️ System Requirements
 
 ### Minimum Requirements
@@ -172,24 +172,24 @@ git clone [https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git](https://github.c
 ## ✨ Features
 
 This tool is packed with 5 powerful modules accessible from a single interface:
-  ```bash
+```
 ### 🗣️ 1. Advanced Text-to-Speech (TTS) & Voice Cloning
 * **Multilingual Support:** Generate speech in **24+ languages** (English, Urdu, Hindi, Arabic, Chinese, French, etc.).
 * **Voice Cloning:** Clone any voice using a short reference audio file (`.wav`/`.mp3`).
 * **Long-Form Generation:** Automatic text splitting/chunking for audiobooks.
 * **Customization:** Control Speed, Temperature, Pitch, and Exaggeration.
 * **Background Mode:** Optimized for mobile; keeps generating even when the screen is off.
-
+```
 ### 🔤 2. Audio/Video Transcriber (Whisper)
 * **Video to SRT:** Convert video files directly to subtitles (`.srt`) and text.
 * **High Accuracy:** Powered by OpenAI Whisper models (Tiny to Large-v3).
 * **Translation:** Translate foreign audio into English subtitles automatically.
 * **Hardware:** Supports **GPU (CUDA)** for blazing speed or CPU processing.
-
+```
 ### 🔄 3. Voice-to-Voice Converter
 * **Timbre Transfer:** Change the input voice to match a target speaker while keeping the emotion and intonation.
 * **Real-time Logic:** Setup for AI voice changing workflows.
-
+```
 ### 🎛️ 4. Audio Cleaner Pro (Offline)
 * **Noise Reduction:** Remove background hiss, rumble, and static.
 * **Silence Removal:** Auto-trim silent parts from recordings.
@@ -199,7 +199,7 @@ This tool is packed with 5 powerful modules accessible from a single interface:
 * **Video to Audio:** Extract high-quality audio (MP3/WAV) from video files.
 * **Format Converter:** Convert between MP3, WAV, AAC, OGG.
 * **Recorder:** Built-in microphone recorder with visualizer.
-
+```
 ---
 
 ## 🚀 Installation
@@ -213,7 +213,7 @@ Follow these steps to set up the studio on your local machine.
 * **GPU (Optional):** NVIDIA GPU with CUDA recommended for faster processing.
 ```
 ### Step-by-Step Guide
-
+```
 1.  **Clone the Repository**
     ```bash
     git clone https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git
@@ -247,7 +247,6 @@ Follow these steps to set up the studio on your local machine.
 ### 1. Run the Server
 Start the application by running the main Python script:
 ```
-
 ```bash 
 # Start server
 python server_vc.py
@@ -255,7 +254,6 @@ python server_vc.py
 # Alternative with specific port
 python server_vc.py --port 8004 --host 0.0.0.0
 ```
-
 
 ## 1 PIC
 <img width="1892" height="945" alt="1" src="https://github.com/user-attachments/assets/e9bf0ce6-0b44-4ade-9ed0-b5ac27d07312" />
