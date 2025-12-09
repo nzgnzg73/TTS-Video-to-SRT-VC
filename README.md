@@ -1,202 +1,142 @@
-# 🌍 Multilingual Chatterbox TTS Server (Windows Edition)
+.
+<div align="center">
 
-[Chatterbox TTS](https://github.com/mirbehnam/Chatterbox-TTS-Server-windows-easyInstallation.git)
+# 🎙️ NZG73 Ultimate AI Audio Studio
+### TTS • Voice Cloning • Transcriber • Audio Cleaner • Converter
 
-Enhanced [Chatterbox TTS](https://github.com/resemble-ai/chatterbox) server with **multilingual support** and **easy Windows installation**. Generate high-quality speech in 24+ languages with voice cloning capabilities.
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.95%2B-009688.svg?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey?style=for-the-badge)](https://github.com/nzgnzg73)
 
-## 📺 Video Tutorials
+<p align="center">
+  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmV5Y3AyZnB5Y3AyZnB5Y3AyZnB5Y3AyZnB5Y3AyZnB5Y3AyZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L2r39d73503nZc713w/giphy.gif" width="600" alt="Audio Waveform Animation">
+</p>
 
-- **Setup Guide:** [**How to in 1 minute - YouTube**](https://www.youtube.com/@Howto_in_1_minute)
-- **Full Tutorial:** [Complete Walkthrough](https://www.youtube.com/@Howto_in_1_minute)
+**An all-in-one offline AI Studio for content creators.** Generate lifelike speech, clone voices, transcribe videos to SRT, remove noise from audio, and convert formats—all running locally on your machine.
 
-## ✨ Key Features
+[✨ Features](#-features) • [🚀 Installation](#-installation) • [📖 Usage](#-usage) • [⚙️ Configuration](#%EF%B8%8F-configuration) • [👤 Contact](#-contact)
 
-🌐 **24+ Languages:** Arabic, Chinese, Danish, Dutch, English, Finnish, French, German, Greek, Hebrew, Hindi, Italian, Japanese, Korean, Malay, Norwegian, Polish, Portuguese, Russian, Spanish, Swedish, Swahili, Turkish
-
-🎤 **Voice Cloning:** Clone any voice using reference audio files
-
-📚 **Audiobook Generation:** Process entire books with automatic text chunking
-
-🚀 **Easy Windows Installation:** One-click setup with `install.bat`
-
-⚡ **GPU Acceleration:** NVIDIA (CUDA) and AMD (ROCm) support
-
-🌐 **Modern Web UI:** Intuitive interface with real-time audio playback
-
-📡 **FastAPI Server:** RESTful API with interactive documentation
-
-## 🖥️ Platform Support
-
-- **Windows:** Full support with easy installation script
-- **Linux:** Manual installation supported  
-- **macOS:** Use the [main repository](https://github.com/devnen/Chatterbox-TTS-Server)
-
-## 🔩 System Requirements
-
-- **Windows 10/11** (64-bit) or **Linux**
-- **Python 3.10+**
-- **4GB+ RAM** (8GB+ recommended)
-- **5GB+ storage** for models
-- **GPU (Optional):** NVIDIA with 4GB+ VRAM or AMD RX 6000/7000 series
-
-## 🚀 Quick Installation (Windows)
-
-1. **Download**
-   ```bash
-   git clone https://github.com/nzgnzg73/Chatterbox-TTS-Server-Multilingual.git
-   cd Chatterbox-TTS-Server-Multilingual
-   ```
-
-2. **Install**
-   - Double-click `install.bat`
-   - Choose your hardware:
-     - Option 1: NVIDIA GPU (CUDA)
-     - Option 2: CPU Only
-     - Option 3: AMD GPU (ROCm)
-
-3. **Run**
-   - Double-click `win-run.bat`
-
-4. **Access**
-   - Open `http://localhost:8004` in your browser
-
-## 💻 Manual Installation (Linux/Other)
-
-1. **Clone Repository**
-   ```bash
-   git clone https://github.com/nzgnzg73/Chatterbox-TTS-Server-Multilingual.git
-   cd Chatterbox-TTS-Server-Multilingual
-   ```
-
-2. **Setup Environment**
-   > **Note:** Make sure you're using Python 3.10 for compatibility
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install --upgrade pip
-   ```
-
-3. **Install Dependencies**
-   
-   Choose based on hardware:
-   ```bash
-   # NVIDIA GPU
-   pip install -r requirements-nvidia.txt
-   
-   # AMD GPU  
-   pip install -r requirements-rocm.txt
-   
-   # CPU Only
-   pip install -r requirements.txt
-   ```
-
-4. **Run Server**
-   ```bash
-   source venv/bin/activate  # if not already activated
-   python server.py
-   ```
-
-## ▶️ Running the Application
-
-**Windows:** Double-click `win-run.bat`
-
-**Linux/Manual:** 
-```bash
-source venv/bin/activate
-python server.py
-```
-
-**Access:** Open `http://localhost:8004`
-
-**API Docs:** Visit `http://localhost:8004/docs`
-
-## 🎯 Usage
-
-### Web Interface
-1. Enter text in any supported language
-2. Select target language from dropdown
-3. Choose voice mode (predefined or clone)
-4. Adjust generation settings
-5. Generate and listen to speech
-
-### API Examples
-
-**Main TTS Endpoint:**
-```bash
-POST /tts
-{
-  "text": "Hello world!",
-  "language": "en", 
-  "voice_mode": "predefined",
-  "temperature": 0.7,
-  "speed_factor": 1.0
-}
-```
-
-**OpenAI Compatible:**
-```bash
-POST /v1/audio/speech
-{
-  "input": "Your text here",
-  "voice": "S1",
-  "language": "en",
-  "response_format": "wav"
-}
-```
-
-## 🎤 Voice Management
-
-**Predefined Voices:** Place `.wav`/`.mp3` files in `./voices` directory
-
-**Voice Cloning:** Upload reference audio via Web UI (stored in `./reference_audio`)
-
-## ⚙️ Configuration
-
-Edit `config.yaml` for settings:
-```yaml
-server:
-  host: "0.0.0.0"
-  port: 8004
-
-tts_engine:
-  device: "auto"  # auto, cuda, cpu
-  
-generation_defaults:
-  temperature: 0.7
-  language: "en"
-```
-
-
-
-## 🔍 Troubleshooting
-
-For comprehensive troubleshooting, visit the [main repository](https://github.com/devnen/Chatterbox-TTS-Server).
-
-**Common Issues:**
-- GPU not detected: Verify drivers and restart
-- Import errors: Ensure virtual environment is activated  
-- Port conflicts: Change port in `config.yaml`
-
-## 🤝 Contributing
-
-Contributions welcome! Report bugs, suggest features, or submit pull requests.
-
-## 📜 License
-
-MIT License
-
-## 🙏 Acknowledgements
-
-- [Resemble AI](https://www.resemble.ai/) for [Chatterbox TTS](https://github.com/resemble-ai/chatterbox)
-- [devnen](https://github.com/devnen) for the original [server implementation](https://github.com/devnen/Chatterbox-TTS-Server)
-
-## 📞 Support
-
-- **General Issues:** [Main repository](https://github.com/devnen/Chatterbox-TTS-Server)
-- **Windows Issues:** Open issue in this repository
-- **macOS Users:** Use [main repository](https://github.com/devnen/Chatterbox-TTS-Server)
-- **Video Tutorials:** [**How to in 1 minute - YouTube**](https://www.youtube.com/@Howto_in_1_minute)
+</div>
 
 ---
 
-*Generate speech in 24+ languages with one-click Windows installation!*
+## ✨ Features
+
+This tool is packed with 5 powerful modules accessible from a single interface:
+
+### 🗣️ 1. Advanced Text-to-Speech (TTS) & Voice Cloning
+* **Multilingual Support:** Generate speech in **24+ languages** (English, Urdu, Hindi, Arabic, Chinese, French, etc.).
+* **Voice Cloning:** Clone any voice using a short reference audio file (`.wav`/`.mp3`).
+* **Long-Form Generation:** Automatic text splitting/chunking for audiobooks.
+* **Customization:** Control Speed, Temperature, Pitch, and Exaggeration.
+* **Background Mode:** Optimized for mobile; keeps generating even when the screen is off.
+
+### 🔤 2. Audio/Video Transcriber (Whisper)
+* **Video to SRT:** Convert video files directly to subtitles (`.srt`) and text.
+* **High Accuracy:** Powered by OpenAI Whisper models (Tiny to Large-v3).
+* **Translation:** Translate foreign audio into English subtitles automatically.
+* **Hardware:** Supports **GPU (CUDA)** for blazing speed or CPU processing.
+
+### 🔄 3. Voice-to-Voice Converter
+* **Timbre Transfer:** Change the input voice to match a target speaker while keeping the emotion and intonation.
+* **Real-time Logic:** Setup for AI voice changing workflows.
+
+### 🎛️ 4. Audio Cleaner Pro (Offline)
+* **Noise Reduction:** Remove background hiss, rumble, and static.
+* **Silence Removal:** Auto-trim silent parts from recordings.
+* **Enhancement:** Adjust pitch (Deep/Alien/Kid) and speed.
+
+### 🛠️ 5. Audio Master Studio
+* **Video to Audio:** Extract high-quality audio (MP3/WAV) from video files.
+* **Format Converter:** Convert between MP3, WAV, AAC, OGG.
+* **Recorder:** Built-in microphone recorder with visualizer.
+
+---
+
+## 🚀 Installation
+
+Follow these steps to set up the studio on your local machine.
+
+### Prerequisites
+* **OS:** Windows 10/11 (64-bit) or Linux.
+* **Python:** Version 3.10 or higher.
+* **FFmpeg:** Required for audio processing. [Download Here](https://ffmpeg.org/download.html).
+* **GPU (Optional):** NVIDIA GPU with CUDA recommended for faster processing.
+
+### Step-by-Step Guide
+
+1.  **Clone the Repository**
+    ```bash
+    git clone [https://github.com/nzgnzg73/your-repo-name.git](https://github.com/nzgnzg73/your-repo-name.git)
+    cd your-repo-name
+    ```
+
+2.  **Create a Virtual Environment (Recommended)**
+    ```bash
+    python -m venv venv
+    # Windows:
+    venv\Scripts\activate
+    # Linux/Mac:
+    source venv/bin/activate
+    ```
+
+3.  **Install Dependencies**
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *(Note: Ensure you install the correct PyTorch version for your hardware from [pytorch.org](https://pytorch.org/))*
+
+4.  **Install FFmpeg**
+    * Download FFmpeg and add it to your System PATH.
+    * Verify by running `ffmpeg -version` in CMD.
+
+---
+
+## 📖 Usage
+
+### 1. Run the Server
+Start the application by running the main Python script:
+
+```bash
+python app.py
+
+Or if you used a specific filename: python main.py or uvicorn app:app --reload
+2. Open the Interface
+Once the server starts, open your web browser and navigate to:
+[http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+(Or the URL displayed in your terminal)
+3. How to Use Modules
+| Module | Instructions |
+|---|---|
+| TTS | Enter text, select language/voice, click Generate. Use "Voice Cloning" to upload a reference audio. |
+| Transcriber | Upload a Video/Audio file. Select "Task" (Transcribe/Translate). Click Start Processing. |
+| Cleaner | Upload noisy audio. Adjust "Noise Reduction" slider. Click Process. |
+| Converter | Go to "Audio Master Studio", upload video, select output format (MP3/WAV), and convert. |
+📂 Project Structure
+├── app.py                 # Main backend server (FastAPI/Flask)
+├── templates/
+│   └── index.html         # Main User Interface (The UI code)
+├── static/
+│   ├── styles.css         # Styling
+│   └── script.js          # Frontend Logic
+├── models/                # Folder for AI models (Whisper/XTTS)
+├── output/                # Generated audio/SRT files saved here
+├── requirements.txt       # Python dependencies
+└── README.md              # Documentation
+
+⚙️ Configuration & Tips
+ * Mobile Usage: This tool is optimized for mobile.
+   * Tip: On Android Chrome, go to Settings > Apps > Chrome > Battery and set to Unrestricted to allow background audio generation.
+ * Models: On the first run, the app may download AI models (Whisper/Coqui). This requires an internet connection and may take a few minutes.
+ * Zoom Lock: Use the 🔓 button in the bottom left to lock the screen zoom for a better app-like experience on mobile.
+👤 Contact & Support
+Created by NZG73.
+ * 📺 YouTube: @NZG73
+ * 🌐 Website: nzg73.blogspot.com
+ * 📧 Email: nzgnzg73@gmail.com
+<div align="center">
+If you like this project, please give it a ⭐ Star on GitHub!
+</div>
+
