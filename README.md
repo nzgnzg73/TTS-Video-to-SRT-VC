@@ -1,313 +1,333 @@
-.
-
 <div align="center">
 
   <a href="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC">
     <img src="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/blob/main/ui/logo.png" alt="Logo" width="200" height="auto">
   </a>
 
-  <h1 align="center">🎵 TTS - Video to SRT - VC 🎬</h1>
+  <h1 align="center">
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=32&pause=1000&color=FF6B6B&center=true&vCenter=true&width=600&lines=🎵+TTS+-+Video+to+SRT+-+VC+🎬;Complete+AI+Audio+Studio;Offline+AI+Powerhouse!" alt="Animated Title" />
+  </h1>
 
   <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=28A745&center=true&vCenter=true&width=435&lines=Text+to+Speech+(24%2B+Langs);Voice+to+Voice+Conversion;Video+to+SRT+Transcription;Offline+AI+Powerhouse" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=28A745&center=true&vCenter=true&width=600&lines=✨+Text+to+Speech+(24%2B+Languages);🎤+Voice+to+Voice+Conversion;📝+Video+to+SRT+Transcription;🔊+Audio+Cleaner+%26+Enhancer;🎛️+Audio+Master+Studio;🔒+100%25+Offline+AI+Suite" alt="Features Animation" />
   </a>
 
   <p align="center">
-    <strong>An All-in-One Offline AI Suite for Audio & Video Processing</strong>
+    <strong>
+      <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=2000&color=4A90E2&center=true&vCenter=true&width=600&lines=An+All-in-One+Offline+AI+Suite;For+Audio+%26+Video+Processing;Your+Voice%2C+Your+Style%2C+Your+Creation" alt="Tagline" />
+    </strong>
     <br />
-    <a href="#-installation-guide"><strong>Explore the Docs »</strong></a>
+    <br />
+    <a href="#-installation-guide"><strong>📖 Explore the Docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/issues">Report Bug</a>
+    <a href="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/issues">🐛 Report Bug</a>
     ·
-    <a href="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/issues">Request Feature</a>
+    <a href="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/issues">✨ Request Feature</a>
   </p>
 
   <p align="center">
-    <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python" alt="Python">
-    <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows" alt="Windows">
+    <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+    <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Platform">
+    <img src="https://img.shields.io/badge/FastAPI-0.95%2B-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
     <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/github/stars/nzgnzg73/TTS-Video-to-SRT-VC?style=for-the-badge" alt="Stars">
+    <img src="https://img.shields.io/github/stars/nzgnzg73/TTS-Video-to-SRT-VC?style=for-the-badge&color=yellow" alt="Stars">
   </p>
+
+  <p align="center">
+    <img src="https://img.shields.io/badge/🎯-GPU_Accelerated-red?style=for-the-badge" alt="GPU">
+    <img src="https://img.shields.io/badge/🔒-100%25_Offline-green?style=for-the-badge" alt="Offline">
+    <img src="https://img.shields.io/badge/🌍-24%2B_Languages-blue?style=for-the-badge" alt="Languages">
+    <img src="https://img.shields.io/badge/📱-Mobile_Optimized-orange?style=for-the-badge" alt="Mobile">
+  </p>
+
 </div>
 
 ---
 
 ## 🚀 **About The Project**
 
-This is a powerful, fully **OFFLINE** web-based application that combines three major AI technologies into one easy-to-use interface. Whether you are a content creator, developer, or AI enthusiast, this tool helps you generate voiceovers, clone voices, and generate subtitles without needing an internet connection.
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=FF69B4&center=true&vCenter=true&width=800&lines=Powerful+Offline+AI+Audio+Studio;Generate+Voiceovers+%7C+Clone+Voices+%7C+Create+Subtitles;No+Internet+Required+%7C+Your+Data+Stays+Private;Perfect+for+Content+Creators+%26+Developers" alt="About Animation" />
+</div>
 
-### ✨ **Key Features**
+<br>
 
-* 🗣️ **Text-to-Speech (TTS):** Generate high-quality speech with voice cloning capabilities.
-* 🎤 **Voice-to-Voice (VC):** Convert your voice into another speaker's voice (Supports Unlimited Languages via Timbre Transfer).
-* 📝 **Video/Audio to SRT:** Automatically generate subtitles (SRT) from any video or audio file (Supports 100+ Languages).
-* 🔒 **100% Offline:** Your data stays on your machine. No API keys required.
-* 🖥️ **User-Friendly UI:** A beautiful web interface located in the `ui` folder.
+This is a **powerful**, fully **OFFLINE** web-based application that combines **five major AI technologies** into one beautiful, easy-to-use interface. Whether you are a **content creator**, **developer**, or **AI enthusiast**, this tool helps you generate voiceovers, clone voices, transcribe videos, clean audio, and convert formats—all **without needing an internet connection**.
+
+---
+
+## ✨ **Key Features**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=800&color=F77737&center=true&vCenter=true&width=700&lines=5+Powerful+Modules+in+One+Interface;Professional+Audio+Processing;Real-time+Voice+Cloning;GPU+%26+CPU+Support;Mobile+%26+Desktop+Ready" alt="Features" />
+</div>
+
+<br>
+
+### 🗣️ **1. Advanced Text-to-Speech (TTS) & Voice Cloning**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=3498DB&width=600&lines=→+Multilingual+Support+(24%2B+Languages);→+Clone+Any+Voice+with+Short+Audio;→+Long-Form+Text+Generation;→+Custom+Speed+%26+Pitch+Control;→+Background+Processing+Mode" alt="TTS Features" />
+
+* **Multilingual Support:** Generate speech in **24+ languages** (English, Urdu, Hindi, Arabic, Chinese, French, Spanish, German, Japanese, Korean, and more).
+* **Voice Cloning:** Clone any voice using a short reference audio file (`.wav`/`.mp3`) with advanced AI models.
+* **Long-Form Generation:** Automatic text splitting and chunking for audiobooks and long content.
+* **Customization:** Full control over Speed, Temperature, Pitch, and Exaggeration parameters.
+* **Background Mode:** Optimized for mobile devices—keeps generating audio even when screen is off.
+
+---
+
+### 🔤 **2. Audio/Video Transcriber (Whisper AI)**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=E74C3C&width=600&lines=→+Video+to+SRT+Subtitles;→+100%2B+Languages+Supported;→+Auto+Language+Detection;→+Translation+to+English;→+GPU+%26+CPU+Processing" alt="Transcriber Features" />
+
+* **Video to SRT:** Convert video files directly to subtitles (`.srt`) and plain text transcripts.
+* **High Accuracy:** Powered by OpenAI Whisper models (Tiny → Large-v3) for maximum precision.
+* **Translation:** Automatically translate foreign audio into English subtitles.
+* **Hardware Support:** Works with **NVIDIA GPU (CUDA)** for blazing speed or CPU for compatibility.
+* **Multiple Formats:** Supports MP4, WebM, MKV, AVI, MOV, MP3, WAV, and more.
+
+---
+
+### 🔄 **3. Voice-to-Voice Converter**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=9B59B6&width=600&lines=→+Timbre+Transfer+Technology;→+Unlimited+Language+Support;→+Real-time+Voice+Changing;→+Preserve+Emotion+%26+Intonation;→+GPU+Accelerated+Processing" alt="Voice Converter Features" />
+
+* **Timbre Transfer:** Change the input voice to match a target speaker while keeping emotion and intonation intact.
+* **Unlimited Languages:** Works with any language through advanced voice conversion.
+* **Real-time Logic:** Optimized setup for AI voice changing workflows.
+* **Professional Quality:** Studio-grade voice conversion results.
+
+---
+
+### 🎛️ **4. Audio Cleaner Pro (Offline)**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=16A085&width=600&lines=→+Professional+Noise+Reduction;→+Auto+Silence+Removal;→+Pitch+%26+Speed+Control;→+Audio+Enhancement;→+Batch+Processing+Support" alt="Audio Cleaner Features" />
+
+* **Noise Reduction:** Remove background hiss, rumble, static, and unwanted sounds.
+* **Silence Removal:** Automatically trim silent parts from recordings.
+* **Enhancement:** Adjust pitch (Deep/Alien/Kid voices) and playback speed.
+* **Professional Results:** Studio-quality audio cleaning without expensive software.
+
+---
+
+### 🛠️ **5. Audio Master Studio**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=F39C12&width=600&lines=→+Video+to+Audio+Extraction;→+Universal+Format+Converter;→+Built-in+Audio+Recorder;→+Real-time+Waveform+Visualizer;→+Multiple+Format+Support" alt="Audio Studio Features" />
+
+* **Video to Audio:** Extract high-quality audio (MP3/WAV) from any video format.
+* **Format Converter:** Convert between MP3, WAV, AAC, OGG, FLAC, and more.
+* **Audio Recorder:** Built-in microphone recorder with live waveform visualization.
+* **Professional Tools:** Complete audio editing suite for content creators.
 
 ---
 
 ## 🌐 **Supported Languages**
 
-### 🗣️ **Text-to-Speech (24+ Languages)**
-The TTS module supports high-quality generation in the following languages:
-> Arabic, Chinese, Danish, Dutch, English, Finnish, French, German, Greek, Hebrew, Hindi, Italian, Japanese, Korean, Malay, Norwegian, Polish, Portuguese, Russian, Spanish, Swedish, Swahili, Turkish.
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=E67E22&center=true&vCenter=true&width=700&lines=24%2B+Languages+for+TTS+%26+Voice+Cloning;100%2B+Languages+for+Transcription;Auto+Language+Detection;Translation+Support+Available" alt="Languages Animation" />
+</div>
 
-### 📝 **Transcriber (Video to SRT)**
-Powered by Whisper technology, the transcriber supports **100+ Languages** with auto-detection, including:
-> English, Urdu, Hindi, Spanish, French, German, Japanese, Chinese, Russian, Arabic, and many more.
+<br>
+
+### 🗣️ **Text-to-Speech & Voice Cloning (24+ Languages)**
+
+| 🌍 Language | Code | Status | 🌍 Language | Code | Status |
+|------------|------|--------|------------|------|--------|
+| **Arabic** | `ar` | ✅ | **English** | `en` | ✅ |
+| **Chinese** | `zh` | ✅ | **Finnish** | `fi` | ✅ |
+| **Danish** | `da` | ✅ | **French** | `fr` | ✅ |
+| **Dutch** | `nl` | ✅ | **German** | `de` | ✅ |
+| **Greek** | `el` | ✅ | **Hebrew** | `he` | ✅ |
+| **Hindi** | `hi` | ✅ | **Italian** | `it` | ✅ |
+| **Japanese** | `ja` | ✅ | **Korean** | `ko` | ✅ |
+| **Malay** | `ms` | ✅ | **Norwegian** | `no` | ✅ |
+| **Polish** | `pl` | ✅ | **Portuguese** | `pt` | ✅ |
+| **Russian** | `ru` | ✅ | **Spanish** | `es` | ✅ |
+| **Swedish** | `sv` | ✅ | **Swahili** | `sw` | ✅ |
+| **Turkish** | `tr` | ✅ | **Urdu** | `ur` | ✅ |
+
+### 📝 **Transcription & Translation (100+ Languages)**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=27AE60&width=700&lines=→+Automatic+Language+Detection;→+English+Translation+Available;→+Multiple+Whisper+Models;→+GPU+%26+CPU+Support;→+High+Accuracy+Transcription" alt="Transcription Languages" />
+
+**Includes:** English, Urdu, Hindi, Spanish, French, German, Japanese, Chinese, Russian, Arabic, Portuguese, Italian, Korean, Turkish, Polish, Dutch, Swedish, Indonesian, Filipino, Vietnamese, Thai, and 80+ more languages!
+
+---
+
+## 🖥️ **System Requirements**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=8E44AD&center=true&vCenter=true&width=700&lines=Runs+on+Windows%2C+Linux+%26+macOS;GPU+Accelerated+%7C+CPU+Compatible;Minimum+4GB+RAM;10GB+Free+Storage+Required" alt="System Requirements" />
+</div>
+
+<br>
+
+### ⚡ **Minimum Requirements**
+* **OS:** Windows 10/11 (64-bit), Linux, or macOS
+* **RAM:** 4GB minimum (8GB recommended)
+* **Storage:** 10GB free space for AI models
+* **Python:** 3.10 or higher
+* **Internet:** Only required for initial model downloads
+
+### 🚀 **Recommended (For Best Performance)**
+* **GPU:** NVIDIA GPU with 4GB+ VRAM (CUDA support)
+* **CPU:** Multi-core processor (Intel i5/AMD Ryzen 5 or better)
+* **RAM:** 16GB or more
+* **Storage:** SSD with 20GB+ free space
+* **Display:** Works on Desktop, Laptop, Tablet, and Mobile
 
 ---
 
 ## 📥 **Installation Guide**
 
-Follow these steps carefully. This guide is written so that even a beginner can set it up!
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=C0392B&center=true&vCenter=true&width=700&lines=Easy+Installation+in+3+Steps;One-Click+Setup+Available;Works+on+Windows+%26+Linux;Beginner-Friendly+Guide" alt="Installation Animation" />
+</div>
+
+<br>
 
 ### **Prerequisites**
-Before you start, make sure you have these installed on your computer:
-1.  **Git**: [Download Here](https://git-scm.com/downloads)
-2.  **Python (3.10 or higher)**: [Download Here](https://www.python.org/downloads/)
-    * *Note: When installing Python, check the box "Add Python to PATH".*
 
-### **Step 1: Clone the Repository**
-1.  Create a new folder on your computer (e.g., on your Desktop).
-2.  Click on the address bar of the folder, type `cmd`, and press **Enter**.
-3.  In the black window (Command Prompt), copy and paste the following command:
+Before you start, make sure you have these installed:
+
+1. **Git:** [Download Here](https://git-scm.com/downloads)
+2. **Python (3.10+):** [Download Here](https://www.python.org/downloads/)
+   * ⚠️ **Important:** When installing Python, check the box **"Add Python to PATH"**
+3. **FFmpeg:** [Download Here](https://ffmpeg.org/download.html)
+   * Required for audio/video processing
+
+---
+
+### 🚀 **Quick Installation (Windows)**
+
+#### **Method 1: One-Click Installer (Recommended)**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=1ABC9C&width=600&lines=Step+1%3A+Clone+the+Repository;Step+2%3A+Run+setup.bat;Step+3%3A+Launch+the+Application" alt="Installation Steps" />
 
 ```bash
-git clone [https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git](https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git)
+# Step 1: Clone the Repository
+git clone https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git
+cd TTS-Video-to-SRT-VC
 
+# Step 2: Run One-Click Installer
+setup.bat
+
+# Step 3: Launch the Application
+"TTS - Video to SRT -VC (RUN).bat"
 ```
+
+**That's it! The server will start automatically!** 🎉
+
+---
+
+#### **Method 2: Manual Installation (Advanced)**
+
+```bash
+# Step 1: Clone Repository
+git clone https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git
+cd TTS-Video-to-SRT-VC
+
+# Step 2: Create Virtual Environment
+python -m venv venv
+
+# Step 3: Activate Virtual Environment
+# For Windows:
+venv\Scripts\activate
+# For Linux/Mac:
+source venv/bin/activate
+
+# Step 4: Install Dependencies
+pip install -r requirements.txt
+
+# Step 5: Install PyTorch (GPU Version)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# Step 6: Run the Server
+python server_vc.py
+```
+
+---
+
+### 🐧 **Installation for Linux/Mac**
+
+```bash
+# Step 1: Clone Repository
+git clone https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git
+cd TTS-Video-to-SRT-VC
+
+# Step 2: Create Virtual Environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Step 3: Install Dependencies
+pip install -r requirements.txt
+
+# Step 4: Install FFmpeg
+# Ubuntu/Debian:
+sudo apt install ffmpeg
+# macOS (with Homebrew):
+brew install ffmpeg
+
+# Step 5: Run Server
+python server_vc.py
+```
+
+---
+
+## 📖 **Usage**
+
 <div align="center">
-
-# 🎙️ NZG73 Ultimate AI Audio Studio
-### TTS • Voice Cloning • Transcriber • Audio Cleaner • Converter
-
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.95%2B-009688.svg?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey?style=for-the-badge)](https://github.com/nzgnzg73)
-
-<p align="center">
-  <img src="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/blob/main/ui/logo.png" width="600" alt="Audio Waveform Animation">
-</p>
-
-**An all-in-one offline AI Studio for content creators.** Generate lifelike speech, clone voices, transcribe videos to SRT, remove noise from audio, and convert formats—all running locally on your machine.
-
-[✨ Features](#-features) • [🚀 Installation](#-installation) • [📖 Usage](#-usage) • [⚙️ Configuration](#%EF%B8%8F-configuration) • [👤 Contact](#-contact)
-
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=D35400&center=true&vCenter=true&width=700&lines=Open+Your+Browser;Navigate+to+localhost%3A8004;Start+Creating+Amazing+Audio;Mobile+%26+Desktop+Compatible" alt="Usage Animation" />
 </div>
-```
----
 
-### 🎬 Video/Audio Processing
-- **Video to Audio Converter**: Extract audio from any video format
-- **Audio Cleaner Pro**: Professional noise reduction and audio enhancement
-- **Universal Transcriber**: Convert audio/video to SRT subtitles (100+ languages)
-- **Audio Master Studio**: Complete audio editing suite with recording capabilities
+<br>
 
-### ⚡ Performance & Usability
-- **GPU Acceleration**: Full CUDA support for NVIDIA GPUs
-- **CPU Fallback**: Works seamlessly on CPU-only systems
-- **Modern Web UI**: Intuitive interface with real-time previews
-- **Background Processing**: Continue working while audio generates
-- **Mobile Optimized**: Works perfectly on smartphones and tablets
+### **Step 1: Start the Server**
 
-### 🔧 Professional Tools
-- **Voice-to-Voice Converter**: Transform voice timbre to match reference speaker
-- **Audio Effects**: Speed control, pitch shifting, noise reduction
-- **File Format Support**: MP3, WAV, OGG, FLAC, MP4, WebM, MKV, AVI, MOV
-- **SRT Generation**: Automatic timestamped subtitle creation
-```
-## 🌐 Supported Languages
-```
-### 🗣️ TTS & Voice Cloning (24+ Languages)
-| Language | Code | Status | Language | Code | Status |
-|----------|------|--------|----------|------|--------|
-| Arabic | `ar` | ✅ | English | `en` | ✅ |
-| Chinese | `zh` | ✅ | Finnish | `fi` | ✅ |
-| Danish | `da` | ✅ | French | `fr` | ✅ |
-| Dutch | `nl` | ✅ | German | `de` | ✅ |
-| Greek | `el` | ✅ | Hebrew | `he` | ✅ |
-| Hindi | `hi` | ✅ | Italian | `it` | ✅ |
-| Japanese | `ja` | ✅ | Korean | `ko` | ✅ |
-| Malay | `ms` | ✅ | Norwegian | `no` | ✅ |
-| Polish | `pl` | ✅ | Portuguese | `pt` | ✅ |
-| Russian | `ru` | ✅ | Spanish | `es` | ✅ |
-| Swedish | `sv` | ✅ | Swahili | `sw` | ✅ |
-| Turkish | `tr` | ✅ | 
-```
-### 📝 Transcription (100+ Languages)
-- **Auto Detection**: Automatic language detection
-- **Translation**: Convert between languages
-- **Multiple Models**: Tiny → Large-v3 for speed/quality balance
-- **GPU/CPU Options**: Run on GPU for speed or CPU for compatibility
-```
-## 🖥️ System Requirements
+Run the application using one of these methods:
 
-### Minimum Requirements
-- **OS**: Windows 10/11 (64-bit), Linux, or macOS
-- **RAM**: 4GB minimum (8GB recommended)
-- **Storage**: 10GB free space for models
-- **Python**: 3.10 or higher
+```bash
+# Method 1: Using Batch File (Windows)
+"TTS - Video to SRT -VC (RUN).bat"
 
-### Recommended (For Best Performance)
-- **GPU**: NVIDIA GPU with 4GB+ VRAM
-- **CPU**: FAST
-- **RAM**: 16GB or more
-- **Storage**: SSD with 20GB free space
-- **Internet**: For downloading models
-
-## 🚀 Quick Installation (Windows)
-
-### Method 1: One-Click Installer (Recommended)
-1. **Download the project:**
-   ```bash
-   git clone https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git
-   cd "TTS-Video-to-SRT-VC"
-   setup.bat                    # Installs everything automatically
-   TTS - Video to SRT -VC (RUN).bat   # Starts the server
-```
-
-## ✨ Features
-
-This tool is packed with 5 powerful modules accessible from a single interface:
-```
-### 🗣️ 1. Advanced Text-to-Speech (TTS) & Voice Cloning
-* **Multilingual Support:** Generate speech in **24+ languages** (English, Urdu, Hindi, Arabic, Chinese, French, etc.).
-* **Voice Cloning:** Clone any voice using a short reference audio file (`.wav`/`.mp3`).
-* **Long-Form Generation:** Automatic text splitting/chunking for audiobooks.
-* **Customization:** Control Speed, Temperature, Pitch, and Exaggeration.
-* **Background Mode:** Optimized for mobile; keeps generating even when the screen is off.
-```
-### 🔤 2. Audio/Video Transcriber (Whisper)
-* **Video to SRT:** Convert video files directly to subtitles (`.srt`) and text.
-* **High Accuracy:** Powered by OpenAI Whisper models (Tiny to Large-v3).
-* **Translation:** Translate foreign audio into English subtitles automatically.
-* **Hardware:** Supports **GPU (CUDA)** for blazing speed or CPU processing.
-```
-### 🔄 3. Voice-to-Voice Converter
-* **Timbre Transfer:** Change the input voice to match a target speaker while keeping the emotion and intonation.
-* **Real-time Logic:** Setup for AI voice changing workflows.
-```
-### 🎛️ 4. Audio Cleaner Pro (Offline)
-* **Noise Reduction:** Remove background hiss, rumble, and static.
-* **Silence Removal:** Auto-trim silent parts from recordings.
-* **Enhancement:** Adjust pitch (Deep/Alien/Kid) and speed.
-
-### 🛠️ 5. Audio Master Studio
-* **Video to Audio:** Extract high-quality audio (MP3/WAV) from video files.
-* **Format Converter:** Convert between MP3, WAV, AAC, OGG.
-* **Recorder:** Built-in microphone recorder with visualizer.
-```
----
-
-## 🚀 Installation
-
-Follow these steps to set up the studio on your local machine.
-
-### Prerequisites
-* **OS:** Windows 10/11 (64-bit) or Linux.
-* **Python:** Version 3.10 or higher.
-* **FFmpeg:** Required for audio processing. [Download Here](https://ffmpeg.org/download.html).
-* **GPU (Optional):** NVIDIA GPU with CUDA recommended for faster processing.
-```
-### Step-by-Step Guide
-```
-1.  **Clone the Repository**
-    ```bash
-    git clone https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git
-    cd TTS-Video-to-SRT-VC
-    ```
-
-2.  **Create a Virtual Environment (Recommended)**
-    ```bash
-    python -m venv venv
-    # Windows:
-    venv\Scripts\activate
-```
-    ```bash
-    # Linux/Mac:
-    source venv/bin/activate
-```
-
-3.  **Install Dependencies**
-    ```bash
-    pip install -r requirements.txt
-```
-(Note: Ensure you install the correct PyTorch version for your hardware from [pytorch.org](https://pytorch.org/))*
-
-## 4 Install FFmpeg
-
-    * Download FFmpeg and add it to your System PATH.
-    * Verify by running `ffmpeg -version` in CMD.
-```
-## 📖 Usage
-```
-### 1. Run the Server
-Start the application by running the main Python script:
-```
-```bash 
-# Start server
+# Method 2: Using Python (All Platforms)
 python server_vc.py
 
-# Alternative with specific port
+# Method 3: Custom Port
 python server_vc.py --port 8004 --host 0.0.0.0
 ```
 
-## 1 PIC
-<img width="1892" height="945" alt="1" src="https://github.com/user-attachments/assets/e9bf0ce6-0b44-4ade-9ed0-b5ac27d07312" />
+### **Step 2: Open Web Interface**
 
+Once the server starts, open your web browser and navigate to:
 
+**🌐 [http://127.0.0.1:8004](http://127.0.0.1:8004)** or **[http://localhost:8004](http://localhost:8004)**
 
+### **Step 3: Choose Your Module**
 
-## 2 PIC
+Select from 5 powerful modules in the interface:
 
-<img width="1886" height="948" alt="Screenshot 2025-12-09 123312" src="https://github.com/user-attachments/assets/82f9d191-5b35-4567-900b-5dde1d920603" />
+| Module | Description |
+|--------|-------------|
+| 🗣️ **TTS & Voice Cloning** | Generate speech and clone voices |
+| 📝 **Transcriber** | Convert audio/video to SRT subtitles |
+| 🔄 **Voice Converter** | Transform voice timbre |
+| 🎛️ **Audio Cleaner** | Remove noise and enhance audio |
+| 🛠️ **Audio Master** | Record, convert, and edit audio |
 
+---
 
-## 3 PIC
+## 🌐 **API Documentation**
 
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=2980B9&center=true&vCenter=true&width=700&lines=REST+API+Endpoints;JSON+Request%2FResponse;Easy+Integration;Developer+Friendly" alt="API Animation" />
+</div>
 
-<img width="1902" height="563" alt="Screenshot 2025-12-09 123340" src="https://github.com/user-attachments/assets/debd8efe-3599-4377-bf95-a39e99159903" />
+<br>
 
+### **1. TTS Generation**
 
-
-## 📁 Project Structure
-
-```
-TTS-Video-to-SRT-VC/
-├── 📁 easy-installation/      # Installation scripts
-├── 📁 Models/                 # AI models storage
-│   └── 📁 nzgnzg73/
-│       └── 📁 vc/             # Voice cloning models
-├── 📁 reference_audio/        # Reference audio files for cloning
-├── 📁 static/                 # Static assets
-├── 📁 ui/                     # Web interface
-│   ├── index.html            # Main interface
-│   ├── script.js             # Frontend logic
-│   ├── styles.css            # Styling
-│   └── 📁 vendor/            # Third-party libraries
-├── 📁 ui_transcriber/         # Transcriber interface
-├── 📁 ui_vc/                  # Voice converter interface
-├── 📁 [NEW] Engine/           # Updated engine components
-├── 🐍 server.py               # Main FastAPI server
-├── 🐍 engine.py               # TTS engine core
-├── 🐍 server_vc.py            # Voice cloning server
-├── ⚙️ config.yaml             # Configuration file
-├── 📋 requirements.txt        # Python dependencies
-├── ⚡ setup.bat               # Windows setup script
-├── 🚀 TTS Server (RUN).bat    # Launch script
-└── 📖 README.md              # This file
-```
-
-
-
-## 🌐 API Documentation
-The server provides REST API endpoints:
-
-
-## TTS Generation
 ```bash
 POST /tts
 Content-Type: application/json
@@ -323,11 +343,9 @@ Content-Type: application/json
 }
 ```
 
-
-## Voice Cloning
+### **2. Voice Cloning**
 
 ```bash
-
 POST /process_vc
 Content-Type: multipart/form-data
 
@@ -337,9 +355,8 @@ device: "cuda"
 cfg_rate: 0.5
 sigma_min: 0.000001
 ```
-## Transcription
 
-
+### **3. Transcription**
 
 ```bash
 POST /transcribe
@@ -350,68 +367,176 @@ language: "en"
 model: "small"
 task: "transcribe"
 ```
-🙏 Acknowledgments
 
-· Coqui TTS for the amazing TTS engine
-· OpenAI Whisper for transcription capabilities
-· Hugging Face for model hosting
-· FastAPI for the robust backend
-· Tailwind CSS for the beautiful interface
+---
 
-📞 Support & Contact
+## 📁 **Project Structure**
 
-## YouTube Tutorials: @NZG73
-## Website: nzg73.blogspot.com
-## Email: nzgnzg73@gmail.com
-## GitHub Issues: Report Bugs
+```
+TTS-Video-to-SRT-VC/
+├── 📁 easy-installation/         # Installation scripts
+├── 📁 Models/                    # AI models storage
+│   └── 📁 nzgnzg73/
+│       └── 📁 vc/                # Voice cloning models
+├── 📁 reference_audio/           # Reference audio files
+├── 📁 static/                    # Static assets
+├── 📁 ui/                        # Web interface (TTS)
+│   ├── index.html               # Main TTS interface
+│   ├── script.js                # Frontend logic
+│   ├── styles.css               # Modern styling
+│   └── 📁 vendor/               # Third-party libraries
+├── 📁 ui_transcriber/            # Transcriber interface
+├── 📁 ui_vc/                     # Voice converter interface
+├── 📁 Engine/                    # Updated engine components
+├── 🐍 server.py                  # Main FastAPI server
+├── 🐍 engine.py                  # TTS engine core
+├── 🐍 server_vc.py               # Voice cloning server
+├── ⚙️ config.yaml                # Configuration file
+├── 📋 requirements.txt           # Python dependencies
+├── ⚡ setup.bat                  # Windows setup script
+├── 🚀 TTS Server (RUN).bat       # Launch script
+└── 📖 README.md                  # This file
+```
 
-⭐ Star History
+---
 
-https://api.star-history.com/svg?repos=nzgnzg73/TTS-Video-to-SRT-VC&type=Date
+## ⚙️ **Configuration & Tips**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=16A085&center=true&vCenter=true&width=700&lines=Mobile+Optimized+Interface;GPU+%26+CPU+Support;Background+Processing;Custom+Settings+Available" alt="Configuration Animation" />
+</div>
+
+<br>
+
+### 📱 **Mobile Usage**
+* This tool is **fully optimized** for mobile devices!
+* **Android Tip:** Go to `Settings > Apps > Chrome > Battery` and set to **Unrestricted** to allow background audio generation when screen is off.
+* **iOS Tip:** Use Safari and enable "Request Desktop Website" for best experience.
+
+### 🔧 **First Run Setup**
+* On first run, the app will download AI models (Whisper/Coqui/Voice Cloning models).
+* This requires an **internet connection** and may take **5-15 minutes** depending on your connection.
+* Models are stored locally and only downloaded once.
+
+### 🎨 **Interface Features**
+* **Zoom Lock:** Use the 🔓 button in the bottom left to lock screen zoom for better app-like experience on mobile.
+* **Dark Mode:** Modern dark theme for comfortable usage.
+* **Real-time Preview:** See waveforms and progress in real-time.
+* **Background Mode:** Continue working while audio generates.
+
+### 🚀 **Performance Tips**
+* For faster processing, use **GPU mode** (NVIDIA CUDA).
+* For CPU-only systems, use smaller models (Tiny/Small) for faster results.
+* Close other heavy applications for better performance.
+* Use SSD storage for faster model loading.
+
+---
+
+## 🎯 **Screenshots & Demo**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=E74C3C&center=true&vCenter=true&width=700&lines=Beautiful+Modern+Interface;Real-time+Processing;Professional+Results;Easy+to+Use" alt="Screenshots Animation" />
+</div>
+
+<br>
+
+### 🖼️ **Main Interface**
+<img width="1892" alt="Main Interface" src="https://github.com/user-attachments/assets/e9bf0ce6-0b44-4ade-9ed0-b5ac27d07312" />
+
+### 🎛️ **Audio Processing**
+<img width="1886" alt="Audio Processing" src="https://github.com/user-attachments/assets/82f9d191-5b35-4567-900b-5dde1d920603" />
+
+### 📝 **Transcription Module**
+<img width="1902" alt="Transcription" src="https://github.com/user-attachments/assets/debd8efe-3599-4377-bf95-a39e99159903" />
+
+---
+
+## 🙏 **Acknowledgments**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=9B59B6&center=true&vCenter=true&width=700&lines=Built+with+Amazing+Technologies;Thanks+to+Open+Source+Community;Powered+by+AI+Innovation" alt="Acknowledgments Animation" />
+</div>
+
+<br>
+
+* 🎯 **[Coqui TTS](https://github.com/coqui-ai/TTS)** - Amazing TTS engine
+* 🎤 **[OpenAI Whisper](https://github.com/openai/whisper)** - Transcription capabilities
+* 🤗 **[Hugging Face](https://huggingface.co/)** - Model hosting and AI tools
+* ⚡ **[FastAPI](https://fastapi.tiangolo.com/)** - Robust backend framework
+* 🎨 **[Tailwind CSS](https://tailwindcss.com/)** - Beautiful interface styling
+* 🧠 **[PyTorch](https://pytorch.org/)** - Deep learning framework
+* 🔊 **[FFmpeg](https://ffmpeg.org/)** - Audio/video processing
+
+---
+
+## 📞 **Support & Contact**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=F39C12&center=true&vCenter=true&width=700&lines=Need+Help%3F+We're+Here!;Join+Our+Community;Get+Support+%26+Updates;Made+with+❤️+by+NZG73" alt="Contact Animation" />
+</div>
+
+<br>
+
+### 👤 **Created by NZG73**
+
+| Platform | Link |
+|----------|------|
+| 📺 **YouTube** | [@NZG73](https://youtube.com/@NZG73) |
+| 🌐 **Website** | [nzg73.blogspot.com](https://nzg73.blogspot.com) |
+| 📧 **Email** | nzgnzg73@gmail.com |
+| 🐛 **Report Bugs** | [GitHub Issues](https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/issues) |
+| ⭐ **GitHub** | [Star this Repo](https://github.com/nzgnzg73/TTS-Video-to-SRT-VC) |
+
+---
+
+## ⭐ **Star History**
+
+<div align="center">
+  <a href="https://star-history.com/#nzgnzg73/TTS-Video-to-SRT-VC&Date">
+    <img src="https://api.star-history.com/svg?repos=nzgnzg73/TTS-Video-to-SRT-VC&type=Date" alt="Star History Chart" />
+  </a>
+</div>
+
+---
+
+## 📜 **License**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=2000&color=27AE60&center=true&vCenter=true&width=600&lines=MIT+License;Free+%26+Open+Source;Use+for+Commercial+Projects;No+Restrictions" alt="License Animation" />
+</div>
+
+<br>
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
 
-Made with ❤️ by NZG73
+## 💖 **Made with Love by NZG73**
 
-If this project helped you, please give it a ⭐ on GitHub!
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=20&pause=1000&color=FF1493&center=true&vCenter=true&width=700&lines=If+this+project+helped+you...;Please+give+it+a+⭐+on+GitHub!;Share+with+your+friends!;Your+Voice%2C+Your+Style%2C+Your+Creation+✨" alt="Closing Animation" />
 
-"Your Voice, Your Style, Your Creation"
+<br>
+
+### 🌟 **If you like this project, please give it a Star!** 🌟
+
+[![GitHub stars](https://img.shields.io/github/stars/nzgnzg73/TTS-Video-to-SRT-VC?style=social)](https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/nzgnzg73/TTS-Video-to-SRT-VC?style=social)](https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/network/members)
+[![GitHub watchers](https://img.shields.io/github/watchers/nzgnzg73/TTS-Video-to-SRT-VC?style=social)](https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/watchers)
+
+<br>
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=24&pause=1000&color=FFD700&center=true&vCenter=true&width=800&lines=Thank+You+for+Using+TTS+-+Video+to+SRT+-+VC!;Happy+Creating!+🎉🎊🎈" alt="Thank You Animation" />
 
 </div>
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-Or if you used a specific filename: python main.py or uvicorn app:app --reload
-2. Open the Interface
-Once the server starts, open your web browser and navigate to:
-[http://127.0.0.1:8004](http://127.0.0.1:8004)
-
-(Or the URL displayed in your terminal)
-3. How to Use Modules
-
-⚙️ Configuration & Tips
- * Mobile Usage: This tool is optimized for mobile.
-   * Tip: On Android Chrome, go to Settings > Apps > Chrome > Battery and set to Unrestricted to allow background audio generation.
- * Models: On the first run, the app may download AI models (Whisper/Coqui). This requires an internet connection and may take a few minutes.
- * Zoom Lock: Use the 🔓 button in the bottom left to lock the screen zoom for a better app-like experience on mobile.
-👤 Contact & Support
-Created by NZG73.
- * 📺 YouTube: @NZG73
- * 🌐 Website: nzg73.blogspot.com
- * 📧 Email: nzgnzg73@gmail.com
 <div align="center">
-If you like this project, please give it a ⭐ Star on GitHub!
-</div>
 
+**© 2024 NZG73. All Rights Reserved.**
+
+[⬆ Back to Top](#-nzg73-ultimate-ai-audio-studio)
+
+</div>
