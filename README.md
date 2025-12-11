@@ -545,7 +545,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <div align="center">
 
-**© 2024 NZG73. All Rights Reserved.**
+**© 2025 NZG73. All Rights Reserved.**
 
 [⬆ Back to Top](#-nzg73-ultimate-ai-audio-studio)
 
