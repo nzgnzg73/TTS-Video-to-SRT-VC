@@ -6,8 +6,6 @@
   </p>
 </div>
 
-
-
 <div align="center">
 
   <a href="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC">
@@ -400,11 +398,18 @@ TTS-Video-to-SRT-VC/
 ├── 📁 Engine/                    # Updated engine components
 ├── 🐍 server.py                  # Main FastAPI server
 ├── 🐍 engine.py                  # TTS engine core
-├── 🐍 server_vc.py               # Voice cloning server
+├── 🐍 server_vc.py               # TTS-Video-to-SRT  server
 ├── ⚙️ config.yaml                # Configuration file
 ├── 📋 requirements.txt           # Python dependencies
 ├── ⚡ setup.bat                  # Windows setup script
-├── 🚀 TTS Server (RUN).bat       # Launch script
+├──📁 Nomi \                        #Here are the details of PC and laptop 
+│└── Nomi.py              
+│└── NOMI RUN.bat         ← Run It
+│└── templates\
+│    └── index.html          
+├── 🚀 TTS Server (RUN).bat     # If You Run This, Text To Voice Or Voice Clone  Will Run.
+├── 🚀 TTS - Video to SRT -VC (RUN).bat     # The future within it which we can take advantage of. 👇🏼
+TTS - Video to SRT -VC (RUN).bat In this file, I am giving you the details, inside this you will find Text to votes Or Audio  Video to SRT, condition Voice to Voice  all available. 
 └── 📖 README.md                  # This file
 ```
 
@@ -545,7 +550,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <div align="center">
 
-**© 2025 NZG73. All Rights Reserved.**
+**© 2024 NZG73. All Rights Reserved.**
 
 [⬆ Back to Top](#-nzg73-ultimate-ai-audio-studio)
 
