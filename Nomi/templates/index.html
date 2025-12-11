@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🖥️ Nomi - System Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            
+            /* Light Mode */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --glass: rgba(30, 41, 59, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation .bubble {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+            opacity: 0.1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Header */
+        .header {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            width: 70px;
+            height: 35px;
+            background: var(--bg-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle::before {
+            content: '☀️';
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+        }
+
+        .theme-toggle::after {
+            content: '🌙';
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+        }
+
+        .theme-toggle .toggle-ball {
+            position: absolute;
+            width: 27px;
+            height: 27px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        [data-theme="dark"] .theme-toggle .toggle-ball {
+            left: calc(100% - 29px);
+        }
+
+        /* Battery Widget */
+        .battery-widget {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 50px;
+            border: 2px solid var(--border);
+        }
+
+        .battery-icon {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            border: 2px solid var(--text-primary);
+            border-radius: 4px;
+        }
+
+        .battery-icon::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 10px;
+            background: var(--text-primary);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .battery-level {
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            bottom: 2px;
+            background: var(--success);
+            border-radius: 2px;
+            transition: all 0.5s ease;
+        }
+
+        .battery-level.low { background: var(--danger); }
+        .battery-level.medium { background: var(--warning); }
+        .battery-level.high { background: var(--success); }
+
+        .battery-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .battery-percent {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .battery-status {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .charging-icon {
+            color: var(--warning);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* URL Display */
+        .url-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .url-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .url-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .url-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .url-icon.local { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .url-icon.network { background: linear-gradient(135deg, #10b981, #059669); }
+        .url-icon.public { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+        .url-content {
+            flex: 1;
+        }
+
+        .url-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .url-value {
+            font-weight: 600;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .url-copy {
+            padding: 0.5rem;
+            background: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .url-copy:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Control Buttons Grid */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .control-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .control-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .control-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .control-card:nth-child(1) { animation-delay: 0.1s; }
+        .control-card:nth-child(2) { animation-delay: 0.2s; }
+        .control-card:nth-child(3) { animation-delay: 0.3s; }
+        .control-card:nth-child(4) { animation-delay: 0.4s; }
+        .control-card:nth-child(5) { animation-delay: 0.5s; }
+        .control-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .control-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1rem;
+            transition: all 0.4s ease;
+        }
+
+        .control-card:hover .control-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .icon-screen { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
+        .icon-shutdown { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .icon-restart { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        .icon-autostart { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .icon-cmd { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
+        .icon-stop { background: linear-gradient(135deg, #ec4899, #db2777); color: white; }
+
+        .control-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            margin: 0 auto;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+            border-radius: 30px;
+            transition: all 0.4s ease;
+        }
+
+        .toggle-slider::before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 2px;
+            bottom: 2px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        input:checked + .toggle-slider {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+        }
+
+        input:checked + .toggle-slider::before {
+            transform: translateX(30px);
+            background: white;
+        }
+
+        /* Action Button */
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        /* CMD Section */
+        .cmd-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.7s backwards;
+        }
+
+        .cmd-header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cmd-header h3 {
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cmd-refresh {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .cmd-refresh:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .cmd-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .cmd-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .cmd-item:hover {
+            background: var(--bg-primary);
+        }
+
+        .cmd-pid {
+            width: 80px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .cmd-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .cmd-kill {
+            padding: 0.4rem 0.8rem;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .cmd-kill:hover {
+            transform: scale(1.05);
+        }
+
+        .no-cmd {
+            padding: 3rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .no-cmd i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* CMD Output Viewer */
+        .cmd-viewer {
+            margin-top: 2rem;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.8s backwards;
+        }
+
+        .cmd-viewer-header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            padding: 1rem 1.5rem;
+        }
+
+        .cmd-viewer-header h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .cmd-url-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .cmd-url-input input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .cmd-url-input input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .cmd-url-input button {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cmd-url-input button:hover {
+            transform: scale(1.05);
+        }
+
+        .cmd-output {
+            background: #0d1117;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: #58a6ff;
+            white-space: pre-wrap;
+        }
+
+        /* Status Indicator */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-primary);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: statusPulse 2s infinite;
+        }
+
+        .status-dot.active { background: var(--success); }
+        .status-dot.inactive { background: var(--danger); }
+
+        @keyframes statusPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 10px 40px var(--shadow);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideInRight 0.5s ease-out;
+            min-width: 300px;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
+        .toast.warning { border-left-color: var(--warning); }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        .toast.success .toast-icon { color: var(--success); }
+        .toast.error .toast-icon { color: var(--danger); }
+        .toast.warning .toast-icon { color: var(--warning); }
+
+        /* First Run Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 2rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            margin: 0 auto 1.5rem;
+        }
+
+        .modal h2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .modal p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.confirm {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .modal-btn.cancel {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .controls-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .url-display {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-terminal"></i>
+                </div>
+                <h1>Nomi</h1>
+            </div>
+
+            <div class="header-actions">
+                <!-- Battery Widget -->
+                <div class="battery-widget">
+                    <div class="battery-icon">
+                        <div class="battery-level" id="batteryLevel" style="width: 100%;"></div>
+                    </div>
+                    <div class="battery-info">
+                        <div class="battery-percent">
+                            <span id="batteryPercent">100%</span>
+                            <i class="fas fa-bolt charging-icon" id="chargingIcon" style="display: none;"></i>
+                        </div>
+                        <div class="battery-status" id="batteryStatus">Checking...</div>
+                    </div>
+                </div>
+
+                <!-- Theme Toggle -->
+                <div class="theme-toggle" onclick="toggleTheme()">
+                    <div class="toggle-ball"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- URL Display -->
+        <div class="url-display">
+            <div class="url-card">
+                <div class="url-icon local">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="url-content">
+                    <div class="url-label">Local URL</div>
+                    <div class="url-value" id="localUrl">http://localhost:21880</div>
+                </div>
+                <button class="url-copy" onclick="copyUrl('localUrl')">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+
+            <div class="url-card">
+                <div class="url-icon network">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <div class="url-content">
+                    <div class="url-label">Network URL</div>
+                    <div class="url-value" id="networkUrl">Loading...</div>
+                </div>
+                <button class="url-copy" onclick="copyUrl('networkUrl')">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+
+            <div class="url-card">
+                <div class="url-icon public">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <div class="url-content">
+                    <div class="url-label">Public URL</div>
+                    <div class="url-value" id="publicUrl">Not Available</div>
+                </div>
+                <button class="url-copy" onclick="copyUrl('publicUrl')">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="controls-grid">
+            <!-- 1. Screen On -->
+            <div class="control-card">
+                <div class="control-icon icon-screen">
+                    <i class="fas fa-desktop"></i>
+                </div>
+                <div class="control-title">Keep Screen On</div>
+                <div class="control-desc">Prevent screen from sleeping</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="screenToggle" onchange="toggleScreenOn()">
+                    <span class="toggle-slider"></span>
+                </label>
+                <div class="status-indicator" style="margin-top: 0.75rem;">
+                    <span class="status-dot" id="screenStatus"></span>
+                    <span id="screenStatusText">OFF</span>
+                </div>
+            </div>
+
+            <!-- 2. Shutdown -->
+            <div class="control-card">
+                <div class="control-icon icon-shutdown">
+                    <i class="fas fa-power-off"></i>
+                </div>
+                <div class="control-title">Shutdown PC</div>
+                <div class="control-desc">Turn off the computer</div>
+                <button class="action-btn btn-danger" onclick="confirmAction('shutdown')">
+                    <i class="fas fa-power-off"></i> Shutdown
+                </button>
+            </div>
+
+            <!-- 3. Restart -->
+            <div class="control-card">
+                <div class="control-icon icon-restart">
+                    <i class="fas fa-redo-alt"></i>
+                </div>
+                <div class="control-title">Restart PC</div>
+                <div class="control-desc">Reboot the computer</div>
+                <button class="action-btn btn-warning" onclick="confirmAction('restart')">
+                    <i class="fas fa-redo-alt"></i> Restart
+                </button>
+            </div>
+
+            <!-- 4. Auto Start -->
+            <div class="control-card">
+                <div class="control-icon icon-autostart">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="control-title">Auto Start</div>
+                <div class="control-desc">Start on Windows boot</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autostartToggle" onchange="toggleAutoStart()">
+                    <span class="toggle-slider"></span>
+                </label>
+                <div class="status-indicator" style="margin-top: 0.75rem;">
+                    <span class="status-dot" id="autostartStatus"></span>
+                    <span id="autostartStatusText">OFF</span>
+                </div>
+            </div>
+
+            <!-- 5. CMD Manager -->
+            <div class="control-card">
+                <div class="control-icon icon-cmd">
+                    <i class="fas fa-terminal"></i>
+                </div>
+                <div class="control-title">CMD Processes</div>
+                <div class="control-desc">View running terminals</div>
+                <button class="action-btn btn-primary" onclick="refreshCmdList()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+
+            <!-- 6. Stop Auto Start -->
+            <div class="control-card">
+                <div class="control-icon icon-stop">
+                    <i class="fas fa-stop-circle"></i>
+                </div>
+                <div class="control-title">Restart Without Auto</div>
+                <div class="control-desc">Restart & disable auto-start</div>
+                <button class="action-btn btn-danger" onclick="confirmAction('restart_no_auto')">
+                    <i class="fas fa-times-circle"></i> Restart (No Auto)
+                </button>
+            </div>
+        </div>
+
+        <!-- CMD List Section -->
+        <div class="cmd-section">
+            <div class="cmd-header">
+                <h3><i class="fas fa-terminal"></i> Running CMD/Console Processes</h3>
+                <button class="cmd-refresh" onclick="refreshCmdList()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="cmd-list" id="cmdList">
+                <div class="no-cmd">
+                    <i class="fas fa-terminal"></i>
+                    <p>Loading processes...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CMD Output Viewer -->
+        <div class="cmd-viewer">
+            <div class="cmd-viewer-header">
+                <h3><i class="fas fa-eye"></i> CMD Output Viewer</h3>
+                <div class="cmd-url-input">
+                    <input type="text" id="cmdUrlInput" placeholder="Enter localhost URL (e.g., http://localhost:8080)">
+                    <button onclick="connectCmdOutput()">
+                        <i class="fas fa-plug"></i> Connect
+                    </button>
+                </div>
+            </div>
+            <div class="cmd-output" id="cmdOutput">
+Waiting for connection...
+Enter a localhost URL above and click Connect to view output.
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- First Run Modal -->
+    <div class="modal-overlay" id="firstRunModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <h2>Welcome to Nomi!</h2>
+            <p>Would you like to enable auto-start? Nomi will automatically launch when Windows starts.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="handleFirstRun(false)">
+                    <i class="fas fa-times"></i> No Thanks
+                </button>
+                <button class="modal-btn confirm" onclick="handleFirstRun(true)">
+                    <i class="fas fa-check"></i> Yes, Enable
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== Configuration ==========
+        const API_BASE = '';
+        
+        // ========== State Management ==========
+        let state = {
+            screenOn: false,
+            autoStart: false,
+            theme: 'light'
+        };
+
+        // ========== Initialization ==========
+        document.addEventListener('DOMContentLoaded', async () => {
+            createBubbles();
+            await loadState();
+            await checkFirstRun();
+            await loadBattery();
+            await loadUrls();
+            await refreshCmdList();
+            
+            // Auto refresh
+            setInterval(loadBattery, 30000);
+            setInterval(refreshCmdList, 60000);
+        });
+
+        // ========== Background Animation ==========
+        function createBubbles() {
+            const container = document.getElementById('bgAnimation');
+            const colors = ['#6366f1', '#ec4899', '#10b981', '#f59e0b', '#3b82f6'];
+            
+            for (let i = 0; i < 15; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    width: ${Math.random() * 100 + 50}px;
+                    height: ${Math.random() * 100 + 50}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    animation-delay: ${Math.random() * 15}s;
+                    animation-duration: ${Math.random() * 10 + 15}s;
+                `;
+                container.appendChild(bubble);
+            }
+        }
+
+        // ========== Theme Toggle ==========
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                state.theme = 'light';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                state.theme = 'dark';
+            }
+            saveState();
+        }
+
+        // ========== State Persistence ==========
+        async function loadState() {
+            try {
+                const response = await fetch(`${API_BASE}/api/state`);
+                if (response.ok) {
+                    state = await response.json();
+                    applyState();
+                }
+            } catch (error) {
+                console.log('Loading state from localStorage');
+                const saved = localStorage.getItem('nomi_state');
+                if (saved) {
+                    state = JSON.parse(saved);
+                    applyState();
+                }
+            }
+        }
+
+        function applyState() {
+            // Apply theme
+            if (state.theme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+            
+            // Apply screen on
+            document.getElementById('screenToggle').checked = state.screenOn;
+            updateScreenStatus(state.screenOn);
+            
+            // Apply auto start
+            document.getElementById('autostartToggle').checked = state.autoStart;
+            updateAutoStartStatus(state.autoStart);
+        }
+
+        async function saveState() {
+            localStorage.setItem('nomi_state', JSON.stringify(state));
+            try {
+                await fetch(`${API_BASE}/api/state`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(state)
+                });
+            } catch (error) {
+                console.log('Could not save state to server');
+            }
+        }
+
+        // ========== First Run Check ==========
+        async function checkFirstRun() {
+            try {
+                const response = await fetch(`${API_BASE}/api/first-run`);
+                const data = await response.json();
+                if (data.isFirstRun) {
+                    document.getElementById('firstRunModal').style.display = 'flex';
+                }
+            } catch (error) {
+                console.error('Error checking first run:', error);
+            }
+        }
+
+        async function handleFirstRun(enable) {
+            document.getElementById('firstRunModal').style.display = 'none';
+            
+            if (enable) {
+                await toggleAutoStart(true);
+                showToast('Auto-start enabled!', 'success');
+            }
+            
+            try {
+                await fetch(`${API_BASE}/api/first-run`, { method: 'POST' });
+            } catch (error) {
+                console.error('Error handling first run:', error);
+            }
+        }
+
+        // ========== Battery ==========
+        async function loadBattery() {
+            try {
+                const response = await fetch(`${API_BASE}/api/battery`);
+                const data = await response.json();
+                
+                const levelEl = document.getElementById('batteryLevel');
+                const percentEl = document.getElementById('batteryPercent');
+                const statusEl = document.getElementById('batteryStatus');
+                const chargingIcon = document.getElementById('chargingIcon');
+                
+                const percent = data.percent;
+                levelEl.style.width = `${percent}%`;
+                percentEl.textContent = `${percent}%`;
+                
+                // Color based on level
+                levelEl.className = 'battery-level';
+                if (percent <= 20) levelEl.classList.add('low');
+                else if (percent <= 50) levelEl.classList.add('medium');
+                else levelEl.classList.add('high');
+                
+                // Charging status
+                if (data.charging) {
+                    chargingIcon.style.display = 'inline';
+                    statusEl.textContent = 'Charging';
+                } else if (data.plugged) {
+                    chargingIcon.style.display = 'none';
+                    statusEl.textContent = 'Plugged In';
+                } else {
+                    chargingIcon.style.display = 'none';
+                    statusEl.textContent = data.timeLeft || 'On Battery';
+                }
+            } catch (error) {
+                console.error('Error loading battery:', error);
+            }
+        }
+
+        // ========== URLs ==========
+        async function loadUrls() {
+            try {
+                const response = await fetch(`${API_BASE}/api/urls`);
+                const data = await response.json();
+                
+                document.getElementById('localUrl').textContent = data.local;
+                document.getElementById('networkUrl').textContent = data.network;
+                document.getElementById('publicUrl').textContent = data.public || 'Not Available';
+            } catch (error) {
+                console.error('Error loading URLs:', error);
+            }
+        }
+
+        function copyUrl(elementId) {
+            const url = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(url);
+            showToast('URL copied to clipboard!', 'success');
+        }
+
+        // ========== Screen Control ==========
+        async function toggleScreenOn() {
+            const toggle = document.getElementById('screenToggle');
+            const enabled = toggle.checked;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/screen-on`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ enabled })
+                });
+                
+                if (response.ok) {
+                    state.screenOn = enabled;
+                    updateScreenStatus(enabled);
+                    saveState();
+                    showToast(`Screen lock ${enabled ? 'enabled' : 'disabled'}`, 'success');
+                }
+            } catch (error) {
+                toggle.checked = !enabled;
+                showToast('Error toggling screen lock', 'error');
+            }
+        }
+
+        function updateScreenStatus(active) {
+            const dot = document.getElementById('screenStatus');
+            const text = document.getElementById('screenStatusText');
+            dot.className = `status-dot ${active ? 'active' : 'inactive'}`;
+            text.textContent = active ? 'ON' : 'OFF';
+        }
+
+        // ========== Auto Start ==========
+        async function toggleAutoStart(forceEnable = null) {
+            const toggle = document.getElementById('autostartToggle');
+            const enabled = forceEnable !== null ? forceEnable : toggle.checked;
+            toggle.checked = enabled;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/autostart`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ enabled })
+                });
+                
+                if (response.ok) {
+                    state.autoStart = enabled;
+                    updateAutoStartStatus(enabled);
+                    saveState();
+                    showToast(`Auto-start ${enabled ? 'enabled' : 'disabled'}`, 'success');
+                }
+            } catch (error) {
+                toggle.checked = !enabled;
+                showToast('Error toggling auto-start', 'error');
+            }
+        }
+
+        function updateAutoStartStatus(active) {
+            const dot = document.getElementById('autostartStatus');
+            const text = document.getElementById('autostartStatusText');
+            dot.className = `status-dot ${active ? 'active' : 'inactive'}`;
+            text.textContent = active ? 'ON' : 'OFF';
+        }
+
+        // ========== Power Controls ==========
+        function confirmAction(action) {
+            const actions = {
+                shutdown: { title: 'Shutdown', message: 'Are you sure you want to shutdown the PC?' },
+                restart: { title: 'Restart', message: 'Are you sure you want to restart the PC?' },
+                restart_no_auto: { title: 'Restart (No Auto)', message: 'Restart and disable auto-start?' }
+            };
+            
+            const config = actions[action];
+            if (confirm(config.message)) {
+                performAction(action);
+            }
+        }
+
+        async function performAction(action) {
+            try {
+                const response = await fetch(`${API_BASE}/api/power/${action}`, { method: 'POST' });
+                if (response.ok) {
+                    showToast(`${action} initiated...`, 'warning');
+                }
+            } catch (error) {
+                showToast(`Error performing ${action}`, 'error');
+            }
+        }
+
+        // ========== CMD Management ==========
+        async function refreshCmdList() {
+            try {
+                const response = await fetch(`${API_BASE}/api/cmd/list`);
+                const processes = await response.json();
+                
+                const container = document.getElementById('cmdList');
+                
+                if (processes.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-cmd">
+                            <i class="fas fa-terminal"></i>
+                            <p>No CMD/Console processes running</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = processes.map(proc => `
+                    <div class="cmd-item">
+                        <span class="cmd-pid">#${proc.pid}</span>
+                        <span class="cmd-name">${proc.name}</span>
+                        <button class="cmd-kill" onclick="killProcess(${proc.pid})">
+                            <i class="fas fa-times"></i> Kill
+                        </button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error refreshing CMD list:', error);
+            }
+        }
+
+        async function killProcess(pid) {
+            if (!confirm(`Kill process #${pid}?`)) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/cmd/kill/${pid}`, { method: 'POST' });
+                if (response.ok) {
+                    showToast(`Process #${pid} terminated`, 'success');
+                    refreshCmdList();
+                }
+            } catch (error) {
+                showToast(`Error killing process #${pid}`, 'error');
+            }
+        }
+
+        // ========== CMD Output Viewer ==========
+        async function connectCmdOutput() {
+            const url = document.getElementById('cmdUrlInput').value.trim();
+            if (!url) {
+                showToast('Please enter a URL', 'warning');
+                return;
+            }
+            
+            const output = document.getElementById('cmdOutput');
+            output.textContent = `Connecting to ${url}...\n`;
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/cmd/connect`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    output.textContent += `Connected!\n\n${data.output}`;
+                } else {
+                    output.textContent += `Error: ${data.error}`;
+                }
+            } catch (error) {
+                output.textContent += `Connection failed: ${error.message}`;
+            }
+        }
+
+        // ========== Toast Notifications ==========
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas ${icons[type]} toast-icon"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideInRight 0.5s ease-out reverse';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
