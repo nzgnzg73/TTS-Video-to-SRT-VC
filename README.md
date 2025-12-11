@@ -1,64 +1,12 @@
 <div align="center">
-
-# 🌐 SELECT YOUR LANGUAGE | اپنی زبان منتخب کریں
-
-<a href="#english">
-  <img src="https://img.shields.io/badge/English-🇺🇸🇬🇧-blue?style=for-the-badge&labelColor=black" alt="English">
-</a>
-<a href="#urdu">
-  <img src="https://img.shields.io/badge/اردو-🇵🇰-green?style=for-the-badge&labelColor=black" alt="Urdu">
-</a>
-<a href="#hindi">
-  <img src="https://img.shields.io/badge/हिन्दी-🇮🇳-orange?style=for-the-badge&labelColor=black" alt="Hindi">
-</a>
-<a href="#chinese">
-  <img src="https://img.shields.io/badge/中文-🇨🇳-red?style=for-the-badge&labelColor=black" alt="Chinese">
-</a>
-<a href="#indonesian">
-  <img src="https://img.shields.io/badge/Indonesia-🇮🇩-red?style=for-the-badge&labelColor=black" alt="Indonesian">
-</a>
-<a href="#spanish">
-  <img src="https://img.shields.io/badge/Español-🇪🇸-yellow?style=for-the-badge&labelColor=black" alt="Spanish">
-</a>
-<a href="#arabic">
-  <img src="https://img.shields.io/badge/العربية-🇸🇦-green?style=for-the-badge&labelColor=black" alt="Arabic">
-</a>
-<a href="#portuguese">
-  <img src="https://img.shields.io/badge/Português-🇧🇷-green?style=for-the-badge&labelColor=black" alt="Portuguese">
-</a>
-<a href="#french">
-  <img src="https://img.shields.io/badge/Français-🇫🇷-blue?style=for-the-badge&labelColor=black" alt="French">
-</a>
-<a href="#german">
-  <img src="https://img.shields.io/badge/Deutsch-🇩🇪-black?style=for-the-badge&labelColor=yellow" alt="German">
-</a>
-<a href="#japanese">
-  <img src="https://img.shields.io/badge/日本語-🇯🇵-white?style=for-the-badge&labelColor=red" alt="Japanese">
-</a>
-<a href="#korean">
-  <img src="https://img.shields.io/badge/한국어-🇰🇷-blue?style=for-the-badge&labelColor=white" alt="Korean">
-</a>
-<a href="#russian">
-  <img src="https://img.shields.io/badge/Русский-🇷🇺-blue?style=for-the-badge&labelColor=red" alt="Russian">
-</a>
-<a href="#turkish">
-  <img src="https://img.shields.io/badge/Türkçe-🇹🇷-red?style=for-the-badge&labelColor=white" alt="Turkish">
-</a>
-
-<br>
-<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=FFD700&center=true&vCenter=true&width=600&lines=👆+Click+Your+Language+Above+👆;👆+اوپر+اپنی+زبان+پر+کلک+کریں+👆;👆+ऊपर+अपनी+भाषा+पर+क्लिक+करें+👆;👆+点击上面选择您的语言+👆" alt="Select Language" />
-
+  <h4>
+    <a href="README.md">English [English] 🇺🇸 nzg 73</a> | 
+    <a href="README.ur.md">Urdu [اردو] 🇵🇰 nzg 73</a> | 
+    <a href="README.hi.md">Hindi [हिंदी] 🇮🇳 nzg 73</a> | 
+    <a href="README.zh.md">Chinese [中文] 🇨🇳 nzg 73</a> | 
+    <a href="README.id.md">Indonesian [Bahasa] 🇮🇩 nzg 73</a>
+  </h4>
 </div>
-
----
-
-<!-- ===================== ENGLISH ===================== -->
-<details id="english" open>
-<summary>
-  
-## 🇺🇸🇬🇧 English | Click to Expand/Collapse
-
-</summary>
 
 <div align="center">
 
@@ -109,47 +57,171 @@
 
 ## 🚀 **About The Project**
 
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=FF69B4&center=true&vCenter=true&width=800&lines=Powerful+Offline+AI+Audio+Studio;Generate+Voiceovers+%7C+Clone+Voices+%7C+Create+Subtitles;No+Internet+Required+%7C+Your+Data+Stays+Private;Perfect+for+Content+Creators+%26+Developers" alt="About Animation" />
+</div>
+
+<br>
+
 This is a **powerful**, fully **OFFLINE** web-based application that combines **five major AI technologies** into one beautiful, easy-to-use interface. Whether you are a **content creator**, **developer**, or **AI enthusiast**, this tool helps you generate voiceovers, clone voices, transcribe videos, clean audio, and convert formats—all **without needing an internet connection**.
 
 ---
 
 ## ✨ **Key Features**
 
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=800&color=F77737&center=true&vCenter=true&width=700&lines=5+Powerful+Modules+in+One+Interface;Professional+Audio+Processing;Real-time+Voice+Cloning;GPU+%26+CPU+Support;Mobile+%26+Desktop+Ready" alt="Features" />
+</div>
+
+<br>
+
 ### 🗣️ **1. Advanced Text-to-Speech (TTS) & Voice Cloning**
-* **Multilingual Support:** Generate speech in **24+ languages**
-* **Voice Cloning:** Clone any voice using a short reference audio file
-* **Long-Form Generation:** Automatic text splitting for audiobooks
-* **Customization:** Full control over Speed, Temperature, Pitch
 
-### 🔤 **2. Audio/Video Transcriber (Whisper AI)**
-* **Video to SRT:** Convert video files directly to subtitles
-* **High Accuracy:** Powered by OpenAI Whisper models
-* **Translation:** Automatically translate to English subtitles
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=3498DB&width=600&lines=→+Multilingual+Support+(24%2B+Languages);→+Clone+Any+Voice+with+Short+Audio;→+Long-Form+Text+Generation;→+Custom+Speed+%26+Pitch+Control;→+Background+Processing+Mode" alt="TTS Features" />
 
-### 🔄 **3. Voice-to-Voice Converter**
-* **Timbre Transfer:** Change voice while keeping emotion
-* **Unlimited Languages:** Works with any language
-
-### 🎛️ **4. Audio Cleaner Pro**
-* **Noise Reduction:** Remove background noise
-* **Silence Removal:** Automatically trim silent parts
-
-### 🛠️ **5. Audio Master Studio**
-* **Video to Audio:** Extract audio from any video
-* **Format Converter:** Convert between formats
-* **Audio Recorder:** Built-in microphone recorder
+* **Multilingual Support:** Generate speech in **24+ languages** (English, Urdu, Hindi, Arabic, Chinese, French, Spanish, German, Japanese, Korean, and more).
+* **Voice Cloning:** Clone any voice using a short reference audio file (`.wav`/`.mp3`) with advanced AI models.
+* **Long-Form Generation:** Automatic text splitting and chunking for audiobooks and long content.
+* **Customization:** Full control over Speed, Temperature, Pitch, and Exaggeration parameters.
+* **Background Mode:** Optimized for mobile devices—keeps generating audio even when screen is off.
 
 ---
 
-## 📥 **Quick Installation**
+### 🔤 **2. Audio/Video Transcriber (Whisper AI)**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=E74C3C&width=600&lines=→+Video+to+SRT+Subtitles;→+100%2B+Languages+Supported;→+Auto+Language+Detection;→+Translation+to+English;→+GPU+%26+CPU+Processing" alt="Transcriber Features" />
+
+* **Video to SRT:** Convert video files directly to subtitles (`.srt`) and plain text transcripts.
+* **High Accuracy:** Powered by OpenAI Whisper models (Tiny → Large-v3) for maximum precision.
+* **Translation:** Automatically translate foreign audio into English subtitles.
+* **Hardware Support:** Works with **NVIDIA GPU (CUDA)** for blazing speed or CPU for compatibility.
+* **Multiple Formats:** Supports MP4, WebM, MKV, AVI, MOV, MP3, WAV, and more.
+
+---
+
+### 🔄 **3. Voice-to-Voice Converter**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=9B59B6&width=600&lines=→+Timbre+Transfer+Technology;→+Unlimited+Language+Support;→+Real-time+Voice+Changing;→+Preserve+Emotion+%26+Intonation;→+GPU+Accelerated+Processing" alt="Voice Converter Features" />
+
+* **Timbre Transfer:** Change the input voice to match a target speaker while keeping emotion and intonation intact.
+* **Unlimited Languages:** Works with any language through advanced voice conversion.
+* **Real-time Logic:** Optimized setup for AI voice changing workflows.
+* **Professional Quality:** Studio-grade voice conversion results.
+
+---
+
+### 🎛️ **4. Audio Cleaner Pro (Offline)**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=16A085&width=600&lines=→+Professional+Noise+Reduction;→+Auto+Silence+Removal;→+Pitch+%26+Speed+Control;→+Audio+Enhancement;→+Batch+Processing+Support" alt="Audio Cleaner Features" />
+
+* **Noise Reduction:** Remove background hiss, rumble, static, and unwanted sounds.
+* **Silence Removal:** Automatically trim silent parts from recordings.
+* **Enhancement:** Adjust pitch (Deep/Alien/Kid voices) and playback speed.
+* **Professional Results:** Studio-quality audio cleaning without expensive software.
+
+---
+
+### 🛠️ **5. Audio Master Studio**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=F39C12&width=600&lines=→+Video+to+Audio+Extraction;→+Universal+Format+Converter;→+Built-in+Audio+Recorder;→+Real-time+Waveform+Visualizer;→+Multiple+Format+Support" alt="Audio Studio Features" />
+
+* **Video to Audio:** Extract high-quality audio (MP3/WAV) from any video format.
+* **Format Converter:** Convert between MP3, WAV, AAC, OGG, FLAC, and more.
+* **Audio Recorder:** Built-in microphone recorder with live waveform visualization.
+* **Professional Tools:** Complete audio editing suite for content creators.
+
+---
+
+## 🌐 **Supported Languages**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=E67E22&center=true&vCenter=true&width=700&lines=24%2B+Languages for+TTS+%26+Voice+Cloning;100%2B+Languages+for+Transcription;Auto+Language+Detection;Translation+Support+Available" alt="Languages Animation" />
+</div>
+
+<br>
+
+### 🗣️ **Text-to-Speech & Voice Cloning (24+ Languages)**
+
+| 🌍 Language | Code | Status | 🌍 Language | Code | Status |
+|------------|------|--------|------------|------|--------|
+| **Arabic** | `ar` | ✅ | **English** | `en` | ✅ |
+| **Chinese** | `zh` | ✅ | **Finnish** | `fi` | ✅ |
+| **Danish** | `da` | ✅ | **French** | `fr` | ✅ |
+| **Dutch** | `nl` | ✅ | **German** | `de` | ✅ |
+| **Greek** | `el` | ✅ | **Hebrew** | `he` | ✅ |
+| **Hindi** | `hi` | ✅ | **Italian** | `it` | ✅ |
+| **Japanese** | `ja` | ✅ | **Korean** | `ko` | ✅ |
+| **Malay** | `ms` | ✅ | **Norwegian** | `no` | ✅ |
+| **Polish** | `pl` | ✅ | **Portuguese** | `pt` | ✅ |
+| **Russian** | `ru` | ✅ | **Spanish** | `es` | ✅ |
+| **Swedish** | `sv` | ✅ | **Swahili** | `sw` | ✅ |
+| **Turkish** | `tr` | ✅ | **Urdu** | `ur` | ✅ |
+
+### 📝 **Transcription & Translation (100+ Languages)**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=27AE60&width=700&lines=→+Automatic+Language+Detection;→+English+Translation+Available;→+Multiple+Whisper+Models;→+GPU+%26+CPU+Support;→+High+Accuracy+Transcription" alt="Transcription Languages" />
+
+**Includes:** English, Urdu, Hindi, Spanish, French, German, Japanese, Chinese, Russian, Arabic, Portuguese, Italian, Korean, Turkish, Polish, Dutch, Swedish, Indonesian, Filipino, Vietnamese, Thai, and 80+ more languages!
+
+---
+
+## 🖥️ **System Requirements**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=8E44AD&center=true&vCenter=true&width=700&lines=Runs+on+Windows%2C+Linux+%26+macOS;GPU+Accelerated+%7C+CPU+Compatible;Minimum+4GB+RAM;10GB+Free+Storage+Required" alt="System Requirements" />
+</div>
+
+<br>
+
+### ⚡ **Minimum Requirements**
+* **OS:** Windows 10/11 (64-bit), Linux, or macOS
+* **RAM:** 4GB minimum (8GB recommended)
+* **Storage:** 10GB free space for AI models
+* **Python:** 3.10 or higher
+* **Internet:** Only required for initial model downloads
+
+### 🚀 **Recommended (For Best Performance)**
+* **GPU:** NVIDIA GPU with 4GB+ VRAM (CUDA support)
+* **CPU:** Multi-core processor (Intel i5/AMD Ryzen 5 or better)
+* **RAM:** 16GB or more
+* **Storage:** SSD with 20GB+ free space
+* **Display:** Works on Desktop, Laptop, Tablet, and Mobile
+
+---
+
+## 📥 **Installation Guide**
+
+<div align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=C0392B&center=true&vCenter=true&width=700&lines=Easy+Installation+in+3+Steps;One-Click+Setup+Available;Works+on+Windows+%26+Linux;Beginner-Friendly+Guide" alt="Installation Animation" />
+</div>
+
+<br>
+
+### **Prerequisites**
+
+Before you start, make sure you have these installed:
+
+1. **Git:** [Download Here](https://git-scm.com/downloads)
+2. **Python (3.10+):** [Download Here](https://www.python.org/downloads/)
+   * ⚠️ **Important:** When installing Python, check the box **"Add Python to PATH"**
+3. **FFmpeg:** [Download Here](https://ffmpeg.org/download.html)
+   * Required for audio/video processing
+
+---
+
+### 🚀 **Quick Installation (Windows)**
+
+#### **Method 1: One-Click Installer (Recommended)**
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=14&pause=1000&color=1ABC9C&width=600&lines=Step+1%3A+Clone+the+Repository;Step+2%3A+Run+setup.bat;Step+3%3A+Launch+the+Application" alt="Installation Steps" />
 
 ```bash
-# Clone Repository
-git clone https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git
+# Step 1: Clone the Repository
+git clone [https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git](https://github.com/nzgnzg73/TTS-Video-to-SRT-VC.git)
 cd TTS-Video-to-SRT-VC
 
-# Run One-Click Installer (Windows)
+# Step 2: Run One-Click Installer
 setup.bat
 
-# Launch Application
+# Step 3: Launch the Application
 "TTS - Video to SRT -VC (RUN).bat"
