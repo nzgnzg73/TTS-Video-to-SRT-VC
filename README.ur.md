@@ -542,7 +542,7 @@ TTS - Video to SRT -VC (RUN).bat اس فائل میں، میں آپ کو تفص�
 
 <div align="center">
 
-**© 2024 NZG73۔ جملہ حقوق محفوظ ہیں۔**
+**© 2025 NZG73۔ جملہ حقوق محفوظ ہیں۔**
 
 [⬆ اوپر واپس جائیں](#-nzg73-ultimate-ai-audio-studio)
 
