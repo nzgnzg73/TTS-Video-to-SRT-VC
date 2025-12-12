@@ -2,7 +2,6 @@
 
 <div align="center">
   <p>
-
     <a href="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/blob/main/Download%20MD/README.model.md">🇺🇸 English</a> | 
     <a href="https://huggingface.co/nzgnzg73/TTS-Video-to-SRT-VC/blob/main/README.zh.md">🇨🇳 Chinese</a> | 
   </p>
