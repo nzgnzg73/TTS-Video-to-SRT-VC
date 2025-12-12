@@ -1,6 +1,14 @@
 # <div align="center">🎙️✨ TTS - Video to SRT - VC ✨🎬</div>
 
 <div align="center">
+  <p>
+
+    <a href="https://github.com/nzgnzg73/TTS-Video-to-SRT-VC/blob/main/Download%20MD/README.model.md">🇺🇸 English</a> | 
+    <a href="https://huggingface.co/nzgnzg73/TTS-Video-to-SRT-VC/blob/main/README.zh.md">🇨🇳 Chinese</a> | 
+  </p>
+</div>
+
+<div align="center">
 
 <!-- Animated Header Wave -->
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=180&section=header&text=TTS%20|%20Video%20to%20SRT%20|%20VC&fontSize=42&fontColor=fff&animation=twinkling&fontAlignY=32&desc=🎤%20AI%20Powered%20Voice%20Tools%20🎬&descAlignY=52&descSize=18"/>
