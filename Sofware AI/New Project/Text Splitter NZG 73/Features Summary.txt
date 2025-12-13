@@ -1,0 +1,27 @@
+✨ Features Summary:
+🌐 Interface & Language
+English UI with full RTL support for Urdu/Arabic
+Auto-detects text direction
+⚡ Performance
+No Lag - Optimized chunking for large texts
+IndexedDB for 32+ years storage
+Virtual rendering for thousands of boxes
+📁 File Support
+TXT, PDF, SRT, HTML, Python, ZIP, JSON, CSV, XML, MD
+Drag & Drop support
+📊 Features
+Real-time Character Counter
+Session Name & Characters Per Box settings
+Copy, Edit, Clear, Share buttons for each box
+Native Share API for mobile
+📚 History & Recycle Bin
+Rename, Delete, Convert to ZIP options
+Soft delete → Recycle Bin → Restore or Permanent Delete
+🎨 Design
+Dark/Light Mode toggle
+Ultra smooth animations
+Floating background particles
+Glassmorphism effects
+
+
+Absolutely free open source code is given by NZG 73 side, enjoy. 
