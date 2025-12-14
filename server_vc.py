@@ -25,10 +25,16 @@ import yaml  # For loading presets
 import numpy as np
 import librosa  # For potential direct use if needed, though utils.py handles most
 from pathlib import Path
+import socket
+import ctypes
+import subprocess
+import psutil          # ←←←← یہ نیا ایڈ کرو (لازمی!)
+import json            # ←←←← یہ نیا ایڈ کرو (لازمی!)
+import winreg          # ←←←← یہ بہت ضروری ہے آٹو اسٹارٹ کے لیے
 from contextlib import asynccontextmanager
 from typing import Optional, List, Dict, Any, Literal
 import webbrowser  # For automatic browser opening
-import threading  # For automatic browser opening
+import threading   # For automatic browser opening
 import sys
 import datetime
 import traceback
@@ -38,7 +44,7 @@ import soundfile as sf
 import importlib
 from huggingface_hub import snapshot_download
 from faster_whisper import WhisperModel  # For Audio Transcriber
-from werkzeug.utils import secure_filename  # یہ نئی لائن شامل کی ہے (Voice-to-Voice کے لیے)
+from werkzeug.utils import secure_filename  # Voice-to-Voice کے لیے
 
 from fastapi import (
     FastAPI,
@@ -128,6 +134,37 @@ logger = logging.getLogger(__name__)
 # --- Global Variables & Application Setup ---
 startup_complete_event = threading.Event()  # For coordinating browser opening
 
+# ==================== NZG 73 System Controller Globals ====================
+SETTINGS_FILE_NZG = Path(__file__).parent / "nzg73_settings.json"
+screen_awake_active = False
+screen_awake_thread = None
+monitor_last_state = True
+
+def load_nzg_settings():
+    default = {
+        "screen_awake": False,
+        "charging_enabled": True,
+        "autostart_enabled": False,
+        "monitor_on": True,
+        "cmd_windows_hidden": False
+    }
+    try:
+        if SETTINGS_FILE_NZG.exists():
+            with open(SETTINGS_FILE_NZG, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                default.update(data)
+    except Exception as e:
+        logger.warning(f"NZG Settings load error: {e}")
+    return default
+
+def save_nzg_settings(settings):
+    try:
+        with open(SETTINGS_FILE_NZG, 'w', encoding='utf-8') as f:
+            json.dump(settings, f, indent=4)
+    except Exception as e:
+        logger.warning(f"NZG Settings save error: {e}")
+
+nzg_settings = load_nzg_settings()
 # --- NEW: Global States for Integrated Features (Voice-to-Voice and Transcriber) ---
 # These manage ON/OFF states without restarting the server.
 vc_model_instance = None  # Voice-to-Voice model
@@ -235,6 +272,215 @@ def get_vc_model(device_choice):
         
     return vc_model_instance
 
+# ==================== NZG 73 Functions ====================
+
+ES_CONTINUOUS = 0x80000000
+ES_SYSTEM_REQUIRED = 0x00000001
+ES_DISPLAY_REQUIRED = 0x00000002
+
+def keep_screen_awake():
+    global screen_awake_active
+    while screen_awake_active:
+        ctypes.windll.kernel32.SetThreadExecutionState(
+            ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED
+        )
+        threading.Event().wait(30)
+    ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
+
+def start_screen_awake():
+    global screen_awake_active, screen_awake_thread
+    if not screen_awake_active:
+        screen_awake_active = True
+        screen_awake_thread = threading.Thread(target=keep_screen_awake, daemon=True)
+        screen_awake_thread.start()
+        nzg_settings["screen_awake"] = True
+        save_nzg_settings(nzg_settings)
+        logger.info("NZG73: Screen Awake ENABLED")
+        return True
+    return False
+
+def stop_screen_awake():
+    global screen_awake_active
+    screen_awake_active = False
+    nzg_settings["screen_awake"] = False
+    save_nzg_settings(nzg_settings)
+    ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
+    logger.info("NZG73: Screen Awake DISABLED")
+    return True
+
+def turn_monitor_off():
+    global monitor_last_state
+    if monitor_last_state:
+        ctypes.windll.user32.SendMessageW(0xFFFF, 0x0112, 0xF170, 2)
+        monitor_last_state = False
+        nzg_settings["monitor_on"] = False
+        save_nzg_settings(nzg_settings)
+        logger.info("NZG73: Monitor OFF")
+    return True
+
+def turn_monitor_on():
+    global monitor_last_state
+    if not monitor_last_state:
+        ctypes.windll.user32.mouse_event(1, 1, 1, 0, 0)
+        ctypes.windll.user32.SendMessageW(0xFFFF, 0x0112, 0xF170, -1)
+        monitor_last_state = True
+        nzg_settings["monitor_on"] = True
+        save_nzg_settings(nzg_settings)
+        logger.info("NZG73: Monitor ON")
+    return True
+
+def hide_all_console():
+    try:
+        import win32gui, win32con
+        import win32process
+        current_pid = os.getpid()
+        hidden = 0
+        def callback(hwnd, _):
+            nonlocal hidden
+            try:
+                class_name = win32gui.GetClassName(hwnd)
+                if win32gui.IsWindowVisible(hwnd) and ('ConsoleWindowClass' in class_name or 'WindowsTerminal' in class_name):
+                    _, pid = win32process.GetWindowThreadProcessId(hwnd)
+                    if pid != current_pid:
+                        win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
+                        hidden += 1
+            except: pass
+            return True
+        win32gui.EnumWindows(callback, None)
+        if hidden > 0:
+            nzg_settings["cmd_windows_hidden"] = True
+            save_nzg_settings(nzg_settings)
+        return hidden > 0
+    except Exception as e:
+        logger.error(f"NZG73 Hide console error: {e}")
+        return False
+
+def show_all_console():
+    try:
+        import win32gui, win32con
+        import win32process
+        current_pid = os.getpid()
+        shown = 0
+        def callback(hwnd, _):
+            nonlocal shown
+            try:
+                class_name = win32gui.GetClassName(hwnd)
+                if not win32gui.IsWindowVisible(hwnd) and ('ConsoleWindowClass' in class_name or 'WindowsTerminal' in class_name):
+                    _, pid = win32process.GetWindowThreadProcessId(hwnd)
+                    if pid != current_pid:
+                        win32gui.ShowWindow(hwnd, win32con.SW_SHOW)
+                        shown += 1
+            except: pass
+            return True
+        win32gui.EnumWindows(callback, None)
+        if shown > 0:
+            nzg_settings["cmd_windows_hidden"] = False
+            save_nzg_settings(nzg_settings)
+        return shown > 0
+    except Exception as e:
+        logger.error(f"NZG73 Show console error: {e}")
+        return False
+
+def kill_all_console():
+    current_pid = os.getpid()
+    killed = 0
+    for proc in psutil.process_iter(['pid', 'name']):
+        try:
+            name = proc.info['name'].lower()
+            if proc.info['pid'] != current_pid and any(x in name for x in ['cmd', 'powershell', 'python', 'conhost', 'windowsterminal']):
+                proc.terminate()
+                killed += 1
+        except: pass
+    return killed > 0
+
+
+# --- Corrected Auto-Start Logic for NZG 73 ---
+# --- Auto-Start on Boot ---
+# ==================== CORRECTED AUTOSTART (BATCH FILE METHOD) ====================
+
+def enable_autostart_nzg():
+    try:
+        # 1. موجودہ فولڈر اور پائتھون کا راستہ نکالیں
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        script_path = os.path.join(current_dir, "server_vc.py")
+        python_exe = sys.executable  # جو پائتھون ابھی چل رہا ہے وہی استعمال ہوگا
+        
+        # 2. ایک بیچ فائل (.bat) کا نام اور راستہ بنائیں
+        bat_file_path = os.path.join(current_dir, "start_nzg73_server.bat")
+        
+        # 3. بیچ فائل کے اندر کوڈ لکھیں (یہ سب سے اہم حصہ ہے)
+        # یہ کمانڈ پہلے ڈائریکٹری تبدیل (CD) کرے گی، پھر سرور چلائے گی
+        bat_content = f"""@echo off
+cd /d "{current_dir}"
+"{python_exe}" "{script_path}"
+"""
+        
+        # 4. بیچ فائل کو فولڈر میں سیو کریں
+        with open(bat_file_path, "w") as f:
+            f.write(bat_content)
+        
+        # 5. اب رجسٹری میں اس بیچ فائل کا لنک دیں
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_SET_VALUE)
+        winreg.SetValueEx(key, "NZG73", 0, winreg.REG_SZ, f'"{bat_file_path}"')
+        winreg.CloseKey(key)
+        
+        # 6. سیٹنگز سیو کریں
+        nzg_settings["autostart_enabled"] = True
+        save_nzg_settings(nzg_settings)
+        
+        logger.info(f"NZG73 Auto-Start ENABLED via Batch File: {bat_file_path}")
+        return True
+        
+    except Exception as e:
+        logger.error(f"NZG73 Auto-Start Enable Error: {e}")
+        return False
+
+def disable_autostart_nzg():
+    try:
+        # 1. رجسٹری سے انٹری ڈیلیٹ کریں
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_SET_VALUE)
+        try:
+            winreg.DeleteValue(key, "NZG73")
+        except FileNotFoundError:
+            pass
+        winreg.CloseKey(key)
+        
+        # 2. بیچ فائل بھی ڈیلیٹ کر دیں تاکہ کچرا نہ رہے
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        bat_file_path = os.path.join(current_dir, "start_nzg73_server.bat")
+        if os.path.exists(bat_file_path):
+            os.remove(bat_file_path)
+
+        # 3. سیٹنگز سیو کریں
+        nzg_settings["autostart_enabled"] = False
+        save_nzg_settings(nzg_settings)
+        
+        logger.info("NZG73 Auto-Start DISABLED and Batch file removed.")
+        return True
+    except Exception as e:
+        logger.error(f"NZG73 Auto-Start Disable Error: {e}")
+        return False
+
+def check_autostart_nzg():
+    try:
+        # رجسٹری چیک کریں کہ کیا انٹری موجود ہے؟
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_READ)
+        winreg.QueryValueEx(key, "NZG73")
+        winreg.CloseKey(key)
+        return True
+    except:
+        return False
+
+def get_local_ip_nzg():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except: return "127.0.0.1"
+    
+# --- END Auto-Start on Boot ---
 # --- Helper Functions for Audio Transcriber ---
 def format_timestamp(seconds):
     td = datetime.timedelta(seconds=seconds)
@@ -529,8 +775,14 @@ if transcriber_ui_path.is_dir():
 else:
     logger.warning("Transcriber UI directory not found. UI may not load.")
 
-# --- API Endpoints ---
+# NEW: System Controller UI Mount
+sysctrl_ui_path = Path(__file__).parent / "ui" / "ui_sysctrl"
+if sysctrl_ui_path.is_dir():
+    app.mount("/sysctrl/ui", StaticFiles(directory=sysctrl_ui_path), name="sysctrl_ui")
+else:
+    logger.warning("System Controller UI directory not found at 'ui/ui_sysctrl'. UI may not load.")
 
+# --- API Endpoints ---
 # --- Main UI Route (Original TTS UI) ---
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def get_web_ui(request: Request):
@@ -1599,7 +1851,126 @@ async def get_ip():
     return JSONResponse({'ip': ip_address})
 
 # --- END Nomi  Share Pro (File Sharing) ---
+# ==================== NZG 73 FastAPI Routes ====================
 
+@app.get("/sysctrl", response_class=HTMLResponse)
+async def sysctrl_page(request: Request):
+    return templates.TemplateResponse("ui_sysctrl/index.html", {"request": request})
+
+@app.get('/api/battery')
+async def api_battery():
+    battery = psutil.sensors_battery()
+    if battery:
+        return {
+            "percent": battery.percent,
+            "charging": battery.power_plugged,
+            "charging_enabled": nzg_settings.get("charging_enabled", True),
+            "time_left": battery.secsleft if battery.secsleft != psutil.POWER_TIME_UNLIMITED else None
+        }
+    return {"percent": 100, "charging": True, "message": "No battery (Desktop)"}
+
+@app.post('/api/charging/enable')
+async def api_charging_enable():
+    nzg_settings["charging_enabled"] = True
+    save_nzg_settings(nzg_settings)
+    return {"success": True}
+
+@app.post('/api/charging/disable')
+async def api_charging_disable():
+    nzg_settings["charging_enabled"] = False
+    save_nzg_settings(nzg_settings)
+    return {"success": True}
+
+@app.get('/api/screen/status')
+async def api_screen_status():
+    return {"awake": nzg_settings.get("screen_awake", False)}
+
+@app.post('/api/screen/on')
+async def api_screen_on():
+    start_screen_awake()
+    return {"success": True}
+
+@app.post('/api/screen/off')
+async def api_screen_off():
+    stop_screen_awake()
+    return {"success": True}
+
+@app.get('/api/monitor/status')
+async def api_monitor_status():
+    return {"on": nzg_settings.get("monitor_on", True)}
+
+@app.post('/api/monitor/on')
+async def api_monitor_on():
+    turn_monitor_on()
+    return {"success": True}
+
+@app.post('/api/monitor/off')
+async def api_monitor_off():
+    turn_monitor_off()
+    return {"success": True}
+
+@app.get('/api/cmd/status')
+async def api_cmd_status():
+    return {"hidden": nzg_settings.get("cmd_windows_hidden", False)}
+
+@app.post('/api/cmd/hide')
+async def api_cmd_hide():
+    return {"success": hide_all_console()}
+
+@app.post('/api/cmd/show')
+async def api_cmd_show():
+    return {"success": show_all_console()}
+
+@app.post('/api/cmd/killall')
+async def api_cmd_killall():
+    return {"success": kill_all_console()}
+
+@app.get('/api/autostart/status')
+async def api_autostart_status():
+    return {"enabled": check_autostart_nzg()}
+
+@app.post('/api/autostart/enable')
+async def api_autostart_enable():
+    return {"success": enable_autostart_nzg()}
+
+@app.post('/api/autostart/disable')
+async def api_autostart_disable():
+    return {"success": disable_autostart_nzg()}
+
+@app.get('/api/network')
+async def api_network():
+    ip = get_local_ip_nzg()
+    port = get_port()
+    return {"ip": ip, "port": port, "url": f"http://{ip}:{port}/sysctrl"}
+
+@app.get('/api/processes')
+async def api_processes():
+    processes = []
+    for proc in psutil.process_iter(['pid', 'name']):
+        try:
+            name = proc.info['name'].lower()
+            if any(x in name for x in ['cmd', 'powershell', 'python', 'conhost', 'windowsterminal']):
+                processes.append({"pid": proc.info['pid'], "name": proc.info['name']})
+        except: pass
+    return processes
+
+@app.post('/api/process/kill/{pid}')
+async def api_kill_process(pid: int):
+    try:
+        p = psutil.Process(pid)
+        p.terminate()
+        return {"success": True}
+    except: return {"success": False}
+
+@app.post('/api/power/restart')
+async def api_restart_pc():
+    os.system("shutdown /r /t 5")
+    return {"success": True}
+
+@app.post('/api/power/shutdown')
+async def api_shutdown_pc():
+    os.system("shutdown /s /t 5")
+    return {"success": True}
 # --- Main Execution ---
 if __name__ == "__main__":
     server_host = get_host()
