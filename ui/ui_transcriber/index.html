@@ -2476,6 +2476,784 @@ document.getElementById("restart-btn").addEventListener("click", async () => {
         </div>
     </div>
 
+
+<!-- ═══════════════════════════════════════════════════════════════
+     System Controller
+═══════════════════════════════════════════════════════════════ -->
+
+
+
+<div class="tool-section" id="sysControlSection" style="margin-top: 20px;">
+    <div class="section-header" onclick="toggleSection('sysControlContent', 'sysControlArrow')">
+        <h2 id="sysCtrlMainTitle">⚡ NZG 73 - System Controller</h2>
+        <div class="collapse-arrow" id="sysControlArrow">▼</div>
+    </div>
+    
+    <div class="section-content hidden" id="sysControlContent">
+        
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+        <style>
+            /* Scoped CSS for System Controller */
+            #sysCtrlWrapper {
+                font-family: 'Poppins', sans-serif;
+                --sys-bg-primary: #0a0a0f;
+                --sys-bg-secondary: #12121a;
+                --sys-bg-card: #1a1a25;
+                --sys-text-primary: #ffffff;
+                --sys-text-secondary: #8888aa;
+                --sys-accent: #6366f1;
+                --sys-accent-glow: rgba(99, 102, 241, 0.4);
+                --sys-success: #22c55e;
+                --sys-danger: #ef4444;
+                --sys-warning: #f59e0b;
+                
+                background: var(--sys-bg-primary);
+                color: var(--sys-text-primary);
+                padding: 15px;
+                border-radius: 10px;
+                position: relative;
+                overflow: hidden; /* Contains the floating animation */
+                transition: all 0.5s ease;
+                text-align: left; /* Reset alignment */
+            }
+
+            /* Light Mode Class scoped to wrapper */
+            #sysCtrlWrapper.sys-light-mode {
+                --sys-bg-primary: #f0f2f5;
+                --sys-bg-secondary: #ffffff;
+                --sys-bg-card: #ffffff;
+                --sys-text-primary: #1a1a2e;
+                --sys-text-secondary: #666688;
+            }
+
+            #sysCtrlWrapper * {
+                box-sizing: border-box;
+            }
+
+            /* Background Animation Scoped */
+            .sys-bg-animation {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            .sys-bg-animation span {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                background: var(--sys-accent);
+                border-radius: 50%;
+                animation: sysFloat 15s infinite;
+                opacity: 0.1;
+            }
+
+            @keyframes sysFloat {
+                0%, 100% { transform: translateY(100%) scale(0); opacity: 0; }
+                50% { opacity: 0.15; }
+                100% { transform: translateY(-100%) scale(1); opacity: 0; }
+            }
+
+            .sys-container {
+                position: relative;
+                z-index: 1;
+                max-width: 100%;
+                margin: 0 auto;
+            }
+
+            .sys-header {
+                text-align: center;
+                padding: 20px 0;
+            }
+
+            .sys-header h1 {
+                font-size: 2rem;
+                background: linear-gradient(135deg, var(--sys-accent), #a855f7);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 5px;
+                display: inline-block;
+            }
+
+            .sys-theme-toggle {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: var(--sys-bg-card);
+                border: 2px solid var(--sys-accent);
+                color: var(--sys-accent);
+                font-size: 1rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                z-index: 10;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .sys-theme-toggle:hover {
+                transform: rotate(180deg) scale(1.1);
+                box-shadow: 0 0 15px var(--sys-accent-glow);
+            }
+
+            .sys-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 15px;
+                margin-top: 10px;
+            }
+
+            .sys-card {
+                background: var(--sys-bg-card);
+                border-radius: 15px;
+                padding: 20px;
+                border: 1px solid rgba(99, 102, 241, 0.2);
+                transition: all 0.4s ease;
+            }
+
+            .sys-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                border-color: var(--sys-accent);
+            }
+
+            .sys-card-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 15px;
+            }
+
+            .sys-card-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background: linear-gradient(135deg, var(--sys-accent), #a855f7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+                color: white;
+            }
+
+            .sys-card-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+
+            /* Battery Styles */
+            .sys-battery-circle {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                background: conic-gradient(var(--sys-success) var(--percent, 0%), var(--sys-bg-secondary) 0%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 15px;
+                position: relative;
+                animation: sysPulse 2s infinite;
+            }
+
+            @keyframes sysPulse {
+                0%, 100% { box-shadow: 0 0 0 0 var(--sys-accent-glow); }
+                50% { box-shadow: 0 0 20px 5px var(--sys-accent-glow); }
+            }
+
+            .sys-battery-inner {
+                width: 90px;
+                height: 90px;
+                border-radius: 50%;
+                background: var(--sys-bg-card);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .sys-battery-percent { font-size: 1.5rem; font-weight: 700; }
+            .sys-battery-status { font-size: 0.7rem; color: var(--sys-text-secondary); }
+            .sys-charging-icon { color: var(--sys-warning); animation: sysBlink 1s infinite; }
+            @keyframes sysBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+            /* Toggles & Buttons */
+            .sys-toggle-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                background: var(--sys-bg-secondary);
+                border-radius: 10px;
+                margin: 8px 0;
+            }
+
+            .sys-toggle-switch {
+                width: 50px;
+                height: 26px;
+                background: var(--sys-bg-primary);
+                border-radius: 30px;
+                position: relative;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .sys-toggle-switch.active { background: var(--sys-success); }
+            .sys-toggle-switch::after {
+                content: '';
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                background: white;
+                border-radius: 50%;
+                top: 3px;
+                left: 3px;
+                transition: all 0.3s ease;
+            }
+            .sys-toggle-switch.active::after { left: 27px; }
+
+            .sys-btn {
+                padding: 10px 15px;
+                border: none;
+                border-radius: 8px;
+                font-size: 0.9rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+                color: white;
+                margin: 2px;
+            }
+
+            .sys-btn:hover { transform: scale(1.05); }
+            .sys-btn-primary { background: linear-gradient(135deg, var(--sys-accent), #a855f7); }
+            .sys-btn-success { background: linear-gradient(135deg, var(--sys-success), #16a34a); }
+            .sys-btn-danger { background: linear-gradient(135deg, var(--sys-danger), #dc2626); }
+            .sys-btn-warning { background: linear-gradient(135deg, var(--sys-warning), #d97706); }
+            .sys-btn-sm { padding: 5px 10px; font-size: 0.75rem; }
+
+            .sys-power-buttons, .sys-monitor-buttons, .sys-cmd-control-buttons {
+                display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;
+            }
+            .sys-monitor-buttons .sys-btn, .sys-cmd-control-buttons .sys-btn { flex: 1; min-width: 80px; }
+
+            /* Process List */
+            .sys-process-list {
+                max-height: 250px;
+                overflow-y: auto;
+                margin-top: 10px;
+            }
+            .sys-process-item {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 10px; background: var(--sys-bg-secondary);
+                border-radius: 8px; margin: 5px 0; transition: all 0.2s;
+            }
+            .sys-process-item:hover { background: var(--sys-bg-primary); }
+            .sys-process-name { font-size: 0.85rem; font-weight: bold;}
+            .sys-process-pid { font-size: 0.75rem; color: var(--sys-text-secondary); }
+
+            /* Network & Badges */
+            .sys-network-info {
+                background: var(--sys-bg-secondary); padding: 15px;
+                border-radius: 10px; text-align: center;
+            }
+            .sys-network-ip { font-size: 1.2rem; font-weight: 600; color: var(--sys-accent); word-break: break-all; }
+            
+            .sys-status-badge {
+                padding: 4px 10px; border-radius: 15px; font-size: 0.75rem; font-weight: 500;
+            }
+            .sys-status-on { background: rgba(34, 197, 94, 0.2); color: var(--sys-success); }
+            .sys-status-off { background: rgba(239, 68, 68, 0.2); color: var(--sys-danger); }
+            .sys-status-hidden { background: rgba(245, 158, 11, 0.2); color: var(--sys-warning); }
+
+            .sys-loader {
+                width: 30px; height: 30px; border: 3px solid var(--sys-bg-secondary);
+                border-top-color: var(--sys-accent); border-radius: 50%;
+                animation: sysSpin 1s linear infinite; margin: 10px auto;
+            }
+            @keyframes sysSpin { to { transform: rotate(360deg); } }
+
+            /* Notification Toast */
+            .sys-notification {
+                position: absolute; /* Relative to wrapper */
+                bottom: 20px; right: 20px;
+                padding: 10px 20px;
+                background: var(--sys-bg-card);
+                border-radius: 10px;
+                border-left: 4px solid var(--sys-accent);
+                box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+                transform: translateX(120%);
+                transition: all 0.4s ease;
+                z-index: 100;
+                color: var(--sys-text-primary);
+            }
+            .sys-notification.show { transform: translateX(0); }
+        </style>
+
+        <div id="sysCtrlWrapper">
+            <div class="sys-bg-animation">
+                <span style="left: 10%; animation-delay: 0s;"></span>
+                <span style="left: 30%; animation-delay: 2s;"></span>
+                <span style="left: 50%; animation-delay: 4s;"></span>
+                <span style="left: 70%; animation-delay: 6s;"></span>
+                <span style="left: 90%; animation-delay: 8s;"></span>
+            </div>
+
+            <button class="sys-theme-toggle" onclick="sysCtrl_toggleTheme()" title="Toggle Tool Theme">
+                <i class="fas fa-moon" id="sysCtrl_themeIcon"></i>
+            </button>
+
+            <div class="sys-container">
+                <div class="sys-header">
+                    <h1><i class="fas fa-bolt"></i> NZG 73</h1>
+                    <p style="color: var(--sys-text-secondary); margin:0;">Advanced System Controller</p>
+                </div>
+
+                <div class="sys-grid">
+                    <div class="sys-card">
+                        <div class="sys-card-header">
+                            <div class="sys-card-icon"><i class="fas fa-battery-full"></i></div>
+                            <span class="sys-card-title">Battery Control</span>
+                        </div>
+                        <div style="text-align:center;">
+                            <div class="sys-battery-circle" id="sysCtrl_batteryCircle">
+                                <div class="sys-battery-inner">
+                                    <span class="sys-battery-percent" id="sysCtrl_batteryPercent">--%</span>
+                                    <span class="sys-battery-status" id="sysCtrl_batteryStatus">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="sys-toggle-container">
+                                <span style="font-size:0.9rem;">Charging Control</span>
+                                <div class="sys-toggle-switch" id="sysCtrl_chargingToggle" onclick="sysCtrl_toggleCharging()"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sys-card">
+                        <div class="sys-card-header">
+                            <div class="sys-card-icon"><i class="fas fa-desktop"></i></div>
+                            <span class="sys-card-title">Screen Awake</span>
+                        </div>
+                        <div class="sys-toggle-container">
+                            <span>Keep Screen On</span>
+                            <div class="sys-toggle-switch" id="sysCtrl_screenToggle" onclick="sysCtrl_toggleScreen()"></div>
+                        </div>
+                        <div class="sys-toggle-container">
+                            <span>Status</span>
+                            <span class="sys-status-badge sys-status-off" id="sysCtrl_screenStatus">OFF</span>
+                        </div>
+                    </div>
+
+                    <div class="sys-card">
+                        <div class="sys-card-header">
+                            <div class="sys-card-icon"><i class="fas fa-tv"></i></div>
+                            <span class="sys-card-title">Monitor Control</span>
+                        </div>
+                        <div class="sys-monitor-buttons">
+                            <button class="sys-btn sys-btn-success" onclick="sysCtrl_turnMonitorOn()">
+                                <i class="fas fa-sun"></i> ON
+                            </button>
+                            <button class="sys-btn sys-btn-danger" onclick="sysCtrl_turnMonitorOff()">
+                                <i class="fas fa-moon"></i> OFF
+                            </button>
+                        </div>
+                        <div class="sys-toggle-container" style="margin-top: 15px;">
+                            <span>Monitor Status</span>
+                            <span class="sys-status-badge sys-status-on" id="sysCtrl_monitorStatus">ON</span>
+                        </div>
+                    </div>
+
+                    <div class="sys-card">
+                        <div class="sys-card-header">
+                            <div class="sys-card-icon"><i class="fas fa-power-off"></i></div>
+                            <span class="sys-card-title">System Power</span>
+                        </div>
+                        <div class="sys-power-buttons">
+                            <button class="sys-btn sys-btn-warning" onclick="sysCtrl_restartPC()">
+                                <i class="fas fa-redo"></i> Restart
+                            </button>
+                            <button class="sys-btn sys-btn-danger" onclick="sysCtrl_shutdownPC()">
+                                <i class="fas fa-power-off"></i> Shutdown
+                            </button>
+                        </div>
+                        <div class="sys-toggle-container" style="margin-top: 20px;">
+                            <span>Auto-Start on Boot</span>
+                            <div class="sys-toggle-switch" id="sysCtrl_autostartToggle" onclick="sysCtrl_toggleAutostart()"></div>
+                        </div>
+                    </div>
+
+                    <div class="sys-card">
+                        <div class="sys-card-header">
+                            <div class="sys-card-icon"><i class="fas fa-wifi"></i></div>
+                            <span class="sys-card-title">Network Access</span>
+                        </div>
+                        <div class="sys-network-info">
+                            <p style="color: var(--sys-text-secondary); margin-bottom: 5px; font-size:0.8rem;">Access from device:</p>
+                            <div class="sys-network-ip" id="sysCtrl_networkIP">Loading...</div>
+                            <button class="sys-btn sys-btn-primary" style="margin-top: 10px; width:100%;" onclick="sysCtrl_copyIP()">
+                                <i class="fas fa-copy"></i> Copy URL
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="sys-card">
+                        <div class="sys-card-header">
+                            <div class="sys-card-icon"><i class="fas fa-terminal"></i></div>
+                            <span class="sys-card-title">Console Control</span>
+                        </div>
+                        <div class="sys-cmd-control-buttons">
+                            <button class="sys-btn sys-btn-warning" onclick="sysCtrl_hideAllConsole()">
+                                <i class="fas fa-eye-slash"></i> Hide
+                            </button>
+                            <button class="sys-btn sys-btn-primary" onclick="sysCtrl_showAllConsole()">
+                                <i class="fas fa-eye"></i> Show
+                            </button>
+                            <button class="sys-btn sys-btn-danger" onclick="sysCtrl_killAllConsole()">
+                                <i class="fas fa-skull"></i> Kill
+                            </button>
+                        </div>
+                        <div class="sys-toggle-container" style="margin-top: 15px;">
+                            <span>Console Status</span>
+                            <span class="sys-status-badge sys-status-on" id="sysCtrl_cmdStatus">Visible</span>
+                        </div>
+                    </div>
+
+                    <div class="sys-card" style="grid-column: 1 / -1;">
+                        <div class="sys-card-header">
+                            <div class="sys-card-icon"><i class="fas fa-list"></i></div>
+                            <span class="sys-card-title">Console Processes</span>
+                            <button class="sys-btn sys-btn-primary sys-btn-sm" style="margin-left: auto;" onclick="sysCtrl_refreshProcesses()">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                        <div class="sys-process-list" id="sysCtrl_processList">
+                            <div class="sys-loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sys-notification" id="sysCtrl_notification">
+                <span id="sysCtrl_notificationText"></span>
+            </div>
+        </div>
+
+        <script>
+            // --- Namespaced JavaScript for System Controller ---
+            const SYS_API_BASE = ''; // Assumes same host API
+
+            // Theme Toggle (Scoped to wrapper)
+            function sysCtrl_toggleTheme() {
+                const wrapper = document.getElementById('sysCtrlWrapper');
+                wrapper.classList.toggle('sys-light-mode');
+                
+                const icon = document.getElementById('sysCtrl_themeIcon');
+                if (wrapper.classList.contains('sys-light-mode')) {
+                    icon.className = 'fas fa-sun';
+                    localStorage.setItem('sys_theme', 'light');
+                } else {
+                    icon.className = 'fas fa-moon';
+                    localStorage.setItem('sys_theme', 'dark');
+                }
+            }
+
+            // Notification System
+            function sysCtrl_showNotification(message) {
+                const notif = document.getElementById('sysCtrl_notification');
+                document.getElementById('sysCtrl_notificationText').textContent = message;
+                notif.classList.add('show');
+                setTimeout(() => notif.classList.remove('show'), 3000);
+            }
+
+            // Battery API
+            async function sysCtrl_fetchBattery() {
+                try {
+                    const res = await fetch(SYS_API_BASE + '/api/battery');
+                    const data = await res.json();
+                    
+                    document.getElementById('sysCtrl_batteryPercent').textContent = data.percent + '%';
+                    document.getElementById('sysCtrl_batteryCircle').style.setProperty('--percent', data.percent + '%');
+                    
+                    const statusEl = document.getElementById('sysCtrl_batteryStatus');
+                    if (data.charging) {
+                        statusEl.innerHTML = '<i class="fas fa-bolt sys-charging-icon"></i> Charging';
+                    } else {
+                        statusEl.textContent = 'Discharging';
+                    }
+
+                    const toggle = document.getElementById('sysCtrl_chargingToggle');
+                    if (data.charging_enabled) toggle.classList.add('active');
+                    else toggle.classList.remove('active');
+
+                } catch(e) { console.error('Battery fetch error:', e); }
+            }
+
+            // Screen Awake API
+            async function sysCtrl_fetchScreenState() {
+                try {
+                    const res = await fetch(SYS_API_BASE + '/api/screen/status');
+                    const data = await res.json();
+                    const toggle = document.getElementById('sysCtrl_screenToggle');
+                    const status = document.getElementById('sysCtrl_screenStatus');
+                    
+                    if (data.awake) {
+                        toggle.classList.add('active');
+                        status.textContent = 'ON';
+                        status.className = 'sys-status-badge sys-status-on';
+                    } else {
+                        toggle.classList.remove('active');
+                        status.textContent = 'OFF';
+                        status.className = 'sys-status-badge sys-status-off';
+                    }
+                } catch(e) { console.error('Screen state error:', e); }
+            }
+
+            // Monitor API
+            async function sysCtrl_fetchMonitorState() {
+                try {
+                    const res = await fetch(SYS_API_BASE + '/api/monitor/status');
+                    const data = await res.json();
+                    const status = document.getElementById('sysCtrl_monitorStatus');
+                    
+                    if (data.on) {
+                        status.textContent = 'ON';
+                        status.className = 'sys-status-badge sys-status-on';
+                    } else {
+                        status.textContent = 'OFF';
+                        status.className = 'sys-status-badge sys-status-off';
+                    }
+                } catch(e) { console.error('Monitor state error:', e); }
+            }
+
+            // CMD/Console API
+            async function sysCtrl_fetchCMDState() {
+                try {
+                    const res = await fetch(SYS_API_BASE + '/api/cmd/status');
+                    const data = await res.json();
+                    const status = document.getElementById('sysCtrl_cmdStatus');
+                    
+                    if (data.hidden) {
+                        status.textContent = 'Hidden';
+                        status.className = 'sys-status-badge sys-status-hidden';
+                    } else {
+                        status.textContent = 'Visible';
+                        status.className = 'sys-status-badge sys-status-on';
+                    }
+                } catch(e) { console.error('CMD state error:', e); }
+            }
+
+            // Autostart API
+            async function sysCtrl_fetchAutostartState() {
+                try {
+                    const res = await fetch(SYS_API_BASE + '/api/autostart/status');
+                    const data = await res.json();
+                    const toggle = document.getElementById('sysCtrl_autostartToggle');
+                    if (data.enabled) toggle.classList.add('active');
+                    else toggle.classList.remove('active');
+                } catch(e) { console.error('Autostart state error:', e); }
+            }
+
+            // Network API
+            async function sysCtrl_fetchNetworkIP() {
+                try {
+                    const res = await fetch(SYS_API_BASE + '/api/network');
+                    const data = await res.json();
+                    document.getElementById('sysCtrl_networkIP').textContent = data.url;
+                } catch(e) { console.error('Network fetch error:', e); }
+            }
+
+            // Process List API
+            async function sysCtrl_refreshProcesses() {
+                try {
+                    document.getElementById('sysCtrl_processList').innerHTML = '<div class="sys-loader"></div>';
+                    const res = await fetch(SYS_API_BASE + '/api/processes');
+                    const data = await res.json();
+                    
+                    let html = '';
+                    data.forEach(proc => {
+                        html += `
+                            <div class="sys-process-item">
+                                <div>
+                                    <div class="sys-process-name">${proc.name}</div>
+                                    <div class="sys-process-pid">PID: ${proc.pid}</div>
+                                </div>
+                                <div>
+                                    <button class="sys-btn sys-btn-danger sys-btn-sm" onclick="sysCtrl_killProcess(${proc.pid})">
+                                        <i class="fas fa-times"></i> Kill
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('sysCtrl_processList').innerHTML = html || '<p style="padding:10px; text-align:center; color:gray;">No console processes found</p>';
+                } catch(e) {
+                    document.getElementById('sysCtrl_processList').innerHTML = '<p style="padding:10px; color:red;">Error loading processes</p>';
+                }
+            }
+
+            // Actions
+            async function sysCtrl_killProcess(pid) {
+                if (confirm('Kill this process?')) {
+                    try {
+                        await fetch(SYS_API_BASE + '/api/process/kill/' + pid, {method: 'POST'});
+                        sysCtrl_showNotification('Process killed!');
+                        sysCtrl_refreshProcesses();
+                    } catch(e) { sysCtrl_showNotification('Error killing process'); }
+                }
+            }
+
+            async function sysCtrl_toggleCharging() {
+                const toggle = document.getElementById('sysCtrl_chargingToggle');
+                const willEnable = !toggle.classList.contains('active');
+                // Optimistic UI update
+                if(willEnable) toggle.classList.add('active'); else toggle.classList.remove('active');
+                
+                try {
+                    await fetch(SYS_API_BASE + '/api/charging/' + (willEnable ? 'enable' : 'disable'), {method: 'POST'});
+                    sysCtrl_showNotification('Charging ' + (willEnable ? 'enabled' : 'disabled'));
+                } catch(e) { sysCtrl_showNotification('Error toggling charging'); sysCtrl_fetchBattery(); }
+            }
+
+            async function sysCtrl_toggleScreen() {
+                const toggle = document.getElementById('sysCtrl_screenToggle');
+                const willAwake = !toggle.classList.contains('active');
+                
+                try {
+                    await fetch(SYS_API_BASE + '/api/screen/' + (willAwake ? 'on' : 'off'), {method: 'POST'});
+                    sysCtrl_showNotification('Screen awake ' + (willAwake ? 'enabled' : 'disabled'));
+                    setTimeout(sysCtrl_fetchScreenState, 500);
+                } catch(e) { sysCtrl_showNotification('Error toggling screen'); }
+            }
+
+            async function sysCtrl_turnMonitorOn() {
+                try {
+                    await fetch(SYS_API_BASE + '/api/monitor/on', {method: 'POST'});
+                    sysCtrl_showNotification('Monitor turned ON');
+                    setTimeout(sysCtrl_fetchMonitorState, 1000);
+                } catch(e) { sysCtrl_showNotification('Error turning monitor on'); }
+            }
+
+            async function sysCtrl_turnMonitorOff() {
+                try {
+                    await fetch(SYS_API_BASE + '/api/monitor/off', {method: 'POST'});
+                    sysCtrl_showNotification('Monitor turned OFF');
+                    setTimeout(sysCtrl_fetchMonitorState, 1000);
+                } catch(e) { sysCtrl_showNotification('Error turning monitor off'); }
+            }
+
+            async function sysCtrl_hideAllConsole() {
+                if (confirm('Hide all console windows?')) {
+                    try {
+                        await fetch(SYS_API_BASE + '/api/cmd/hide', {method: 'POST'});
+                        sysCtrl_showNotification('Consoles hidden');
+                        setTimeout(sysCtrl_fetchCMDState, 500);
+                    } catch(e) { sysCtrl_showNotification('Error hiding consoles'); }
+                }
+            }
+
+            async function sysCtrl_showAllConsole() {
+                try {
+                    await fetch(SYS_API_BASE + '/api/cmd/show', {method: 'POST'});
+                    sysCtrl_showNotification('Consoles visible');
+                    setTimeout(sysCtrl_fetchCMDState, 500);
+                } catch(e) { sysCtrl_showNotification('Error showing consoles'); }
+            }
+
+            async function sysCtrl_killAllConsole() {
+                if (confirm('Kill all console processes (CMD/Python)?')) {
+                    try {
+                        await fetch(SYS_API_BASE + '/api/cmd/killall', {method: 'POST'});
+                        sysCtrl_showNotification('All consoles killed');
+                        setTimeout(() => { sysCtrl_fetchCMDState(); sysCtrl_refreshProcesses(); }, 500);
+                    } catch(e) { sysCtrl_showNotification('Error killing consoles'); }
+                }
+            }
+
+            async function sysCtrl_toggleAutostart() {
+                const toggle = document.getElementById('sysCtrl_autostartToggle');
+                const willEnable = !toggle.classList.contains('active');
+                
+                try {
+                    await fetch(SYS_API_BASE + '/api/autostart/' + (willEnable ? 'enable' : 'disable'), {method: 'POST'});
+                    sysCtrl_showNotification('Auto-start ' + (willEnable ? 'enabled' : 'disabled'));
+                    sysCtrl_fetchAutostartState();
+                } catch(e) { sysCtrl_showNotification('Error toggling autostart'); }
+            }
+
+            async function sysCtrl_restartPC() {
+                if (confirm('Restart PC?')) {
+                    await fetch(SYS_API_BASE + '/api/power/restart', {method: 'POST'});
+                    sysCtrl_showNotification('Restarting...');
+                }
+            }
+
+            async function sysCtrl_shutdownPC() {
+                if (confirm('Shutdown PC?')) {
+                    await fetch(SYS_API_BASE + '/api/power/shutdown', {method: 'POST'});
+                    sysCtrl_showNotification('Shutting down...');
+                }
+            }
+
+            function sysCtrl_copyIP() {
+                const ip = document.getElementById('sysCtrl_networkIP').textContent;
+                navigator.clipboard.writeText(ip);
+                sysCtrl_showNotification('URL copied!');
+            }
+
+            async function sysCtrl_updateAll() {
+                await Promise.all([
+                    sysCtrl_fetchScreenState(),
+                    sysCtrl_fetchMonitorState(),
+                    sysCtrl_fetchCMDState()
+                ]);
+            }
+
+            // Initialization logic (Replaces DOMContentLoaded)
+            function sysCtrl_Init() {
+                // Restore theme preference
+                if (localStorage.getItem('sys_theme') === 'light') {
+                    document.getElementById('sysCtrlWrapper').classList.add('sys-light-mode');
+                    document.getElementById('sysCtrl_themeIcon').className = 'fas fa-sun';
+                }
+
+                // Initial Fetches
+                sysCtrl_fetchBattery();
+                sysCtrl_fetchScreenState();
+                sysCtrl_fetchMonitorState();
+                sysCtrl_fetchCMDState();
+                sysCtrl_fetchAutostartState();
+                sysCtrl_fetchNetworkIP();
+                sysCtrl_refreshProcesses();
+
+                // Start Intervals
+                setInterval(sysCtrl_fetchBattery, 5000);
+                setInterval(sysCtrl_updateAll, 2000);
+            }
+
+            // Run Init immediately
+            sysCtrl_Init();
+        </script>
+    </div>
+</div>
+
+
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+               END  System Controller
+═══════════════════════════════════════════════════════════════ -->
+
 <!-- ═══════════════════════════════════════════════════════════════
      Audio to SRT Transcribe
 ═══════════════════════════════════════════════════════════════ -->
@@ -4552,6 +5330,14 @@ async function ast_uploadAndTranscribe() {
          SECTION : END Nomi Share Pro (Ultra Network) 
     ═══════════════════════════════════════════════════════════ -->
 
+
+
+
+
+
+
+
+
     <!-- ═══════════════════════════════════════════════════════════
          SECTION 2: VIDEO TO AUDIO CONVERTER
     ═══════════════════════════════════════════════════════════ -->
@@ -6336,4 +7122,3 @@ console.log('🎵 Audio & Video Editor loaded! (Offline Mode)');
 
 </body>
 </html>
-
