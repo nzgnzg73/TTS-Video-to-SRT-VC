@@ -4096,6 +4096,462 @@ async function ast_uploadAndTranscribe() {
     ═══════════════════════════════════════════════════════════ -->
 
 
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION : START Nomi Share Pro (File Sharing) 
+    ═══════════════════════════════════════════════════════════ -->
+
+
+
+
+<div class="tool-section" id="nomiShareProSection" style="margin-top: 20px;">
+    
+    <div class="section-header" onclick="toggleSection('nomiShareProContent', 'nomiShareProArrow')">
+        <h2 id="ns_mainTitle">📤 🌐 📥 Share Pro (File Sharing)</h2>
+        <div class="collapse-arrow" id="nomiShareProArrow">▼</div>
+    </div>
+    
+    <div class="section-content hidden" id="nomiShareProContent">
+        
+        <style>
+            /* Global Variables - Prefix not strictly needed here but good practice */
+            #nomiShareProContent :root {
+                --ns-bg-color: #0f0f0f;
+                --ns-card-bg: #1a1a1a;
+                --ns-text-color: #e0e0e0;
+                --ns-accent-color: #00e676; 
+                --ns-receive-color: #2979ff;
+                --ns-danger-color: #ff1744;
+            }
+
+            #ns_wrapper {
+                font-family: 'Segoe UI', sans-serif;
+                background-color: var(--ns-bg-color);
+                color: var(--ns-text-color);
+                padding: 15px; /* Reduced padding for modular look */
+                border-radius: 10px;
+                overflow-x: hidden;
+            }
+
+            /* --- Header & Tabs (Modified to fit modular structure) --- */
+            #ns_header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 15px 15px; background: var(--ns-card-bg);
+                border-radius: 12px; margin-bottom: 20px;
+                border-bottom: 2px solid var(--ns-accent-color);
+                box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+            }
+            #ns_header h3 { margin: 0; }
+
+            .ns_tabs {
+                display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;
+                flex-wrap: wrap;
+            }
+
+            .ns_tab-btn {
+                background: #222; border: 1px solid #444; color: #888;
+                padding: 10px 15px; border-radius: 30px; cursor: pointer;
+                font-size: 0.9rem; transition: 0.3s;
+                display: flex; align-items: center; gap: 8px;
+            }
+
+            .ns_tab-btn.active {
+                background: var(--ns-accent-color); color: #000;
+                font-weight: bold; border-color: var(--ns-accent-color);
+                box-shadow: 0 0 10px rgba(0, 230, 118, 0.4);
+            }
+
+            /* --- Send/Receive Area --- */
+            .ns_send-receive-zone {
+                display: none; text-align: center; padding: 30px;
+                border: 3px dashed var(--ns-accent-color); border-radius: 20px;
+                margin-bottom: 30px; background: rgba(0, 230, 118, 0.05);
+                animation: ns_pulse 2s infinite; cursor: pointer;
+            }
+            .ns_send-receive-zone.active { display: block; }
+
+            @keyframes ns_pulse { 0% { border-color: #00e676; } 50% { border-color: #2979ff; } 100% { border-color: #00e676; } }
+
+            .ns_status-indicators {
+                display: flex; justify-content: center; gap: 40px; margin-top: 20px; font-size: 1.2rem;
+            }
+            .ns_sending { color: var(--ns-accent-color); display: none; align-items: center; gap: 10px; }
+            .ns_receiving { color: var(--ns-receive-color); display: none; align-items: center; gap: 10px; }
+
+            /* --- Grid & Cards --- */
+            .ns_grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+            .ns_hidden { display: none !important; }
+
+            .ns_card {
+                background: var(--ns-card-bg); border-radius: 10px; padding: 10px;
+                position: relative; transition: 0.3s;
+                border: 1px solid #333;
+                word-wrap: break-word; /* Ensure long file names don't break layout */
+            }
+            .ns_card:hover { transform: translateY(-3px); border-color: var(--ns-accent-color); }
+            
+            .ns_card img, .ns_card video {
+                width: 100%; height: 100px; /* Adjusted size */ object-fit: cover; border-radius: 8px; cursor: pointer;
+            }
+            
+            /* Audio Specific Styles */
+            .ns_audio-preview {
+                height: 70px; display: flex; align-items: center; justify-content: center;
+                font-size: 40px; color: var(--ns-accent-color);
+                animation: ns_bounce 2s infinite ease-in-out;
+            }
+            @keyframes ns_bounce { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+            
+            .ns_card-title { margin-top: 8px; font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
+
+            /* --- IMPROVED MENU --- */
+            .ns_menu-dots {
+                position: absolute; top: 10px; right: 10px;
+                background: rgba(0,0,0,0.8); color: #fff;
+                width: 25px; height: 25px; border-radius: 50%;
+                display: flex; align-items: center; justify-content: center;
+                cursor: pointer; font-weight: bold; font-size: 18px;
+                z-index: 10;
+            }
+            
+            .ns_menu-popup {
+                position: absolute; top: 35px; right: 5px;
+                background: #252525; border-radius: 8px;
+                display: none; flex-direction: column; z-index: 100;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.8); width: 160px; /* Adjusted size */
+                border: 1px solid #444; overflow: hidden;
+            }
+            .ns_menu-popup button {
+                background: none; border: none; color: white; padding: 10px;
+                text-align: left; cursor: pointer; border-bottom: 1px solid #333;
+                font-size: 0.85rem; display: flex; align-items: center; gap: 8px;
+            }
+            .ns_menu-popup button:hover { background: #333; }
+            
+            .ns_btn-delete { color: var(--ns-danger-color) !important; font-weight: bold; background: rgba(255, 23, 68, 0.1) !important; }
+            .ns_btn-delete:hover { background: var(--ns-danger-color) !important; color: white !important; }
+
+            /* --- Modals --- */
+            .ns_modal {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.95); z-index: 2000;
+                display: none; justify-content: center; align-items: center;
+            }
+            .ns_modal-content-box img, .ns_modal-content-box video {
+                max-width: 90vw; max-height: 85vh; 
+                width: auto; height: auto;
+                object-fit: contain; border-radius: 10px;
+                box-shadow: 0 0 30px rgba(0, 230, 118, 0.2);
+            }
+            .ns_close-modal {
+                position: absolute; top: 20px; right: 30px;
+                color: white; font-size: 40px; cursor: pointer; z-index: 2001;
+            }
+
+            .ns_qr-modal {
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                background: white; padding: 30px; border-radius: 20px; color: black;
+                text-align: center; display: none; z-index: 3000;
+                box-shadow: 0 0 100px rgba(0, 230, 118, 0.5);
+            }
+        </style>
+
+        <div id="ns_wrapper">
+
+            <div id="ns_header">
+                <h3>📁 File Location <span style="color:var(--ns-accent-color)"> ↪📂↩ 👉🏻 ( ui\File Sharing ) 😀😁😊</span></h3>
+                <button onclick="ns_showQrModal()" style="background:var(--ns-accent-color); border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight:bold;">📱 Mobile Connect</button>
+            </div>
+
+            <div class="ns_tabs">
+                <button class="ns_tab-btn active" onclick="ns_switchTab('sendrecv')">🚀 Send / Receive</button>
+                <button class="ns_tab-btn" onclick="ns_switchTab('gallery')">🖼️ Gallery</button>
+                <button class="ns_tab-btn" onclick="ns_switchTab('audio')">🎵 Audio</button>
+                <button class="ns_tab-btn" onclick="ns_switchTab('files')">📁 Files</button>
+                <button class="ns_tab-btn" onclick="ns_switchTab('trash')">🗑️ History</button>
+            </div>
+
+            <div id="ns_sendrecv-view" class="ns_send-receive-zone active" onclick="document.getElementById('ns_fileInput').click()">
+                <h1>⬆️ Click to Send Data</h1>
+                <p>Real-time Transfer Enabled</p>
+                <input type="file" id="ns_fileInput" multiple style="display: none;" onchange="ns_uploadFiles(this.files)">
+                <div class="ns_status-indicators">
+                    <div id="ns_sending-anim" class="ns_sending">⬆️ Uploading...</div>
+                    <div id="ns_receiving-anim" class="ns_receiving">⬇️ Data Saved!</div>
+                </div>
+            </div>
+
+            <div id="ns_gallery-view" class="ns_grid ns_hidden"></div>
+            <div id="ns_audio-view" class="ns_grid ns_hidden"></div>
+            <div id="ns_files-view" class="ns_grid ns_hidden"></div>
+            <div id="ns_trash-view" class="ns_grid ns_hidden">
+                <div style="grid-column: 1/-1; text-align: center; margin-bottom: 20px; color:#666;">Items here can be restored or deleted forever.</div>
+            </div>
+
+            <div id="ns_mediaModal" class="ns_modal" onclick="ns_closeModal(event)">
+                <span class="ns_close-modal">&times;</span>
+                <div class="ns_modal-content-box" id="ns_modalContent"></div>
+            </div>
+
+            <div id="ns_qrModal" class="ns_qr-modal">
+                <h2>Scan to Connect</h2>
+                <img id="ns_qrImage" src="" alt="QR Code" style="width:150px; height:150px;">
+                <h3 id="ns_ipText">Loading...</h3>
+                <button onclick="document.getElementById('ns_qrModal').style.display='none'" style="margin-top:10px; padding:8px 15px; cursor:pointer; border:none; border-radius:5px; background:#444; color:white;">Close</button>
+            </div>
+            
+        </div>
+
+        <script>
+            let ns_currentTab = 'sendrecv';
+
+            // --- TABS ---
+            function ns_switchTab(tab) {
+                ns_currentTab = tab;
+                document.getElementById('ns_sendrecv-view').classList.remove('active');
+                document.getElementById('ns_gallery-view').classList.add('ns_hidden');
+                document.getElementById('ns_audio-view').classList.add('ns_hidden');
+                document.getElementById('ns_files-view').classList.add('ns_hidden');
+                document.getElementById('ns_trash-view').classList.add('ns_hidden');
+                
+                document.querySelectorAll('.ns_tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector(`#nomiShareProContent button[onclick="ns_switchTab('${tab}')"]`).classList.add('active'); // Added parent scope for uniqueness
+
+                if(tab === 'sendrecv') document.getElementById('ns_sendrecv-view').classList.add('active');
+                else {
+                    document.getElementById('ns_' + tab + '-view').classList.remove('ns_hidden');
+                    ns_loadFiles();
+                }
+            }
+
+            // --- UPLOAD ---
+            async function ns_uploadFiles(files) {
+                const sendAnim = document.getElementById('ns_sending-anim');
+                sendAnim.style.display = 'flex';
+                const formData = new FormData();
+                for (let i = 0; i < files.length; i++) { formData.append('files', files[i]); }
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/upload', true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        setTimeout(() => {
+                            sendAnim.style.display = 'none';
+                            const recvAnim = document.getElementById('ns_receiving-anim');
+                            recvAnim.style.display = 'flex';
+                            setTimeout(() => recvAnim.style.display = 'none', 3000);
+                            alert("Sent Successfully!");
+                        }, 500);
+                    } else {
+                        sendAnim.style.display = 'none';
+                        alert("Upload Failed!");
+                    }
+                };
+                xhr.onerror = function() {
+                    sendAnim.style.display = 'none';
+                    alert("Network Error during upload!");
+                };
+                xhr.send(formData);
+            }
+
+            // --- LOAD (UPDATED LOGIC FOR AUDIO) ---
+            async function ns_loadFiles() {
+                // Mocked JSON response for testing purposes. In your live system, this should call your backend.
+                /* const mockData = {
+                    files: [
+                        { name: "cat_pic.jpg", path: "/files/cat_pic.jpg", type: "image" },
+                        { name: "vid_lesson.mp4", path: "/files/vid_lesson.mp4", type: "video" },
+                        { name: "voice_note.mp3", path: "/files/voice_note.mp3", type: "audio" },
+                        { name: "document.pdf", path: "/files/document.pdf", type: "file" }
+                    ],
+                    trash: [
+                        { name: "old_meme.jpg", path: "/trash/old_meme.jpg", type: "image" }
+                    ]
+                };
+                const data = mockData;
+                */
+                
+                const res = await fetch('/files');
+                const data = await res.json();
+                
+                const gGrid = document.getElementById('ns_gallery-view');
+                const aGrid = document.getElementById('ns_audio-view');
+                const fGrid = document.getElementById('ns_files-view');
+                const tGrid = document.getElementById('ns_trash-view');
+                
+                gGrid.innerHTML = ''; aGrid.innerHTML = ''; fGrid.innerHTML = ''; 
+                tGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; margin-bottom: 20px; color:#666;">Items here can be restored or deleted forever.</div>';
+
+                data.files.forEach(file => {
+                    const card = ns_createCard(file, false);
+                    if(file.type === 'image' || file.type === 'video') {
+                        gGrid.appendChild(card);
+                    } else if(file.type === 'audio') {
+                        aGrid.appendChild(card);
+                    } else {
+                        fGrid.appendChild(card);
+                    }
+                });
+                data.trash.forEach(file => tGrid.appendChild(ns_createCard(file, true)));
+            }
+
+            // --- CARD WITH AUDIO LAYOUT ---
+            function ns_createCard(file, isTrash) {
+                const div = document.createElement('div');
+                div.className = 'ns_card';
+                
+                let content = '';
+                if (file.type === 'image') {
+                    content = `<img src="${file.path}" onclick="ns_openPreview('${file.path}', 'image')">`;
+                } else if (file.type === 'video') {
+                    content = `<video src="${file.path}" onclick="ns_openPreview('${file.path}', 'video')"></video>`;
+                } else if (file.type === 'audio') {
+                    content = `
+                        <div class="ns_audio-preview" onclick="document.getElementById('ns_audio-${file.name}').play()">🎵</div>
+                        <audio id="ns_audio-${file.name}" controls src="${file.path}" style="width:100%; height:30px; margin-bottom:5px;"></audio>
+                    `;
+                } else {
+                    content = `<div style="height:100px; display:flex; align-items:center; justify-content:center; font-size:40px;">📄</div>`;
+                }
+
+                const menuHtml = isTrash ? 
+                    `<div class="ns_menu-popup" id="ns_menu-${file.name}">
+                        <button onclick="ns_restoreFile('${file.name}')">♻️ Restore</button>
+                        <button onclick="ns_deletePermanently('${file.name}')" class="ns_btn-delete">❌ Delete Forever</button>
+                    </div>` :
+                    `<div class="ns_menu-popup" id="ns_menu-${file.name}">
+                        <button onclick="ns_renameFile('${file.name}')">✏️ Rename</button>
+                        <button onclick="ns_shareFile('${file.path}')">🔗 Copy Link</button>
+                        <button onclick="ns_shareSocial('${file.path}')">📢 Share Social</button>
+                        <button onclick="ns_downloadFile('${file.path}', '${file.name}')">⬇️ Download</button>
+                        <button onclick="ns_savePermanent('${file.name}')">💾 Save Safe</button>
+                        <button onclick="ns_moveToTrash('${file.name}')" class="ns_btn-delete">🗑️ Delete (History)</button>
+                    </div>`;
+
+                div.innerHTML = `
+                    ${content}
+                    <div class="ns_card-title">${file.name}</div>
+                    <div class="ns_menu-dots" onclick="ns_toggleMenu(event, '${file.name}')">⋮</div>
+                    ${menuHtml}
+                `;
+                return div;
+            }
+
+            function ns_toggleMenu(e, name) {
+                e.stopPropagation();
+                const m = document.getElementById(`ns_menu-${name}`);
+                document.querySelectorAll('.ns_menu-popup').forEach(x => { if(x!==m) x.style.display='none'; });
+                m.style.display = m.style.display==='flex'?'none':'flex';
+            }
+
+            // --- FILE MANAGEMENT FUNCTIONS ---
+            
+            function ns_downloadFile(path, name) {
+                const link = document.createElement('a');
+                link.href = path;
+                link.download = name;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            async function ns_shareSocial(path) {
+                const fullUrl = window.location.origin + path;
+                if (navigator.share) {
+                    try {
+                        await navigator.share({ title: 'Nomi Share', text: 'Check out this file:', url: fullUrl });
+                    } catch (err) { window.open(`https://wa.me/?text=${encodeURIComponent(fullUrl)}`, '_blank'); }
+                } else {
+                    window.open(`https://wa.me/?text=${encodeURIComponent(fullUrl)}`, '_blank');
+                }
+            }
+
+            async function ns_renameFile(oldName) {
+                let newName = prompt("Enter new name:", oldName);
+                if (newName && newName !== oldName) {
+                    await fetch('/rename', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({old: oldName, new: newName})
+                    });
+                    ns_loadFiles();
+                }
+            }
+
+            function ns_shareFile(path) {
+                const fullUrl = window.location.origin + path;
+                navigator.clipboard.writeText(fullUrl);
+                alert("Link Copied: " + fullUrl);
+            }
+
+            async function ns_savePermanent(name) {
+                if(confirm("Save to SafeData folder?")) {
+                    await fetch(`/save_permanent?name=${encodeURIComponent(name)}`);
+                    alert("Saved to SafeData!");
+                }
+            }
+
+            async function ns_moveToTrash(name) { 
+                await fetch(`/delete?name=${encodeURIComponent(name)}`); 
+                ns_loadFiles(); 
+            }
+
+            async function ns_restoreFile(name) { 
+                await fetch(`/restore?name=${encodeURIComponent(name)}`); 
+                ns_loadFiles(); 
+            }
+
+            async function ns_deletePermanently(name) { 
+                if(confirm('Delete forever? This action cannot be undone!')) { 
+                    await fetch(`/permanent_delete?name=${encodeURIComponent(name)}`); 
+                    ns_loadFiles(); 
+                } 
+            }
+
+            // --- MODAL FUNCTIONS ---
+            function ns_openPreview(path, type) {
+                const modal = document.getElementById('ns_mediaModal');
+                const content = document.getElementById('ns_modalContent');
+                modal.style.display = 'flex';
+                if(type === 'image') content.innerHTML = `<img src="${path}">`;
+                else content.innerHTML = `<video src="${path}" controls autoplay></video>`;
+            }
+            
+            function ns_closeModal(e) {
+                if (e.target.id === 'ns_mediaModal' || e.target.classList.contains('ns_close-modal')) {
+                    document.getElementById('ns_mediaModal').style.display = 'none';
+                    document.getElementById('ns_modalContent').innerHTML = '';
+                }
+            }
+
+            async function ns_showQrModal() {
+                const ipText = document.getElementById('ns_ipText');
+                ipText.innerText = "Fetching IP...";
+                const res = await fetch('/get_ip');
+                const data = await res.json();
+                const url = `http://${data.ip}:5000`;
+                ipText.innerText = url;
+                document.getElementById('ns_qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
+                document.getElementById('ns_qrModal').style.display = 'block';
+            }
+
+            // Global click handler to close menus
+            document.getElementById('nomiShareProContent').onclick = function(e) {
+                if(!e.target.closest('.ns_menu-dots') && !e.target.closest('.ns_menu-popup')) {
+                    document.querySelectorAll('.ns_menu-popup').forEach(m => m.style.display='none');
+                }
+            }
+        </script>
+    </div>
+</div>
+
+
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION : END Nomi Share Pro (Ultra Network) 
+    ═══════════════════════════════════════════════════════════ -->
+
     <!-- ═══════════════════════════════════════════════════════════
          SECTION 2: VIDEO TO AUDIO CONVERTER
     ═══════════════════════════════════════════════════════════ -->
