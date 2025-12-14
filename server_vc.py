@@ -140,7 +140,7 @@ transcriber_current_model_name = None
 transcriber_is_enabled = False  # Toggle flag for Transcriber
 tts_is_enabled = True   # TTS آن/آف کے لیے
 # --- Voice-to-Voice Converter Specific Config ---
-HF_REPO_ID = "Nzgnzg73/chatterbox"
+HF_REPO_ID = "nzgnzg73/vc"
 script_dir = os.path.dirname(os.path.abspath(__file__))
 chatterbox_src_path = os.path.join(script_dir, 'src')
 models_root_dir = os.path.join(script_dir, 'models')
@@ -1446,7 +1446,160 @@ async def transcribe(
     except Exception as e:
         logger.error(f"Transcriber Error: {e}")
         raise HTTPException(status_code=500, detail=f"Processing Failed: {str(e)}")
-# --- END Audio Video to SRT Transcriber ---    
+# --- END Audio Video to SRT Transcriber ---
+
+
+# --- NEW: Nomi Share Pro (File Sharing) ---
+
+# Mount the new UI folder for Nomi Share
+share_ui_path = Path(__file__).parent / "ui" / "ui_share"
+if share_ui_path.is_dir():
+    app.mount("/share/ui", StaticFiles(directory=share_ui_path), name="share_ui")
+else:
+    logger.warning("Nomi Share UI directory (ui/ui_share) not found. File sharing UI may not load.")
+
+# New route for Nomi Share Pro main page
+@app.get("/share", response_class=HTMLResponse, include_in_schema=False)
+async def nomi_share_page(request: Request):
+    """Serves the Nomi Share Pro interface."""
+    try:
+        return templates.TemplateResponse("ui_share/index.html", {"request": request})
+    except Exception as e:
+        logger.error(f"Error loading Nomi Share page: {e}")
+        return HTMLResponse("<h1>Nomi Share Pro</h1><p>UI loading error. Check server logs.</p>", status_code=500)
+
+# --- File Sharing Backend Routes (Converted from Flask to FastAPI) ---
+                                               
+# Folders inside ui folder
+UPLOAD_FOLDER = Path(__file__).parent / "ui" / "File Sharing" / "uploads"
+TRASH_FOLDER = Path(__file__).parent / "ui" / "File Sharing" / "trash"
+SAFE_FOLDER = Path(__file__).parent / "ui" / "File Sharing" / "SafeData"
+
+for folder in [UPLOAD_FOLDER, TRASH_FOLDER, SAFE_FOLDER]:
+    folder.mkdir(parents=True, exist_ok=True)
+
+# Serve uploaded files
+app.mount("/uploads", StaticFiles(directory=UPLOAD_FOLDER), name="uploads")
+
+# Serve trash files (for preview)
+app.mount("/trash_file", StaticFiles(directory=TRASH_FOLDER), name="trash_files")
+
+@app.post("/upload", tags=["Nomi Share"])
+async def upload_file(files: List[UploadFile] = File(...)):
+    for file in files:
+        if file.filename == '':
+            continue
+        file_path = UPLOAD_FOLDER / file.filename
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    return JSONResponse({"message": "Success"})
+
+@app.get("/files", tags=["Nomi Share"])
+async def list_files():
+    active_files = []
+    trash_files = []
+
+    for f in UPLOAD_FOLDER.iterdir():
+        if f.is_file():
+            ext = f.suffix.lower()[1:]
+            ftype = 'file'
+            if ext in ['jpg', 'jpeg', 'png', 'gif', 'webp']:
+                ftype = 'image'
+            elif ext in ['mp4', 'mkv', 'avi', 'mov']:
+                ftype = 'video'
+            elif ext in ['mp3', 'wav', 'ogg', 'm4a', 'aac']:
+                ftype = 'audio'
+            active_files.append({
+                'name': f.name,
+                'path': f'/uploads/{f.name}',
+                'type': ftype
+            })
+
+    for f in TRASH_FOLDER.iterdir():
+        if f.is_file():
+            ext = f.suffix.lower()[1:]
+            ftype = 'file'
+            if ext in ['jpg', 'jpeg', 'png', 'gif', 'webp']:
+                ftype = 'image'
+            elif ext in ['mp4', 'mkv', 'avi', 'mov']:
+                ftype = 'video'
+            elif ext in ['mp3', 'wav', 'ogg', 'm4a', 'aac']:
+                ftype = 'audio'
+            trash_files.append({
+                'name': f.name,
+                'path': f'/trash_file/{f.name}',
+                'type': ftype
+            })
+
+    return JSONResponse({'files': active_files, 'trash': trash_files})
+
+@app.post("/rename", tags=["Nomi Share"])
+async def rename_file(data: Dict[str, str]):
+    old_name = data.get('old')
+    new_name = data.get('new')
+    if not old_name or not new_name:
+        raise HTTPException(status_code=400, detail="Missing names")
+
+    ext = Path(old_name).suffix
+    if not new_name.endswith(ext):
+        new_name += ext
+
+    src = UPLOAD_FOLDER / old_name
+    dst = UPLOAD_FOLDER / new_name
+
+    if src.exists() and not dst.exists():
+        src.rename(dst)
+        return {"message": "Renamed"}
+    raise HTTPException(status_code=400, detail="Error")
+
+@app.get("/delete", tags=["Nomi Share"])
+async def delete_file(name: str):
+    src = UPLOAD_FOLDER / name
+    dst = TRASH_FOLDER / name
+    if src.exists():
+        shutil.move(str(src), str(dst))
+        return {"message": "Moved to Trash"}
+    raise HTTPException(status_code=404, detail="File not found")
+
+@app.get("/restore", tags=["Nomi Share"])
+async def restore_file(name: str):
+    src = TRASH_FOLDER / name
+    dst = UPLOAD_FOLDER / name
+    if src.exists():
+        shutil.move(str(src), str(dst))
+        return {"message": "Restored"}
+    raise HTTPException(status_code=404, detail="File not found")
+
+@app.get("/permanent_delete", tags=["Nomi Share"])
+async def permanent_delete(name: str):
+    path = TRASH_FOLDER / name
+    if path.exists():
+        path.unlink()
+        return {"message": "Deleted Permanently"}
+    raise HTTPException(status_code=404, detail="File not found")
+
+@app.get("/save_permanent", tags=["Nomi Share"])
+async def save_permanent(name: str):
+    src = UPLOAD_FOLDER / name
+    dst = SAFE_FOLDER / name
+    if src.exists():
+        shutil.copy2(str(src), str(dst))
+        return {"message": "Saved Permanently"}
+    raise HTTPException(status_code=404, detail="File not found")
+
+@app.get("/get_ip", tags=["Nomi Share"])
+async def get_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip_address = s.getsockname()[0]
+        s.close()
+    except:
+        ip_address = "127.0.0.1"
+    return JSONResponse({'ip': ip_address})
+
+# --- END Nomi  Share Pro (File Sharing) ---
+
 # --- Main Execution ---
 if __name__ == "__main__":
     server_host = get_host()
