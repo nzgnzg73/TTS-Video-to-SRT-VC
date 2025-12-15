@@ -1,0 +1,203 @@
+مرحلہ نمبر 1: پروجیکٹ کا ڈھانچہ (Project Structure) بنوانا
+مقصد: سب سے پہلے AI کو سمجھائیں کہ آپ بنانا کیا چاہتے ہیں اور وہ آپ کو فائلوں کی لسٹ بنا کر دے۔
+یہ پرومپٹ کاپی کریں:
+> **"Act as a Senior Tech Lead and Architect. I want to build a [Project Name/Description here] using HTML, CSS, and JavaScript.
+> Please analyze the requirements and provide the Complete Folder Structure (Tree view) for this project.
+> List all the necessary files (e.g., index.html, style.css, script.js) and explain the purpose of each file in one line.
+> ⚠️ Note: Do not write any code yet. Just give me the plan and structure."**
+> 
+مرحلہ نمبر 2: اصول طے کرنا (The Golden Rules)
+مقصد: یہ سب سے اہم اسٹیپ ہے۔ سٹرکچر ملنے کے بعد، کوڈ شروع کرنے سے پہلے یہ پرومپٹ دیں تاکہ AI "چھوٹا کوڈ" لکھنے کی غلطی نہ کرے۔
+یہ پرومپٹ کاپی کریں:
+> **"Great. Now act as an Expert Full-Stack Developer. We will write the code file by file.
+> ⚠️ STRICT RULES FOR CODING (READ CAREFULLY):
+>  * No Placeholders: Never use comments like `` or // Rest of code. You must write the FULL, working code.
+>  * Production Level: The code must be clean, bug-free, and fully responsive.
+>  * Length: Do not shorten the code. If the code is too long, stop and ask me to continue, but do not skip lines.
+>  * One File at a Time: Only provide code for the file I ask for.
+> Acknowledge if you understand these rules."**
+> 
+مرحلہ نمبر 3: پہلی فائل (HTML) مانگنا
+مقصد: اب جب AI نے اصول مان لیے ہیں، تو پہلی فائل مانگیں۔
+یہ پرومپٹ کاپی کریں:
+> "Okay, let's start. Please write the complete, detailed code for index.html.
+> Ensure you include the links for CSS and JavaScript properly. Write the full code without skipping any section."
+> 
+مرحلہ نمبر 4: باقی فائلز (CSS اور JS) مانگنا
+مقصد: جب HTML مل جائے، تو اسی طرح اگلی فائلز مانگیں۔
+CSS کے لیے:
+> "Now, provide the complete code for style.css. Make sure the UI is modern, uses Flexbox/Grid, and is fully responsive (Mobile & PC)."
+> 
+JavaScript کے لیے:
+> "Now, provide the complete code for script.js. Handle all the logic, button clicks, and features we discussed. No placeholders."
+> 
+مرحلہ نمبر 5: اگر AI کوڈ لکھتے لکھتے رک جائے (Code Cut-off)
+مقصد: جیسا کہ آپ نے پوچھا، اگر کوڈ لمبا ہو اور AI آدھے میں رک جائے، تو اسے دوبارہ شروع سے لکھنے کا نہ کہیں، بلکہ یہ لکھیں:
+یہ پرومپٹ کاپی کریں:
+> "You stopped writing at the line: '[یہاں وہ آخری لائن پیسٹ کریں جہاں کوڈ رکا تھا]'.
+> Please continue exactly from there. Do not repeat the previous code, just continue the rest."
+> 
+
+
+_____________________________________
+
+
+
+
+مرحلہ نمبر 1: پروجیکٹ کا ڈھانچہ بنوانا
+مقصد: سب سے پہلے AI کو واضح طور پر بتائیں کہ آپ کیا بنانا چاہتے ہیں، تاکہ وہ آپ کے لیے فائلوں کی مکمل فہرست تیار کر دے۔
+یہ پرومپٹ کاپی کریں:
+
+> "ایک سینئر ٹیک لیڈ اور آرکیٹیکٹ کے طور پر کام کریں۔ میں HTML، CSS اور JavaScript استعمال کرتے ہوئے [یہاں پروجیکٹ کا نام/تفصیل لکھیں] بنانا چاہتا ہوں۔
+براہِ کرم ضروریات کا تجزیہ کریں اور اس پروجیکٹ کے لیے مکمل فولڈر اسٹرکچر (ٹری ویو کی شکل میں) فراہم کریں۔
+تمام ضروری فائلوں کی فہرست دیں (مثلاً index.html، style.css، script.js) اور ہر فائل کا مقصد ایک سطر میں بیان کریں۔
+⚠️ نوٹ: ابھی کوئی کوڈ نہ لکھیں۔ صرف منصوبہ اور اسٹرکچر دیں۔"
+
+
+
+مرحلہ نمبر 2: اصول طے کرنا (سنہری اصول)
+مقصد: یہ سب سے اہم مرحلہ ہے۔ اسٹرکچر ملنے کے بعد، کوڈ لکھنا شروع کرنے سے پہلے یہ پرومپٹ دیں تاکہ AI مختصر یا ادھورا کوڈ لکھنے کی غلطی نہ کرے۔
+یہ پرومپٹ کاپی کریں:
+
+> **"بہت خوب۔ اب ایک ماہر فل اسٹیک ڈیولپر کے طور پر کام کریں۔ ہم فائل بہ فائل کوڈ لکھیں گے۔
+⚠️ کوڈنگ کے لیے سخت اصول (غور سے پڑھیں):
+
+کوئی پلیس ہولڈر نہیں: // یا 'باقی کوڈ یہاں' جیسے کمنٹس کبھی استعمال نہ کریں۔ مکمل اور کام کرنے والا کوڈ لکھیں۔
+
+پروڈکشن لیول: کوڈ صاف، بغیر بگ کے اور مکمل طور پر ریسپانسیو ہونا چاہیے۔
+
+طوالت: کوڈ مختصر نہ کریں۔ اگر کوڈ بہت لمبا ہو جائے تو رک کر مجھ سے جاری رکھنے کی اجازت مانگیں، مگر لائنیں نہ چھوڑیں۔
+
+ایک وقت میں ایک فائل: صرف اسی فائل کا کوڈ فراہم کریں جس کے لیے میں کہوں۔
+اگر آپ ان اصولوں کو سمجھتے ہیں تو تصدیق کریں۔"**
+
+
+
+
+مرحلہ نمبر 3: پہلی فائل (HTML) مانگنا
+مقصد: اب جب AI اصول مان چکا ہے، تو پہلی فائل طلب کریں۔
+یہ پرومپٹ کاپی کریں:
+
+> "ٹھیک ہے، آئیے شروع کرتے ہیں۔ براہِ کرم index.html کے لیے مکمل اور تفصیلی کوڈ لکھیں۔
+اس بات کو یقینی بنائیں کہ CSS اور JavaScript کی فائلوں کے لنکس درست طریقے سے شامل ہوں۔ کوئی حصہ چھوڑے بغیر مکمل کوڈ لکھیں۔"
+
+
+
+مرحلہ نمبر 4: باقی فائلیں (CSS اور JavaScript) مانگنا
+مقصد: جب HTML مل جائے تو اسی انداز میں اگلی فائلیں طلب کریں۔
+CSS کے لیے:
+
+> "اب style.css کا مکمل کوڈ فراہم کریں۔ یقینی بنائیں کہ یوزر انٹرفیس جدید ہو، Flexbox/Grid استعمال کیا گیا ہو، اور مکمل طور پر ریسپانسیو ہو (موبائل اور پی سی دونوں کے لیے)۔"
+
+
+
+JavaScript کے لیے:
+
+> "اب script.js کا مکمل کوڈ فراہم کریں۔ تمام لاجک، بٹن کلکس اور وہ تمام فیچرز سنبھالیں جن پر ہم نے بات کی ہے۔ کوئی پلیس ہولڈر نہ ہو۔"
+
+
+
+مرحلہ نمبر 5: اگر AI کوڈ لکھتے ہوئے رک جائے (کوڈ کٹ آف)
+مقصد: اگر کوڈ لمبا ہونے کی وجہ سے AI درمیان میں رک جائے، تو اسے شروع سے دوبارہ لکھنے کا نہ کہیں، بلکہ یہ لکھیں:
+یہ پرومپٹ کاپی کریں:
+
+> "آپ اس لائن پر رک گئے تھے: '[یہاں وہ آخری لائن پیسٹ کریں جہاں کوڈ رکا تھا]'۔
+براہِ کرم وہیں سے بالکل آگے جاری رکھیں۔ پچھلا کوڈ دوبارہ نہ دہرائیں، صرف باقی حصہ لکھیں۔"
+
+
+
+_____________________________________
+
+
+حل نمبر 1: کوڈ کو الگ الگ فائلوں میں ہی رکھیں (بہترین طریقہ)
+پروفیشنل طریقہ یہی ہے کہ HTML، CSS اور JS الگ الگ فائلوں میں ہوں۔ اس میں کوئی مسئلہ نہیں آتا اگر آپ کے فولڈر میں فائلوں کے نام وہی ہوں جو کوڈ کے اندر لکھے ہیں۔
+طریقہ:
+ * اپنے کمپیوٹر پر ایک فولڈر بنائیں۔
+ * اس میں 3 فائلیں بنائیں: index.html, style.css, script.js
+ * کوڈ پیسٹ کریں۔
+مسئلہ کہاں آتا ہے؟
+مسئلہ تب آتا ہے جب HTML فائل کو پتہ ہی نہ ہو کہ CSS یا JS فائل کہاں پڑی ہے۔ اس کنیکشن کو چیک کرنے کے لیے AI کو یہ پرومپٹ دیں:
+🔹 پرومپٹ (لنکنگ چیک کرنے کے لیے):
+اگر آپ نے الگ الگ کوڈ لے لیا ہے اور اب چاہتے ہیں کہ AI چیک کرے کہ یہ آپس میں جڑیں گے یا نہیں، تو یہ لکھیں:
+
+
+
+> **"I have the separate codes for HTML, CSS, and JS.
+> Please provide me the UPDATED <head> and <body> tags for my index.html file.
+> Make sure it is correctly linked to style.css and script.js.
+> Also, ensure the JavaScript is loaded properly (using defer or at the end of the body) so that buttons work correctly."**
+
+
+
+
+_____________________________________
+
+
+حل نمبر 2: سب کو ایک ہی فائل میں اکٹھا کر دیں (آسان طریقہ)
+اگر آپ فولڈرز کے چکر میں نہیں پڑنا چاہتے اور چاہتے ہیں کہ ایک ہی فائل (Single File) ہو جس میں سب کچھ ہو، تو آپ AI سے ان تینوں کو "Merge" (ضم) کروا سکتے ہیں۔
+لیکن! ان کو جوڑتے وقت اکثر AI غلطی کرتا ہے۔ اس لیے آپ کو یہ خاص پرومپٹ استعمال کرنی ہوگی:
+🔹 پرومپٹ (کوڈ اکٹھا کرنے کے لیے):
+جب آپ کے پاس تینوں کوڈز (HTML, CSS, JS) آ جائیں، تو AI کو یہ کہیں:
+
+
+
+> **"Now, I want to combine all these codes into a SINGLE index.html file.
+> ⚠️ STRICT INSTRUCTION:
+> Do not change any logic or class names.
+>  * Place all CSS inside <style> tags in the head.
+>  * Place all JavaScript inside <script> tags right before the closing </body> tag.
+>  * Verify that all IDs and Classes in HTML match the JS and CSS exactly.
+> Provide the full, final merged code."**
+
+
+
+
+
+تمام فائلیں (HTML, CSS, JS) ایک ہی فولڈر (Same Folder) کے اندر ہونی چاہئیں۔
+ * ✅ صحیح:
+   * Folder: MyProject
+     * index.html
+     * style.css
+     * script.js
+   * (اس میں کوئی مسئلہ نہیں آئے گا)
+ * ❌ غلط:
+   * Folder: MyProject
+     * index.html
+     * Folder: CSS -> style.css
+
+
+_____________________________________
+
+1. پہلی پرومپٹ: (اگر آپ کے پاس کوڈ الگ الگ ہے اور آپ چاہتے ہیں AI خود جوڑ کر دے)
+یہ پرومپٹ تب استعمال کریں جب آپ کے پاس HTML، CSS اور JS کا کوڈ موجود ہے اور آپ AI کو دے کر کہہ رہے ہیں کہ "بھائی ان کو ایک فائل میں مکس کر دو۔"
+یہ پرومپٹ کاپی کریں:
+
+
+> **"Act as a Web Developer. I have separate codes for HTML, CSS, and JavaScript.
+> Please combine/merge them into a SINGLE index.html file.
+> ⚠️ Follow this structure strictly:
+>  * Start with the standard HTML structure.
+>  * Put all the CSS code inside <style> tags within the <head> section.
+>  * Put all the HTML body content inside the <body> tags.
+>  * Put all the JavaScript code inside <script> tags at the very end, just before the closing </body> tag.
+> Do not use external links (like <link href...> or <script src...>). Just give me one complete copy-pasteable code block."**
+> 
+
+_____________________________________
+
+2. دوسری پرومپٹ: (اگر آپ خود پیسٹ کرنا چاہتے ہیں اور جگہ پوچھ رہے ہیں)
+یہ پرومپٹ تب استعمال کریں جب آپ AI سے پوچھنا چاہتے ہیں کہ "مجھے بتاؤ کس لائن کے نیچے CSS ڈالوں اور کس کے نیچے JS ڈالوں؟"
+یہ پرومپٹ کاپی کریں:
+
+
+> **"I want to manually paste my CSS and JavaScript into my HTML file.
+> Please provide me with an 'Empty Template' or 'Skeleton' of an index.html file.
+> Inside the code, write clear COMMENTS in capital letters like:
+>  * `` (Show me the lines above and below this).
+>  * ``
+>  * ``
+> Show me exactly where these sections go so I don't make a mistake."**
+> 
+آپ کی آسانی کے لیے (Manual Guide)
+اگر آپ AI کا انتظار نہیں کرنا چاہتے تو حل یہ ہے (اسے یاد کر لیں):
+ * CSS کی جگہ: ہمیشہ <head> ٹیگ ختم ہونے سے پہلے <style> کے اندر۔
