@@ -201,75 +201,7 @@
     <button type="button" id="clear-btn" class="btn-danger px-4 py-2 rounded-md ml-2">🗑 Clear</button>
 </div>
 
-<!-- 🔔 Popup container -->
-<div id="popup-msg"
-    class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-sm px-4 py-2 rounded-lg shadow-lg opacity-0 pointer-events-none transition-all duration-500 z-50">
-</div>
 
-<!-- ✳ Script -->
-<script>
-    const textarea = document.getElementById("text");
-    const copyBtn = document.getElementById("copy-btn");
-    const pasteBtn = document.getElementById("paste-btn");
-    const clearBtn = document.getElementById("clear-btn");
-    const popup = document.getElementById("popup-msg");
-
-    // 📢 Popup message
-    function showPopup(message) {
-        popup.innerText = message;
-        popup.classList.remove("opacity-0", "pointer-events-none");
-        setTimeout(() => {
-            popup.classList.add("opacity-0", "pointer-events-none");
-        }, 2000);
-    }
-
-    // ✅ Copy Button
-    copyBtn.addEventListener("click", async () => {
-        try {
-            await navigator.clipboard.writeText(textarea.value);
-            showPopup("✅ Text copied!");
-        } catch (err) {
-            showPopup("⚠ Clipboard blocked — copy manually.");
-        }
-    });
-
-    // ✅ Paste Button (fixed for mobile)
-    pasteBtn.addEventListener("click", async () => {
-        try {
-            const text = await navigator.clipboard.readText();
-            textarea.value += (textarea.value ? "\n" : "") + text;
-            showPopup("📥 Text pasted!");
-        } catch (err) {
-            // 🟡 fallback popup (mobile-friendly, no layout shift)
-            const input = document.createElement("textarea");
-            input.setAttribute("placeholder", "Paste text here...");
-            input.className =
-                "fixed bottom-10 left-1/2 -translate-x-1/2 w-[90%] h-[100px] border border-slate-400 rounded-xl p-2 bg-white shadow-xl z-[9999]";
-            document.body.appendChild(input);
-
-            input.focus({ preventScroll: true });
-            showPopup("📱 Mobile paste box opened");
-
-            input.addEventListener("blur", () => {
-                textarea.value += (textarea.value ? "\n" : "") + input.value;
-                document.body.removeChild(input);
-                showPopup("📥 Text added manually!");
-            });
-        }
-    });
-
-    // ✅ Clear Button
-    clearBtn.addEventListener("click", () => {
-        textarea.value = "";
-        document.getElementById("char-count").innerText = "0";
-        showPopup("🗑 Cleared!");
-    });
-
-    // ✅ Character Counter
-    textarea.addEventListener("input", () => {
-        document.getElementById("char-count").innerText = textarea.value.length;
-    });
-</script>
 
                                 <!--.............................................................................................-->
 
@@ -7122,3 +7054,4 @@ console.log('🎵 Audio & Video Editor loaded! (Offline Mode)');
 
 </body>
 </html>
+
